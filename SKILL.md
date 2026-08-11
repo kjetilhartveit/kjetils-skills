@@ -74,7 +74,7 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
   1. You are on the `main` branch and pull latest git changes.
   2. You have installed latest package versions (with e.g. `pnpm install`).
   3. Have created a new branch and PR with an unique name with this format `agent-merge-{yyyy}-{MM}-{hh}-{mm}-{ss}` (replace placeholders/vars with current date in UTC).
-  - This is the branch/PR you will be working on during the workflow. You should not merge individual updates/commits directly into the `main` branch, but rather merge the PR into the `main` branch after all open pull requests have been processed.
+     - This is the branch/PR you will be working on during the workflow. You should not merge individual updates/commits directly into the `main` branch, but rather merge the PR into the `main` branch after all open pull requests have been processed.
 - Commit often when suitable.
 - Do not close processed PRs, these will automatically be handled by renovatebot once the pull request is merged in.
 - Do not delete any branches.
