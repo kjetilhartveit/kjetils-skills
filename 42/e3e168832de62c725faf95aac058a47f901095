@@ -1,0 +1,25 @@
+skills/create-durable-plan/SKILL.md
+  s_fc322cc28b2fb3::t_71f04c35ed2d11 1-19,21
+  h_ea837308011c6c 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "42e3e168832de62c725faf95aac058a47f901095",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  },
+  "sessions": {
+    "s_fc322cc28b2fb3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a1b5d9b5-7874-417c-a9c0-5f0186460bf2",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
