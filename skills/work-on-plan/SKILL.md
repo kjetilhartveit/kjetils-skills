@@ -19,6 +19,6 @@ Use this skill when:
 
 ## Instructions
 
-1. Find the current plan. Each plan resides in its own folder and the folder name is prefixed with an incremental number when created (e.g. `0-sample-plan`, `1-{first plan}`, `2-{second plan}` and so on). So the current plan is usually the plan with the highest number.
+1. Find the current plan, which is usually the plan with the highest number (see `about-docs-folder` for the folder structure). Skip `0-sample-plan`, which is only a template.
    - Note that the user might specify working on a specific plan, and in such cases you should follow the user's request.
 2. Keep working on the plan. Follow the instructions in the plan.
