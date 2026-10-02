@@ -40,22 +40,14 @@ docs/plans/
 
 ### Sample PLAN.md
 
-This is only a sample showing the basic parts in plans, the final structure can be determined by agents/users themselves.
+- Note: the plan should include tick boxes so we can track the progress of the plan.
 
 ```
 # {title of the plan}
 
-{context for the agent}
+{context and plan body}
 
-## Plan
-
-- [ ] First step
-- [ ] Second step
-- [ ] Third step
-    - [ ] Substep 1
-    - [ ] Substep 2
-
-### Execution of plan
+## Execution of plan
 
 - You should only work in the `{branch name}` branch.
 - You should git commit and push regularly, particularly after making many code changes.
