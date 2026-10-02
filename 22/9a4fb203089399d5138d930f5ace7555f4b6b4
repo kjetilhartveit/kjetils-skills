@@ -1,0 +1,27 @@
+skills/work-on-plan/SKILL.md
+  h_ea837308011c6c 16-19
+  s_35931b99b83158::t_c8335ba5c67132 22
+skills/about-docs-folder/SKILL.md
+  h_ea837308011c6c 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "229a4fb203089399d5138d930f5ace7555f4b6b4",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  },
+  "sessions": {
+    "s_35931b99b83158": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0fb38738-9521-4da5-9198-030ddd6988a2",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
