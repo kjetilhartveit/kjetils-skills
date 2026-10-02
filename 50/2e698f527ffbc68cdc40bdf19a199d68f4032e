@@ -1,0 +1,14 @@
+skills/about-docs-folder/SKILL.md
+  h_ea837308011c6c 43,48,50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "502e698f527ffbc68cdc40bdf19a199d68f4032e",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
