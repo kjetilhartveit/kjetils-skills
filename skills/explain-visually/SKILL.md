@@ -40,6 +40,7 @@ When explaining a concept/feature/change/architectural consideration in two laye
 
 ## Tips for effects/explanation methods
 
+- In the Claude ecosystem, you may use the `dataviz` skill to create visualizations.
 - Before and after: show the state before and after the change, side by side where possible, and why the change is needed.
 - Include concrete examples.
 - You may use animations.
