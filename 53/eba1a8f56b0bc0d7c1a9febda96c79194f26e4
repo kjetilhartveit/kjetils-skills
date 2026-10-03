@@ -1,0 +1,14 @@
+skills/create-durable-plan/SKILL.md
+  h_ea837308011c6c 20-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "53eba1a8f56b0bc0d7c1a9febda96c79194f26e4",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
