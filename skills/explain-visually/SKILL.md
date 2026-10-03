@@ -11,10 +11,13 @@ The goal: the reader quickly understands what changes, how it works and why, wit
 
 - The user asks for a visual explanation.
 
-## Background information gathering
+## Information and information gathering
 
 - Before explaining visually, make sure you gather significant and enough relevant information in order to back your explanation/statements.
-- Facts over guesswork and opinions.
+  - Facts over guesswork and opinions.
+- Include enough information so that the user can make informed decisions. Substance over fluff.
+- Include references to source material.
+- Include code snippets which gives context and understanding.
 
 ## Structure of an explanation
 
