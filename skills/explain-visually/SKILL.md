@@ -43,6 +43,7 @@ When explaining a concept/feature/change/architectural consideration in two laye
 - In the Claude ecosystem, you may use the `dataviz` skill to create visualizations.
 - Before and after: show the state before and after the change, side by side where possible, and why the change is needed.
 - Include concrete examples.
+- Code snippet should use syntax highlighting, and also highlight the important parts of the code.
 - You may use animations.
 - Pick the most fitting visual communication method which best explains the specific feature or concept.
 - You may use prototypes or simulators to showcase the proposed solution when reading about it is not enough, e.g. for algorithms, UI behavior or state machines.
