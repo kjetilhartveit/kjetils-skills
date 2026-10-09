@@ -1,6 +1,6 @@
 ---
 name: explain-with-storytelling
-description: Use when explaining how something behaves over time or why a change matters as a scroll-driven story, where a sticky graphic changes as the reader scrolls through short text steps.
+description: Use when asked to explain visually with storytelling.
 ---
 
 # Explain with Storytelling
@@ -10,12 +10,8 @@ step scrolls into view, the graphic changes to show it. Best for giving the big 
 
 ## Use this skill when
 
-- Giving the overview of a change, an incident or a mechanism before the code.
-- The point is a change in behaviour over time (before vs after, a failure building up, a value growing).
-- A reader should get the idea without reading code.
-
-Not for line-by-line code changes (use `explain-with-code-walkthrough`) or for comparing two states side by side
-(use `explain-with-preview`).
+- The user asks for a visual explanation of changes with storytelling.
+- Used by an orchestrator to explain changes visually with storytelling.
 
 ## Structure
 

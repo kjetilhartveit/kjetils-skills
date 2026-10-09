@@ -1,6 +1,6 @@
 ---
 name: explain-with-code-walkthrough
-description: Use when explaining code changes step by step as a scroll-driven walkthrough, with a sticky code panel that highlights the relevant lines for each step.
+description: Use when asked to explain visually with a code walkthrough.
 ---
 
 # Explain with Code Walkthrough
@@ -10,9 +10,8 @@ file and highlights the lines that step is about. The reader watches today's cod
 
 ## Use this skill when
 
-- Explaining what changes in the code and where.
-- Walking a reviewer through a diff in a sensible order.
-- Showing how a new function or branch fits into existing code.
+- The user asks for a visual explanation of changes with a code walkthrough.
+- Used by an orchestrator to explain changes visually with a code walkthrough.
 
 ## Steps
 

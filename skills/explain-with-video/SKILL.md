@@ -1,6 +1,6 @@
 ---
 name: explain-with-video
-description: Use when the user wants a short animated video explanation (about 60 seconds), built as a live HTML player that follows the page theme, with chapter names and details below the player.
+description: Use when asked to explain visually with video.
 ---
 
 # Explain with Video
@@ -11,8 +11,8 @@ editing it needs no re-render.
 
 ## Use this skill when
 
-- The user asks for a video, an animation or "a 60-second version".
-- A story is easiest to grasp as motion, and the reader is happy to watch rather than scroll.
+- The user asks for a visual explanation of changes with video.
+- Used by an orchestrator to explain changes visually with video.
 
 ## The video
 

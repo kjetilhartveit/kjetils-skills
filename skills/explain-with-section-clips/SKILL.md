@@ -1,6 +1,6 @@
 ---
 name: explain-with-section-clips
-description: Use when explaining something as a set of short sections where each section's visual is a small looping animation that plays when it scrolls into view.
+description: Use when asked to explain visually with section clips
 ---
 
 # Explain with Section Clips
@@ -10,8 +10,8 @@ small player frame. Each clip shows exactly one idea.
 
 ## Use this skill when
 
-- The explanation splits naturally into a handful of separate ideas, each easier to show moving than still.
-- A reader should be able to skim section by section, but motion helps (counters, flows, things being blocked).
+- The user asks for a visual explanation of changes with section clips.
+- Used by an orchestrator to explain changes visually with section clips.
 
 ## Sections
 

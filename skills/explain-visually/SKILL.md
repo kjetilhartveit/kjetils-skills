@@ -1,6 +1,6 @@
 ---
 name: explain-visually
-description: Use when the user asks for a visual explanation.
+description: Use when the user asks for a visual explanation or to 'explain visually'.
 ---
 
 # Explain Visually

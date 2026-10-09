@@ -1,6 +1,6 @@
 ---
 name: explain-with-preview
-description: Use when the reader should compare two or more states by switching between them, such as the options of a decision or the before and after of a change's fragility, dependencies or complexity.
+description: Use when asked to explain visually with a preview.
 ---
 
 # Explain with Preview
@@ -10,16 +10,15 @@ right that switches when the reader picks a card. Switching back and forth makes
 
 ## Use this skill when
 
-- Presenting a **decision**: each option is a card, and the panel previews what that option means.
-- Showing **before and after** for long-term effects of a change: fragility, dependencies, complexity.
-- Any comparison where seeing two states in the same frame says more than describing them.
+- The user asks for a visual explanation of changes with a preview.
+- Used by an orchestrator to explain changes visually with a preview.
 
 ## Two modes
 
-| Mode | Cards | Default selection | Extras |
-|---|---|---|---|
-| Options (decision) | One per option, usually 2–3 | The recommended option | A "Recommended" badge, 2–3 pro/con chips per option |
-| Before / after | Exactly two: "Before · today" and "After · with the change" | After | No badge; each card has a one-line summary of that state |
+| Mode               | Cards                                                       | Default selection      | Extras                                                   |
+| ------------------ | ----------------------------------------------------------- | ---------------------- | -------------------------------------------------------- |
+| Options (decision) | One per option, usually 2–3                                 | The recommended option | A "Recommended" badge, 2–3 pro/con chips per option      |
+| Before / after     | Exactly two: "Before · today" and "After · with the change" | After                  | No badge; each card has a one-line summary of that state |
 
 ## Left column
 
@@ -39,7 +38,7 @@ right that switches when the reader picks a card. Switching back and forth makes
     (fails safe, slows down, alarm reports it, needs a decision).
   - Dependencies: one small diagram of what depends on what; new edges and modules highlighted.
   - Complexity: the code each piece adds (empty slots before, `+` lines after) and a small tally, including
-    what is *not* added.
+    what is _not_ added.
 - Use real content. If a visual has to be illustrative, label it as an illustration.
 
 ## Phones

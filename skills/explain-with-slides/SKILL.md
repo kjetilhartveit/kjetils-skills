@@ -1,6 +1,6 @@
 ---
 name: explain-with-slides
-description: Use when the reader wants a quick, high-level grasp of something as a short deck of slides, one idea per slide, without details.
+description: Use when asked to explain visually with slides.
 ---
 
 # Explain with Slides
@@ -10,10 +10,8 @@ overall grasp, not for details.
 
 ## Use this skill when
 
-- Someone asks for slides, a deck or a quick high-level summary.
-- The audience needs the gist in under a minute, e.g. before a meeting or for stakeholders.
-
-Not the default for explaining a change: details, code and tables don't belong in slides.
+- The user asks for a visual explanation of changes with slides.
+- Used by an orchestrator to explain changes visually with slides.
 
 ## Content
 
