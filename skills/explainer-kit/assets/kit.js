@@ -8,7 +8,8 @@
      EV.highlight(src) -> html         TS/JS token highlighting of one string
      EV.svg                            helpers: el, text, clamp, win, easeIO, easeOut
      EV.select(tab)                    switch tab from script
-     EV.stickyTop() -> px              height of the sticky bar at the top (tab bar / chapter bar), 0 if none
+     EV.stickyTop() -> px              height of the sticky bar at the top (tab bar / chapter bar), 0 if none;
+                                       also kept in the CSS variable --ev-sticky-top on <html>
    Events dispatched on each .ev-tab-content: "ev:tabshow" / "ev:tabhide" (detail: {tab, first}). */
 (function () {
   "use strict";
@@ -522,7 +523,11 @@
     pending.splice(0).forEach(function (f) { f(); });
     initTabs();
     initToc();
+    syncStickyTop();
+    window.addEventListener("resize", syncStickyTop);
   }
+  /* Mirrors EV.stickyTop() into CSS so sticky panels (.ev-stick) can sit below the top bar without script. */
+  function syncStickyTop() { root.style.setProperty("--ev-sticky-top", EV.stickyTop() + "px"); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();

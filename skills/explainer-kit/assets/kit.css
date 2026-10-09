@@ -533,6 +533,23 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-visual { margin: 0; min-width: 0; }
 .ev-visual > svg { display: block; width: 100%; height: auto; }
 
+/* Side-by-side: text on the left, a sticky panel on the right that stays vertically centred in the
+   viewport space below the top bar (--ev-sticky-top, set by kit.js). Put the panel inside .ev-stick.
+   Below 900px the columns stack and the panel is no longer sticky. */
+.ev-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--ev-s7); align-items: start; }
+.ev-side > * { min-width: 0; }
+.ev-stick {
+  position: sticky; top: var(--ev-sticky-top, 0px);
+  height: calc(100vh - var(--ev-sticky-top, 0px)); height: calc(100dvh - var(--ev-sticky-top, 0px));
+  display: flex; flex-direction: column; justify-content: safe center; padding: var(--ev-s4) 0;
+}
+.ev-stick > * { max-height: 100%; overflow: auto; }
+@media (max-width: 899px) {
+  .ev-side { grid-template-columns: minmax(0, 1fr); }
+  .ev-stick { position: static; height: auto; padding: 0; }
+  .ev-stick > * { max-height: none; overflow: visible; }
+}
+
 /* Jump list: horizontal section index at the top of a tab */
 .ev-jump { display: flex; flex-wrap: wrap; gap: var(--ev-s2); margin-bottom: var(--ev-s7); padding: 0; list-style: none; }
 .ev-jump a {
