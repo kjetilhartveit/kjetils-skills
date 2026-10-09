@@ -1,0 +1,23 @@
+skills/explain-with-preview/SKILL.md
+  s_5738ffa1842a3c::t_5d3377cb23c890 52-53
+skills/explain-with-storytelling/SKILL.md
+  s_5738ffa1842a3c::t_5d3377cb23c890 50-52
+skills/explain-with-code-walkthrough/SKILL.md
+  s_5738ffa1842a3c::t_5d3377cb23c890 45-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ce98aad7b431be056111bffc1beecf19ab796a9a",
+  "prompts": {},
+  "sessions": {
+    "s_5738ffa1842a3c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1c7e50ef-df9a-4c5d-8106-0262dc8cb28e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
