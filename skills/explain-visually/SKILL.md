@@ -1,49 +1,85 @@
 ---
 name: explain-visually
-description: Use when the user asks for a visual explanation.
+description: Use when the user asks for a visual explanation of a change, proposal, feature or concept, to produce one consistent explainer page with an overview, a story, a code walkthrough and before/after previews.
 ---
 
 # Explain Visually
 
-The goal: the reader quickly understands what changes, how it works and why, without reading every line of code. Be concise and show rather than tell.
+The goal: the reader quickly understands what changes, how it works and why, without reading every line of code,
+and can still dig into the details. Show rather than tell, concise first, details on demand.
+
+This skill coordinates. The look comes from the `explainer-kit` skill and each chapter follows its own
+`explain-with-*` skill.
 
 ## Use this skill when
 
-- The user asks for a visual explanation.
+- The user asks for a visual explanation, an explainer or "explain this visually".
+- Explaining a code change, a proposal, a plan or an architecture decision so the user can make informed decisions.
 
-## Information and information gathering
+## 1. Gather the facts
 
-- Before explaining visually, make sure you gather significant and enough relevant information in order to back your explanation/statements.
-  - Facts over guesswork and opinions.
-- Include enough information so that the user can make informed decisions. Substance over fluff.
-- Include references to source material.
-- Include code snippets which gives context and understanding.
+- Gather enough relevant information to back every statement: read the code, docs, plans and history.
+  Facts over guesswork and opinions; substance over fluff.
+- Collect references to source material (`file:line`, docs, links) and the real code snippets you'll show.
+- Note any decisions the user has to make, and the long-term effects: fragility (what can break and when),
+  dependencies (what now depends on what) and complexity (what's added or removed, and is it worth it).
 
-## Structure of an explanation
+## 2. Write the content brief
 
-1. Summary:
-   - Start with a short summary of what changes and why.
-   - Mention any important architectural or long-term considerations that the user should be aware of.
-   - Keep it concise and easy-to-understand, details will be explained in the following steps.
-2. Explain every concept/feature/change in two layers.
-3. Explain architectural and long-term considerations in two layers. Consider at least the following aspects:
-   - Fragility: what can easily break, and under which conditions.
-   - Dependencies: new or changed dependencies, and what now depends on what.
-   - Complexity: added or removed complexity, and whether it is worth it.
+Write a short markdown brief in the scratchpad. It is the single source of truth for every chapter, so chapters
+can be built in parallel and stay consistent:
 
-### Explaining in two layers
+- The one-sentence answer and the key numbers.
+- Per chapter: what it must show, the facts, the real code (with paths), and sources.
+- What is a fact and what is an illustration.
 
-When explaining a concept/feature/change/architectural consideration in two layers, then do the following:
+## 3. The page
 
-- Top level: concise, easy to understand, pseudo code, diagrams, visual effects etc.
-- Concrete: actual code examples from the codebase (or the proposed code).
+One scrollable page with a sticky chapter list on the left. Chapters, in this order:
 
-## Tips for effects/explanation methods
+| # | Chapter | Built with | Section name | When |
+|---|---|---|---|---|
+| — | Overview | this skill (kit overview component) | — | always |
+| 1 | Story | `explain-with-storytelling` | `story` | always: the big picture |
+| 2 | Code | `explain-with-code-walkthrough` | `code` | when code changes |
+| 3 | Fragility | `explain-with-preview`, before/after | `fragile` | when relevant |
+| 4 | Dependencies | `explain-with-preview`, before/after | `deps` | when relevant |
+| 5 | Complexity | `explain-with-preview`, before/after | `complex` | when relevant |
+| 6 | Decision | `explain-with-preview`, options | `decide` | only when the user has something to decide |
 
-- In the Claude ecosystem, you may use the `dataviz` skill to create visualizations.
-- Before and after: show the state before and after the change, side by side where possible, and why the change is needed.
-- Include concrete examples.
-- Code snippet should use syntax highlighting, and also highlight the important parts of the code.
-- You may use animations.
-- Pick the most fitting visual communication method which best explains the specific feature or concept.
-- You may use prototypes or simulators to showcase the proposed solution when reading about it is not enough, e.g. for algorithms, UI behavior or state machines.
+- **Overview:** a headline that states the answer, one sentence, one hero visual (the most telling concrete
+  picture, drawn to scale), and one key line with at most one "Decide" callout. No grid of info boxes.
+- Skip chapters that don't apply instead of filling them. Don't repeat the overview inside the chapters.
+- Only add `explain-with-section-clips`, `explain-with-slides` or `explain-with-video` when the user asks for them.
+  Slides and video are usually separate pages.
+
+## 4. Build the chapters
+
+- Load the `explainer-kit` skill and read its `FRAGMENT-CONTRACT.md`. Use the kit as is: don't design new themes,
+  fonts or components for one page.
+- When subagents are available, build the chapters **in parallel**: one subagent per chapter, each given the brief,
+  its `explain-with-*` skill, the kit path, its section name and an output file. Build the three before/after
+  chapters together from one template plus data.
+- Every chapter follows the kit's shared rules: concise first; details in toggles that name their contents;
+  visual details (highlighted code, chips, compact tables); no faded text; motion only when it explains.
+- Put references in the details: file paths in code headers, `file:line` and links in the toggles.
+
+## 5. Assemble, check and publish
+
+```bash
+python <explainer-kit>/assets/assemble.py --page --toc --title "Short name" --overview overview.html \
+  --section story=frag-story.html --section code=frag-code.html \
+  --section fragile=frag-fragile.html --section deps=frag-deps.html --section complex=frag-complex.html \
+  --section decide=frag-decide.html --out index.html
+```
+
+- Fix any contract errors the assembler reports.
+- Check the facts on the page against the brief (claims, counts, file lists). Agents drift.
+- Look at the page once (screenshot or artifact preview) in dark and on a phone width; fix what's broken.
+  Don't iterate on polish.
+- Publish the single page as an artifact.
+
+## Keep it fast
+
+- The kit, the chapter skills and the brief remove most of the work: agents only write content and visuals.
+- Parallel chapters, one screenshot pass and no redesign keep a full explainer to a few minutes per chapter.

@@ -1,0 +1,46 @@
+---
+name: explain-with-code-walkthrough
+description: Use when explaining code changes step by step as a scroll-driven walkthrough, with a sticky code panel that highlights the relevant lines for each step.
+---
+
+# Explain with Code Walkthrough
+
+Short steps on the left scroll past a sticky code panel on the right. For each step the panel shows the right
+file and highlights the lines that step is about. The reader watches today's code become the proposed code.
+
+## Use this skill when
+
+- Explaining what changes in the code and where.
+- Walking a reviewer through a diff in a sensible order.
+- Showing how a new function or branch fits into existing code.
+
+## Steps
+
+- 4–8 steps, in the order a reader should understand them (usually: today's code → where the change goes → the
+  new code → who uses it).
+- Each step: **one bold sentence** saying what this step shows, then at most 1–2 short lines.
+- Deeper explanation, tables and traces go in one `ev-more` toggle per step whose summary **names what's inside**
+  (e.g. "Why 5 rows are enough · Tick trace"). The reader should know what they'd get without clicking.
+- Make toggle content visual: highlighted code, groups, status chips, compact tables. No walls of text.
+
+## The code panel
+
+- Show real code from the codebase (or the proposed code), with the file path in the panel header.
+- Animate with **highlights, not content shifts**: dim unfocused lines, glide a focus band to the new range,
+  cross-fade when the file changes. Don't grow or collapse lines while the reader is looking.
+- Mark new lines with a green `+` gutter and removed lines with `−`.
+- Select lines by stable ids (tag lines in the code data), not by hand-counted line numbers, which drift.
+- Keep snippets to the relevant lines plus a little context; mark skipped parts ("⋯ 12 lines hidden") instead of
+  showing whole files. Avoid lines that need sideways scrolling where possible.
+
+## Phones
+
+- Below the two-column width, drop the sticky panel and show each step's code slice inline under the step.
+
+## Building it
+
+- Build it as a fragment with the `explainer-kit` skill. Use the kit's code block (`ev-code` with `data-add`,
+  `data-hl`, `data-groups`, `data-marks`) for inline and toggle code.
+- Initialise in `EV.onShow`, place the sticky panel below `EV.stickyTop()`, and re-measure the focus band on
+  resize.
+- Give each step `id` + `data-toc` so it appears in the chapter list.

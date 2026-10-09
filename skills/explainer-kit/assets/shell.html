@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"<!--EV:HTML-ATTRS-->>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title><!--EV:TITLE--></title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<!--EV:KIT-CSS-->
+<!--EV:KIT-JS-->
+</head>
+<body>
+<div class="ev-page">
+  <div class="ev-topbar">
+    <div class="ev-docname"><span><!--EV:TITLE--></span></div>
+    <div data-ev-themes></div>
+  </div>
+<!--EV:OVERVIEW-->
+</div>
+<!--EV:TABS-->
+</body>
+</html>
+<!--
+  Template for assemble.py. Markers:
+    EV:HTML-ATTRS  optional attributes on <html> (e.g. data-ev-theme="ocean" from --theme)
+    EV:TITLE       page name (both <title> and the top-left document name)
+    EV:KIT-CSS     replaced by <style>kit.css</style>
+    EV:KIT-JS      replaced by <script>kit.js</script> (in <head>, so EV exists before fragments run)
+    EV:OVERVIEW    the overview fragment (<header class="ev-overview">…</header>); may be empty
+    EV:TABS        tabbed mode:  <div class="ev-tabbar"><div class="ev-tablist" role="tablist">…</div></div>
+                                 <main class="ev-panels"> fragment sections, each role="tabpanel" </main>
+                   standalone:   <main class="ev-panels ev-standalone"> one fragment section </main>
+                                 (no tab bar; kit.js fires ev:tabshow on the section immediately)
+  This comment is stripped from the output.
+-->
