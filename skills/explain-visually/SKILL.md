@@ -1,6 +1,6 @@
 ---
 name: explain-visually
-description: Use when the user asks for a visual explanation of a change, proposal, feature or concept, to produce one consistent explainer page with an overview, a story, a code walkthrough and before/after previews.
+description: Use when the user asks for a visual explanation.
 ---
 
 # Explain Visually
@@ -37,15 +37,15 @@ can be built in parallel and stay consistent:
 
 One scrollable page with a sticky chapter list on the left. Chapters, in this order:
 
-| # | Chapter | Built with | Section name | When |
-|---|---|---|---|---|
-| — | Overview | this skill (kit overview component) | — | always |
-| 1 | Story | `explain-with-storytelling` | `story` | always: the big picture |
-| 2 | Code | `explain-with-code-walkthrough` | `code` | when code changes |
-| 3 | Fragility | `explain-with-preview`, before/after | `fragile` | when relevant |
-| 4 | Dependencies | `explain-with-preview`, before/after | `deps` | when relevant |
-| 5 | Complexity | `explain-with-preview`, before/after | `complex` | when relevant |
-| 6 | Decision | `explain-with-preview`, options | `decide` | only when the user has something to decide |
+| #   | Chapter      | Built with                           | Section name | When                                       |
+| --- | ------------ | ------------------------------------ | ------------ | ------------------------------------------ |
+| —   | Overview     | this skill (kit overview component)  | —            | always                                     |
+| 1   | Story        | `explain-with-storytelling`          | `story`      | always: the big picture                    |
+| 2   | Code         | `explain-with-code-walkthrough`      | `code`       | when code changes                          |
+| 3   | Fragility    | `explain-with-preview`, before/after | `fragile`    | when relevant                              |
+| 4   | Dependencies | `explain-with-preview`, before/after | `deps`       | when relevant                              |
+| 5   | Complexity   | `explain-with-preview`, before/after | `complex`    | when relevant                              |
+| 6   | Decision     | `explain-with-preview`, options      | `decide`     | only when the user has something to decide |
 
 - **Overview:** a headline that states the answer, one sentence, one hero visual (the most telling concrete
   picture, drawn to scale), and one key line with at most one "Decide" callout. No grid of info boxes.
