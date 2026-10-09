@@ -95,7 +95,7 @@ name given with `--section NAME=FILE`.
 | small bars | `<div class="ev-bars">` of `ev-k` / `<span class="ev-bar [is-cap]"><i style="--v:40%">` / `ev-v` |
 | facts | `<dl class="ev-facts"><dt>…</dt><dd>…</dd></dl>` |
 | jump list | `<ul class="ev-jump"><li><a href="#NAME-x"><span class="ev-n">1</span>Label</a></li></ul>` |
-| text + sticky panel | `<div class="ev-side"><div>…steps / cards…</div><div class="ev-stick"><div>…panel…</div></div></div>` — text left, panel right and vertically centred below the top bar; stacks below 900px (override the stacking per skill, e.g. pin the graphic at the top on phones) |
+| text + sticky panel | `<div class="ev-side"><div>…steps / cards…</div><div class="ev-stick">…panel…</div></div>` — text left, panel right. At rest the panel is centred on the text column's first child (or its `[data-ev-anchor]` element) with no gap above; while scrolling it sticks in the vertical centre below the top bar. Don't pad the top of the text column; pad the bottom so the last step can reach the middle. Stacks below 900px (override the stacking per skill, e.g. pin the graphic at the top on phones) |
 | wide tab | add `ev-wide` to the section to drop the 720px reading width |
 
 ## 7. The overview (coordinator only)
@@ -132,4 +132,5 @@ python assemble.py --page --toc --title "Backoff explainer" --overview overview.
 - Sticky things inside a fragment must sit below whatever is stuck to the top: use `EV.stickyTop()` (px; tab bar or
   chapter bar, 0 if none; also in CSS as `var(--ev-sticky-top)`), and re-measure on resize.
 - Side panels (story graphic, code panel, preview) go on the **right**, text on the **left**, and the panel is
-  stuck in the **vertical centre** of the viewport below the top bar. Use `ev-side` + `ev-stick` for this.
+  stuck in the **vertical centre** of the viewport below the top bar. Use `ev-side` + `ev-stick` for this. The panel
+  shows from the start of the chapter, level with the first text box, never after a gap.

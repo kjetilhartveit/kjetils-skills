@@ -533,21 +533,23 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-visual { margin: 0; min-width: 0; }
 .ev-visual > svg { display: block; width: 100%; height: auto; }
 
-/* Side-by-side: text on the left, a sticky panel on the right that stays vertically centred in the
-   viewport space below the top bar (--ev-sticky-top, set by kit.js). Put the panel inside .ev-stick.
+/* Side-by-side: text on the left, a sticky panel (.ev-stick) on the right. At rest the panel is centred on the
+   first text box (the column's first child, or its [data-ev-anchor] element); while scrolling it sticks in the
+   vertical centre of the viewport below the top bar, so both arrive in the middle together.
+   kit.js sets --ev-stick-h (panel height) and the alignment margins; --ev-sticky-top is the top bar height.
    Below 900px the columns stack and the panel is no longer sticky. */
 .ev-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--ev-s7); align-items: start; }
-.ev-side > * { min-width: 0; }
+.ev-side > * { min-width: 0; margin-top: var(--ev-side-shift, 0px); }
 .ev-stick {
-  position: sticky; top: var(--ev-sticky-top, 0px);
-  height: calc(100vh - var(--ev-sticky-top, 0px)); height: calc(100dvh - var(--ev-sticky-top, 0px));
-  display: flex; flex-direction: column; justify-content: safe center; padding: var(--ev-s4) 0;
+  position: sticky;
+  top: max(calc(var(--ev-sticky-top, 0px) + var(--ev-s4)),
+           calc(var(--ev-sticky-top, 0px) + (100vh - var(--ev-sticky-top, 0px) - var(--ev-stick-h, 0px)) / 2));
+  max-height: calc(100vh - var(--ev-sticky-top, 0px) - 2 * var(--ev-s4)); overflow: auto;
 }
-.ev-stick > * { max-height: 100%; overflow: auto; }
 @media (max-width: 899px) {
   .ev-side { grid-template-columns: minmax(0, 1fr); }
-  .ev-stick { position: static; height: auto; padding: 0; }
-  .ev-stick > * { max-height: none; overflow: visible; }
+  .ev-side > * { margin-top: 0; }
+  .ev-stick { position: static; max-height: none; overflow: visible; }
 }
 
 /* Jump list: horizontal section index at the top of a tab */

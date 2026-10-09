@@ -525,9 +525,34 @@
     initToc();
     syncStickyTop();
     window.addEventListener("resize", syncStickyTop);
+    document.querySelectorAll(".ev-side").forEach(initSide);
   }
   /* Mirrors EV.stickyTop() into CSS so sticky panels (.ev-stick) can sit below the top bar without script. */
   function syncStickyTop() { root.style.setProperty("--ev-sticky-top", EV.stickyTop() + "px"); }
+
+  /* ev-side: tell CSS the panel's height (for the centred sticky top) and centre the panel on the first text
+     box at rest, by pushing down whichever column starts higher. Re-runs whenever either side changes size
+     (also when a hidden tab is shown). */
+  function initSide(side) {
+    var stick = side.querySelector(":scope > .ev-stick");
+    var text = Array.prototype.filter.call(side.children, function (c) { return c !== stick; })[0];
+    if (!stick || !text || !window.ResizeObserver) return;
+    var anchor = text.querySelector("[data-ev-anchor]") || text.firstElementChild || text;
+    function align() {
+      var h = stick.offsetHeight;
+      if (!h) return;                       // hidden tab
+      stick.style.setProperty("--ev-stick-h", h + "px");
+      var stacked = getComputedStyle(stick).position !== "sticky";
+      var a = anchor.getBoundingClientRect(), t = text.getBoundingClientRect();
+      var diff = stacked ? 0 : Math.round(a.top - t.top + a.height / 2 - h / 2);
+      stick.style.setProperty("--ev-side-shift", Math.max(0, diff) + "px");
+      text.style.setProperty("--ev-side-shift", Math.max(0, -diff) + "px");
+    }
+    var ro = new ResizeObserver(align);
+    [stick, text, anchor].forEach(function (el) { ro.observe(el); });
+    window.addEventListener("resize", align);
+    align();
+  }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();
