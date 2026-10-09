@@ -1,0 +1,26 @@
+skills/explain-with-section-clips/SKILL.md
+  h_ea837308011c6c 3,13-14
+skills/explain-with-storytelling/SKILL.md
+  h_ea837308011c6c 3,13-14
+skills/explain-with-video/SKILL.md
+  h_ea837308011c6c 3,14-15
+skills/explain-with-slides/SKILL.md
+  h_ea837308011c6c 3,13-14
+skills/explain-with-code-walkthrough/SKILL.md
+  h_ea837308011c6c 3,13-14
+skills/explain-visually/SKILL.md
+  h_ea837308011c6c 3
+skills/explain-with-preview/SKILL.md
+  h_ea837308011c6c 3,13-14,18-21,41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "efb381bd4b01b2cb7f8f502f938ff93363301d0d",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
