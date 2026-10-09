@@ -47,7 +47,9 @@ it. Best for giving the big picture before the details.
 ## Building it
 
 - Build it as a fragment with the `explainer-kit` skill (tokens, `EV.onShow`). Lay it out with the kit's
-  `ev-side` (steps left) + `ev-stick` (graphic right, sticky and vertically centred below the top bar). Use
+  `ev-side` (steps left) + `ev-stick` (graphic right, sticky and vertically centred below the top bar). The first
+  step starts at the top of its column, level with the graphic (no top padding or spacer); add bottom padding so
+  the last step can reach the middle. Use
   `IntersectionObserver` with a trigger line near the middle of the viewport to set the active step, and drive the graphic's states from CSS keyed on a `data-step` attribute.
 - Give scenes `id` + `data-toc` so they appear in the chapter list.
 - Check with screenshots at several scroll positions (Playwright, or a page that forces each step).

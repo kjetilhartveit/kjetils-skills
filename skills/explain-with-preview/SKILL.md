@@ -49,6 +49,7 @@ forth makes the differences obvious.
 ## Building it
 
 - Build it as a fragment with the `explainer-kit` skill; lay it out with the kit's `ev-side` (cards left) +
-  `ev-stick` (panel right, sticky and vertically centred below the top bar).
+  `ev-stick` (panel right, sticky and vertically centred below the top bar). Put `data-ev-anchor` on the card list
+  so the panel starts level with the cards, with no gap above it.
 - When several chapters use this pattern (e.g. fragility, dependencies and complexity), generate them from one
   template plus per-chapter data so they look like a series and are fast to produce.
