@@ -6,7 +6,8 @@ description: Use when asked to explain visually with a preview.
 # Explain with Preview
 
 A two-column chapter: a short takeaway and a few clickable cards on the left, and a sticky preview panel on the
-right that switches when the reader picks a card. Switching back and forth makes the differences obvious.
+right, held in the vertical centre of the viewport, that switches when the reader picks a card. Switching back and
+forth makes the differences obvious.
 
 ## Use this skill when
 
@@ -47,6 +48,7 @@ right that switches when the reader picks a card. Switching back and forth makes
 
 ## Building it
 
-- Build it as a fragment with the `explainer-kit` skill; place the sticky panel below `EV.stickyTop()`.
+- Build it as a fragment with the `explainer-kit` skill; lay it out with the kit's `ev-side` (cards left) +
+  `ev-stick` (panel right, sticky and vertically centred below the top bar).
 - When several chapters use this pattern (e.g. fragility, dependencies and complexity), generate them from one
   template plus per-chapter data so they look like a series and are fast to produce.

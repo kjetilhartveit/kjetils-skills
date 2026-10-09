@@ -5,8 +5,9 @@ description: Use when asked to explain visually with storytelling.
 
 # Explain with Storytelling
 
-A scroll-driven story ("scrollytelling"): one sticky graphic on one side, short text steps on the other. As each
-step scrolls into view, the graphic changes to show it. Best for giving the big picture before the details.
+A scroll-driven story ("scrollytelling"): short text steps on the left scroll past one sticky graphic on the
+right, held in the vertical centre of the viewport. As each step scrolls into view, the graphic changes to show
+it. Best for giving the big picture before the details.
 
 ## Use this skill when
 
@@ -45,8 +46,8 @@ step scrolls into view, the graphic changes to show it. Best for giving the big 
 
 ## Building it
 
-- Build it as a fragment with the `explainer-kit` skill (tokens, `EV.onShow`, `EV.stickyTop()` for the sticky
-  offset). Use `IntersectionObserver` with a trigger line near the middle of the viewport to set the active step,
-  and drive the graphic's states from CSS keyed on a `data-step` attribute.
+- Build it as a fragment with the `explainer-kit` skill (tokens, `EV.onShow`). Lay it out with the kit's
+  `ev-side` (steps left) + `ev-stick` (graphic right, sticky and vertically centred below the top bar). Use
+  `IntersectionObserver` with a trigger line near the middle of the viewport to set the active step, and drive the graphic's states from CSS keyed on a `data-step` attribute.
 - Give scenes `id` + `data-toc` so they appear in the chapter list.
 - Check with screenshots at several scroll positions (Playwright, or a page that forces each step).

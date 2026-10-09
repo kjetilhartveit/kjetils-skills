@@ -5,8 +5,9 @@ description: Use when asked to explain visually with a code walkthrough.
 
 # Explain with Code Walkthrough
 
-Short steps on the left scroll past a sticky code panel on the right. For each step the panel shows the right
-file and highlights the lines that step is about. The reader watches today's code become the proposed code.
+Short steps on the left scroll past a sticky code panel on the right, held in the vertical centre of the viewport.
+For each step the panel shows the right file and highlights the lines that step is about. The reader watches
+today's code become the proposed code.
 
 ## Use this skill when
 
@@ -40,6 +41,6 @@ file and highlights the lines that step is about. The reader watches today's cod
 
 - Build it as a fragment with the `explainer-kit` skill. Use the kit's code block (`ev-code` with `data-add`,
   `data-hl`, `data-groups`, `data-marks`) for inline and toggle code.
-- Initialise in `EV.onShow`, place the sticky panel below `EV.stickyTop()`, and re-measure the focus band on
-  resize.
+- Lay it out with the kit's `ev-side` (steps left) + `ev-stick` (code panel right, sticky and vertically centred
+  below the top bar). Initialise in `EV.onShow` and re-measure the focus band on resize.
 - Give each step `id` + `data-toc` so it appears in the chapter list.
