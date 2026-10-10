@@ -1,0 +1,24 @@
+skills/explainer-kit/assets/kit.js
+  s_5738ffa1842a3c::t_fca62c4166489d 11-12,255-282
+  s_5738ffa1842a3c::t_50a75aa201eb27 283
+skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_5738ffa1842a3c::t_fca62c4166489d 98,137-138
+skills/explainer-kit/assets/kit.css
+  s_5738ffa1842a3c::t_fca62c4166489d 549-559
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9a69bc2fa9d91c29473cd732900f2e60c72bf4fd",
+  "prompts": {},
+  "sessions": {
+    "s_5738ffa1842a3c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1c7e50ef-df9a-4c5d-8106-0262dc8cb28e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
