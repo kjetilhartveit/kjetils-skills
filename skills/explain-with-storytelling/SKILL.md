@@ -33,8 +33,8 @@ it. Best for giving the big picture before the details.
 
 ## Text steps
 
-- Fully readable from the moment they enter until they're nearly out of view. Never dim inactive steps; mark
-  the active one with a border or accent instead.
+- Fully readable from the moment they enter until they're nearly out of view. Never dim inactive steps; the
+  current one gets a mild marker (the kit's `ev-step.is-active`: accent edge and a faint tint).
 - Larger text than body copy, high contrast, short lines.
 
 ## Motion
@@ -43,13 +43,18 @@ it. Best for giving the big picture before the details.
   through. No decorative motion.
 - With reduced motion, swap states instantly.
 - The page must look complete before any scrolling (the first step's state is visible at rest).
+- The graphic's first state belongs to step 1 and must not change while step 1 is current: no intro state, no
+  build-up as step 1 reaches the middle. The first change happens when step 2 becomes current.
+- Scrolling back up restores the earlier states exactly: each state is set from the step number alone, never
+  built on top of the previous state.
 
 ## Building it
 
 - Build it as a fragment with the `explainer-kit` skill (tokens, `EV.onShow`). Lay it out with the kit's
   `ev-side` (steps left) + `ev-stick` (graphic right, sticky and vertically centred below the top bar). The first
   step starts at the top of its column, level with the graphic (no top padding or spacer); add bottom padding so
-  the last step can reach the middle. Use
-  `IntersectionObserver` with a trigger line near the middle of the viewport to set the active step, and drive the graphic's states from CSS keyed on a `data-step` attribute.
+  the last step can reach the middle. Make steps `ev-step` boxes and drive them with
+  `EV.steps(steps, function (i) { graphic.dataset.step = i + 1; })` (not an `IntersectionObserver`, which gets
+  the reverse scroll wrong); key the graphic's states in CSS on the `data-step` attribute.
 - Give scenes `id` + `data-toc` so they appear in the chapter list.
 - Check with screenshots at several scroll positions (Playwright, or a page that forces each step).
