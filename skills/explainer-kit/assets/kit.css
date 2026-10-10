@@ -546,6 +546,17 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
            calc(var(--ev-sticky-top, 0px) + (100vh - var(--ev-sticky-top, 0px) - var(--ev-stick-h, 0px)) / 2));
   max-height: calc(100vh - var(--ev-sticky-top, 0px) - 2 * var(--ev-s4)); overflow: auto;
 }
+.ev-step {
+  padding: var(--ev-s4); border: 1px solid var(--ev-line); border-radius: var(--ev-radius); background: var(--ev-surface);
+  transition: border-color .25s, box-shadow .25s, background-color .25s;
+}
+/* Current step (set by EV.steps): mild, never dims the others */
+.ev-step.is-active {
+  border-color: color-mix(in srgb, var(--ev-accent) 45%, var(--ev-line));
+  box-shadow: inset 3px 0 0 var(--ev-accent-fill);
+  background: color-mix(in srgb, var(--ev-accent-soft) 45%, var(--ev-surface));
+}
+@media (prefers-reduced-motion: reduce) { .ev-step { transition: none; } }
 @media (max-width: 899px) {
   .ev-side { grid-template-columns: minmax(0, 1fr); }
   .ev-side > * { margin-top: 0; }

@@ -8,6 +8,8 @@
      EV.highlight(src) -> html         TS/JS token highlighting of one string
      EV.svg                            helpers: el, text, clamp, win, easeIO, easeOut
      EV.select(tab)                    switch tab from script
+     EV.steps(els, fn(i, el))          scroll steps beside a sticky panel: marks the current one .is-active and
+                                       calls fn when it changes (both scroll directions; first step at rest)
      EV.stickyTop() -> px              height of the sticky bar at the top (tab bar / chapter bar), 0 if none;
                                        also kept in the CSS variable --ev-sticky-top on <html>
    Events dispatched on each .ev-tab-content: "ev:tabshow" / "ev:tabhide" (detail: {tab, first}). */
@@ -249,6 +251,35 @@
     window.addEventListener("resize", queue);
     onScroll();
   }
+
+  /* ------------------------------------- scroll steps (story, code walkthrough) */
+  /* The current step is the last one whose top has passed the middle of the viewport (below the top bar),
+     else the first. Computed from positions on every scroll, so it is right when scrolling back up too and
+     nothing changes until step 2 reaches the middle (the panel's first state is step 1's). */
+  EV.steps = function (els, fn) {
+    els = Array.prototype.slice.call(els);
+    if (!els.length) return;
+    var current = -1, queued = false;
+    function update() {
+      queued = false;
+      if (!els[0].getClientRects().length) return;   // hidden tab
+      var top = EV.stickyTop(), line = top + (window.innerHeight - top) / 2, i = 0;
+      els.forEach(function (el, k) { if (el.getBoundingClientRect().top <= line) i = k; });
+      if (i === current) return;
+      current = i;
+      els.forEach(function (el, k) {
+        el.classList.toggle("is-active", k === i);
+        if (k === i) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
+      });
+      if (fn) fn(i, els[i]);
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    var tab = els[0].closest(".ev-tab-content");
+    if (tab) tab.addEventListener("ev:tabshow", queue);
+    update();
+  };
 
   /* onShow / onHide: safe to call before or after the first show */
   EV.onShow = function (name, fn) {
