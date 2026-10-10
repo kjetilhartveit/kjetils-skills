@@ -1,0 +1,33 @@
+skills/explain-visually/SKILL.md
+  s_8ee97b5ed7a920::t_690c60595344b8 12,19,21-25,27,29-37,39,41-42,56-57,62-67,73-75,79-84
+skills/explainer-kit/assets/check.py
+  s_8ee97b5ed7a920::t_99a6482287646f 10,61
+  s_8ee97b5ed7a920::t_bf29499b12ff85 1-9,11-60,62-106
+skills/explain-with-storytelling/SKILL.md
+  s_8ee97b5ed7a920::t_99a6482287646f 32-33,61-62
+skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_8ee97b5ed7a920::t_99a6482287646f 98
+skills/explainer-kit/assets/kit.js
+  s_8ee97b5ed7a920::t_b494d43ebe2768 266-270
+skills/explainer-kit/SKILL.md
+  s_8ee97b5ed7a920::t_99a6482287646f 29,32
+  s_8ee97b5ed7a920::t_f59e84f8a8d8c5 33
+skills/explainer-kit/assets/kit.css
+  s_8ee97b5ed7a920::t_bf29499b12ff85 564-568
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "96ed7c96f622d03764055596f0c6d4337c0a1e5e",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
