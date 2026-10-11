@@ -1,0 +1,29 @@
+docs/explain-visually-loop/results.md
+  s_8ee97b5ed7a920::t_468c3812707a57 3
+docs/explain-visually-loop/archive/haiku/iter1-skill-changes.patch
+  s_8ee97b5ed7a920::t_a9ccb08b92b636 1-334
+docs/explain-visually-loop/archive/haiku/README.md
+  s_8ee97b5ed7a920::t_367cad7a1a1280 1-18
+docs/explain-visually-loop/.gitignore
+  s_8ee97b5ed7a920::t_367cad7a1a1280 5
+docs/explain-visually-loop/tools/run_iteration.sh
+  s_8ee97b5ed7a920::t_7f83af05e89d1d 1-9
+docs/explain-visually-loop/tools/run_explainer.sh
+  s_8ee97b5ed7a920::t_7f83af05e89d1d 4,15,48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "36c29870590db83cb8754fc96016de4a5dfa83ec",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
