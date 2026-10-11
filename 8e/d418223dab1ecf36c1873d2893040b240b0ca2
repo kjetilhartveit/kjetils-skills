@@ -1,0 +1,23 @@
+docs/explain-visually-loop/tools/run_explainer.sh
+  s_8ee97b5ed7a920::t_d7c045958440c8 4,8-14,35-37,40,44-45,55-57,60-61,75
+docs/explain-visually-loop/tools/metrics.py
+  s_8ee97b5ed7a920::t_45023b53824ec2 10,42-55,70
+docs/explain-visually-loop/results.md
+  s_8ee97b5ed7a920::t_f80041f435a950 9-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8ed418223dab1ecf36c1873d2893040b240b0ca2",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
