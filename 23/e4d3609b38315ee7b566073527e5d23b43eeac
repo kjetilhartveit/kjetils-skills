@@ -1,0 +1,39 @@
+docs/explain-visually-loop/experiments/exp6-story-graphic/open-graphic/skills/explainer-kit/assets/templates/story.html
+  s_8ee97b5ed7a920::t_f51bd4b8e97f61 1-153
+docs/explain-visually-loop/experiments/exp6-story-graphic/open-graphic/skills/explain-with-storytelling/SKILL.md
+  s_8ee97b5ed7a920::t_f51bd4b8e97f61 1-68
+docs/explain-visually-loop/tools/run_chunk.sh
+  s_8ee97b5ed7a920::t_0531a432ba5f32 58
+docs/explain-visually-loop/experiments/exp5-measure/verification.md
+  s_8ee97b5ed7a920::t_31d479fabd948d 1-164
+skills/explain-visually/SKILL.md
+  s_8ee97b5ed7a920::t_26a9da4f4b5dc8 24-39,42,51-52
+  s_8ee97b5ed7a920::t_67933332772552 40-41
+docs/explain-visually-loop/experiments/exp6-story-graphic/open-graphic/skills/explain-visually/SKILL.md
+  s_8ee97b5ed7a920::t_f51bd4b8e97f61 1-93
+docs/explain-visually-loop/results.md
+  s_8ee97b5ed7a920::t_51c5d27f334444 158-160
+  s_8ee97b5ed7a920::t_a7896b5c73a2f6 129-157
+skills/explain-visually/assets/measure.py
+  s_8ee97b5ed7a920::t_26a9da4f4b5dc8 1-96
+docs/explain-visually-loop/problems.md
+  s_8ee97b5ed7a920::t_51c5d27f334444 20-25,37-38
+docs/explain-visually-loop/experiments/exp6-story-graphic/prompt.md
+  s_8ee97b5ed7a920::t_2186c8eb53f010 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "23e4d3609b38315ee7b566073527e5d23b43eeac",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
