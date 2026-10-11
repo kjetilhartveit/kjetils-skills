@@ -1,0 +1,33 @@
+skills/explainer-kit/assets/templates/story.html
+  s_8ee97b5ed7a920::t_b9a7e39d4505f0 7-9,83-87
+docs/explain-visually-loop/experiments/exp6-story-graphic/verification.md
+  s_8ee97b5ed7a920::t_5d4ba2f00b5390 1-118
+skills/explain-with-storytelling/SKILL.md
+  s_8ee97b5ed7a920::t_efa3f6d14065b7 32-33
+  s_8ee97b5ed7a920::t_b9a7e39d4505f0 28-31,61
+docs/explain-visually-loop/tools/test_check.py
+  s_8ee97b5ed7a920::t_6c640e6ea0ec5c 39
+skills/explain-visually/SKILL.md
+  s_8ee97b5ed7a920::t_a361d04c55072d 86
+  s_8ee97b5ed7a920::t_ade2de677ca8d3 87-88
+docs/explain-visually-loop/problems.md
+  s_8ee97b5ed7a920::t_f499f92917fa57 32,34
+docs/explain-visually-loop/results.md
+  s_8ee97b5ed7a920::t_7c12543ea4d659 159-184
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d6084fd7026cfed7c5ef98584de06f1fa710a53f",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
