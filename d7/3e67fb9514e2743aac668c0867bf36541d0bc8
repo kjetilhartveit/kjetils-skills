@@ -1,0 +1,42 @@
+docs/explain-visually-loop/experiments/exp4-kit-docs/docs-fixed/skills/explainer-kit/assets/check.py
+  s_8ee97b5ed7a920::t_a75e1d87f6581a 1-548
+docs/explain-visually-loop/experiments/exp4-kit-docs/docs-fixed/skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_8ee97b5ed7a920::t_a75e1d87f6581a 12-15,81,100,102,108
+  s_8ee97b5ed7a920::t_4b16e1d5fd8806 1-11,16-80,82-99,101,103-107,109-147
+docs/explain-visually-loop/experiments/exp4-kit-docs/docs-fixed/skills/explainer-kit/SKILL.md
+  s_8ee97b5ed7a920::t_4b16e1d5fd8806 1-20,22-38,40-81
+  s_8ee97b5ed7a920::t_a75e1d87f6581a 21,39
+docs/explain-visually-loop/experiments/exp4-kit-docs/verification-haiku.md
+  s_8ee97b5ed7a920::t_527540cc73012c 1-112
+docs/explain-visually-loop/experiments/exp4-kit-docs/prompt.md
+  s_8ee97b5ed7a920::t_63ba889eb9ac55 1-7
+docs/explain-visually-loop/experiments/exp4-kit-docs/signals.json
+  s_8ee97b5ed7a920::t_d6b6d16d2bf80e 1-299
+docs/explain-visually-loop/experiments/exp4-kit-docs/verification-sonnet.md
+  s_8ee97b5ed7a920::t_c7f4054817d633 1-61
+docs/explain-visually-loop/experiments/exp4-kit-docs/docs-fixed/skills/explain-visually/SKILL.md
+  s_8ee97b5ed7a920::t_a75e1d87f6581a 58-62
+  s_8ee97b5ed7a920::t_4b16e1d5fd8806 1-57,63-92
+docs/explain-visually-loop/tools/chunk_signals.py
+  s_8ee97b5ed7a920::t_6d6d3e5942b8ad 1-86
+docs/explain-visually-loop/problems.md
+  s_8ee97b5ed7a920::t_fbbdf4c4e1ee52 17-18,27
+docs/explain-visually-loop/results.md
+  s_8ee97b5ed7a920::t_2a5ff5a016f3a7 84-109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d73e67fb9514e2743aac668c0867bf36541d0bc8",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
