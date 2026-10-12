@@ -1,0 +1,37 @@
+skills/explainer-kit/assets/preview.py
+  s_ed05da56bfc65f::t_c400b2351c4d62 1-214
+skills/explain-with-code-walkthrough/SKILL.md
+  s_ed05da56bfc65f::t_1eb1b15487a4ed 8-10,19-22,26-32,34,36-37,39-62,64-66
+skills/explain-visually/SKILL.md
+  s_ed05da56bfc65f::t_d4a1b84d21cd09 8-10,15-64,67-68,72-77
+skills/explain-with-storytelling/SKILL.md
+  s_ed05da56bfc65f::t_55f2e56a240770 8-10,19-23,27-30,32,34-35,37-57,59-66
+skills/explainer-kit/assets/check.py
+  s_ed05da56bfc65f::t_1f8a5e306e6acc 1-176
+skills/explain-with-preview/SKILL.md
+  s_ed05da56bfc65f::t_baccffe572ff14 8-10,15,19-36,40-46
+skills/explainer-kit/SKILL.md
+  s_ed05da56bfc65f::t_1567b83418ce06 10,23-30,45-46,50,55-56,58-59,71,81
+skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_ed05da56bfc65f::t_3469b88b00c44c 98-100,134-150
+skills/explainer-kit/assets/kit.css
+  s_ed05da56bfc65f::t_42eba7bb47cac5 565-578
+skills/explainer-kit/assets/kit.js
+  s_ed05da56bfc65f::t_c24dbd7e14bb2d 12-13,264-269,273,583
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2f8edb5f6b6b8be1bb83e88c23b17659ce47cb9d",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
