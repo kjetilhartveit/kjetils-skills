@@ -1,0 +1,25 @@
+docs/explain-visually-loop/scoring.md
+  s_ed05da56bfc65f::t_dd7cce41699afe 1-77
+docs/explain-visually-loop/tools/shoot.py
+  s_ed05da56bfc65f::t_655c87b8fc3cfb 6-10,24,37-47,52-54,61-72,95-98
+docs/explain-visually-loop/tools/score.py
+  s_ed05da56bfc65f::t_a127160aa3541f 1-401
+docs/explain-visually-loop/tools/measure.py
+  s_ed05da56bfc65f::t_7e718f10b77e1c 80-81,88-89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "eae00db1929741bae69c17fe965fc3e2358fae7d",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
