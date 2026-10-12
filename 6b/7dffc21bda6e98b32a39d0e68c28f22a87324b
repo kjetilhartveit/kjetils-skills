@@ -1,0 +1,38 @@
+docs/explain-visually-loop/scoring.md
+  s_a8dc39a2002df5::t_c26e79e2456eac 78-81,92-94
+docs/explain-visually-loop/reports/a-opus.md
+  s_ed05da56bfc65f::t_1bb67e0f30d6cc 1-120
+  s_ed05da56bfc65f::t_8b162b3f294174 121-124
+docs/explain-visually-loop/reports/a-opus/index.html
+  s_ed05da56bfc65f::t_83e24a79759872 1-1674
+docs/explain-visually-loop/reports/a-opus/measures.json
+  s_ed05da56bfc65f::t_42298734a9cad0 1-24
+docs/explain-visually-loop/reports/a-opus/result.json
+  s_ed05da56bfc65f::t_b79e12e847c67c 1-108
+docs/explain-visually-loop/reports/a-opus/score.json
+  s_ed05da56bfc65f::t_a27976a633e298 1-127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6b7dffc21bda6e98b32a39d0e68c28f22a87324b",
+  "prompts": {},
+  "sessions": {
+    "s_a8dc39a2002df5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9e94ce7-2f14-4d81-b72c-049fea5ad7cb",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    },
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
