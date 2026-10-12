@@ -1,0 +1,24 @@
+{
+  "page": "C:/git/kjetils-skills-wt/opt-a-opus/docs/explain-visually-loop/runs/a-v3b/20261013-010725-sonnet-facts/out/index.html",
+  "bytes": 101100,
+  "visible_words": 972,
+  "sections": [
+    "story",
+    "decide"
+  ],
+  "chapters": 3,
+  "steps": 6,
+  "code_blocks": 3,
+  "tables": 0,
+  "chips": 10,
+  "toggles": 2,
+  "callouts": 1,
+  "side_panels": 2,
+  "visuals": 1,
+  "clips": 0,
+  "external_links": 8,
+  "literal_colours_in_fragment_styles": 0,
+  "layout_problems": [],
+  "page_height_desktop": 3811,
+  "page_height_phone": 5415
+}

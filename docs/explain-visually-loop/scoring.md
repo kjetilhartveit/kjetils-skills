@@ -75,10 +75,10 @@ Chapters: 3–4 → 100, 2 → 80, 5 → 70, 6 → 40, more → 10.
 
 | Page | Overall | Quality | Checks (facts / layout / structure) | Judge | Economy |
 | --- | --- | --- | --- | --- | --- |
-| baseline-opus | **68.5** | 60.7 | 33.8 / 14.0 / 28 | 52.5 | 100 |
-| opus-1 | 57.3 | 65.1 | 33.8 / 15.0 / 22 | 62.0 | 26.3 |
-| opus-2 | 49.7 | 55.6 | 30.8 / 5.8 / 22 | 54.0 | 26.0 |
-| qwen | 32.9 | 33.8 | 0 / 2.0 / 22 | 39.0 | 29.3 |
+| baseline-opus | **67.5** | 59.4 | 33.8 / 14.0 / 28 | 50.5 | 100.0 |
+| opus-1 | 57.1 | 64.8 | 33.8 / 15.0 / 22 | 61.5 | 26.3 |
+| opus-2 | 48.9 | 54.6 | 30.8 / 5.8 / 22 | 52.5 | 26.0 |
+| qwen | 32.3 | 33.1 | 0.0 / 2.0 / 22 | 38.0 | 29.3 |
 
 baseline-opus is clearly first overall and qwen clearly last. On quality alone opus-1 edges baseline-opus: opus-1
 was made from the same measurement run as `facts-oxlint.md`, while baseline-opus measured in its own session
@@ -89,6 +89,7 @@ its step on a phone).
 
 ## Caveats
 
-- The judge varies by roughly ±3 points of judge score between calls on the same page; compare candidates on
-  2+ runs, and treat overall differences under ~3 as noise.
+- The judge is stable: three judgements of the same page gave quality 70.3 / 69.7 / 70.0. Runs vary much more
+  than the judge, so compare candidates on 2+ runs and treat overall differences under ~3 as noise.
+- `page.txt` opens every toggle and un-hides switchable panels (pick cards, tabs), so the judge sees all options.
 - Facts regexes are specific to the oxlint/Biome task; a new task needs new `KEY_FACTS` and `OVERCLAIMS`.
