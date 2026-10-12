@@ -6,7 +6,10 @@ description: Use when the user asks for a visual explanation or to 'explain visu
 # Explain Visually
 
 The goal: the reader quickly understands what changes, how it works and why, and can decide, without reading
-every line of code. Show rather than tell, concise first, details on demand. One page, ~1,000–1,600 words.
+every line of code. Show rather than tell, concise first, details on demand. One page, ~1,000–1,500 words.
+
+Say exactly what the facts say: "migrated" is not "kept", "honoured" is not "unchanged". When a number has
+exceptions, name them in the same sentence ("263 rules migrate; 1 must be turned off").
 
 The look comes from the `explainer-kit` skill; each chapter follows its `explain-with-*` skill.
 

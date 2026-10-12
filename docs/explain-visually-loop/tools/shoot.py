@@ -4,7 +4,7 @@ Usage: python shoot.py <page.html> <out-dir>
 
 Writes desktop (1440 wide) and phone (390 wide) screenshots in dark and light, a full-page desktop screenshot
 per mode, story screenshots (first, middle and last step on desktop, middle step on a phone), page.txt (the
-page's text with every toggle opened, for a judge) and report.json with layout problems the eye can miss:
+page's text with every toggle and switchable panel opened, for a judge) and report.json with layout problems the eye can miss:
 horizontal overflow, cut-off panels and code blocks, console errors, SVG text too small to read on a phone, and
 scroll steps whose panel is out of view or covers the step.
 """
@@ -92,10 +92,16 @@ STEP_STATE_JS = """
 PAGE_TEXT_JS = """
 () => {
   document.querySelectorAll('details').forEach(d => d.open = true);
+  document.querySelectorAll('[hidden]').forEach(el => el.hidden = false);
   const svgLabels = [...document.querySelectorAll('svg')]
     .map(svg => [...svg.querySelectorAll('text')].map(t => t.textContent.trim()).filter(Boolean).join(' | '))
     .filter(Boolean);
-  return document.body.innerText + '\\n\\n--- text inside SVG graphics ---\\n' + svgLabels.join('\\n');
+  const notRendered = [...document.querySelectorAll('.ev-tab-content *')]
+    .filter(el => !['SCRIPT', 'STYLE', 'TEMPLATE'].includes(el.tagName) && getComputedStyle(el).display === 'none' &&
+                  getComputedStyle(el.parentElement).display !== 'none')
+    .map(el => el.textContent.replace(/\\s+/g, ' ').trim()).filter(Boolean);
+  return document.body.innerText + '\\n\\n--- text inside SVG graphics ---\\n' + svgLabels.join('\\n') +
+         '\\n\\n--- text in panels that are switched off until clicked ---\\n' + notRendered.join('\\n');
 }
 """
 

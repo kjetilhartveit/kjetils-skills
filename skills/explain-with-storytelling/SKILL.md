@@ -35,8 +35,8 @@ scroll under it. Best for the big picture before the details.
   </div>
   <div class="ev-stick"><figure class="ev-visual"><svg class="ev-svg" viewBox="0 0 440 320" role="img" aria-label="…">
     <text x="20" y="44" class="ev-t-lg" data-say="44.0 s|5.3 s||3.3 s">44.0 s</text>
-    <rect x="20" y="70" width="400" height="28" class="ev-node" data-hl="1"/>
-    <rect x="20" y="110" width="48" height="28" class="ev-node is-new" data-on="2-" data-hl="2,5"/>
+    <rect x="20" y="70" width="400" height="28" rx="4" class="ev-f-line" data-hl="1"/>
+    <rect x="20" y="110" width="48" height="28" rx="4" class="ev-f-acc" data-on="2-" data-hl="2,5"/>
     <text x="20" y="180" class="ev-t-risk" data-on="3">! what goes wrong</text>
   </svg></figure></div>
 </div>
@@ -47,8 +47,10 @@ scroll under it. Best for the big picture before the details.
   `data-on` elements only on their steps (`2-4`, `3-` = from 3 on, `2,5`), adds `.is-hl` on `data-hl` steps and
   sets `data-say` text to the n-th item (`a|b||d`; an empty item keeps the previous text). Step 1's state is what
   the page shows at rest; scrolling back restores states exactly. Use only these attributes and the kit's SVG
-  classes (`ev-node`, `ev-wire`, `ev-t-*`, `ev-f-*`); add a scoped `<style>` keyed on `[data-step="3"]` only for
-  what the attributes can't express.
+  classes; add a scoped `<style>` keyed on `[data-step="3"]` only for what the attributes can't express.
+- Bars and blocks are filled rects (`ev-f-acc` the point, `ev-f-new` good, `ev-f-risk` bad, `ev-f-line` neutral,
+  `ev-f-sunken` track); boxes in a diagram are `ev-node` (+ `is-acc`, `is-new`, `is-risk`), arrows `ev-wire`.
+  `data-hl` outlines a rect or accents a node / text.
 - `ev-side--pin` spaces the steps and pins the graphic on phones; don't add padding, spacers or media queries.
 - Keep the SVG compact so it stays legible when pinned on a phone: `viewBox` about 440 × 300 (at most 480 wide),
   labels at the kit's default size (15) or larger, no labels smaller than `ev-t-xs`.

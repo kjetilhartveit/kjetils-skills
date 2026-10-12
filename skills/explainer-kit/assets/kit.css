@@ -441,6 +441,8 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-tab-content { max-width: var(--ev-read-w); min-width: 0; }
 .ev-tab-content:focus, .ev-tab-content:focus-visible { outline: none; }
 .ev-tab-content.ev-wide { max-width: none; }
+/* Two-column chapters (story, code walkthrough, preview) need the full page width for their panel */
+.ev-tab-content:has(.ev-side) { max-width: none; }
 .ev-standalone { padding-block-start: var(--ev-s4); }
 
 /* ==========================================================================
@@ -580,7 +582,8 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 /* Story states set by kit.js from data-on / data-hl (see .ev-side[data-ev-story]) */
 .ev-stick [data-on] { transition: opacity .4s var(--ev-ease); }
 .ev-stick .is-off { opacity: 0; visibility: hidden; }
-.ev-stick .ev-node.is-hl, .ev-stick rect.is-hl { fill: var(--ev-accent-soft); stroke: var(--ev-accent-fill); stroke-width: 2; }
+.ev-stick .ev-node.is-hl { fill: var(--ev-accent-soft); stroke: var(--ev-accent-fill); stroke-width: 2; }
+.ev-stick rect.is-hl:not(.ev-node) { stroke: var(--ev-fg); stroke-width: 2; }
 .ev-stick text.is-hl { fill: var(--ev-accent); font-weight: 600; }
 .ev-stick .ev-wire.is-hl { stroke: var(--ev-accent-fill); stroke-dasharray: none; }
 @media (prefers-reduced-motion: reduce) { .ev-stick [data-on] { transition: none; } }
