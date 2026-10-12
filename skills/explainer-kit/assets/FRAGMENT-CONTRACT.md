@@ -1,5 +1,7 @@
 # Fragment contract (explainer kit)
 
+This file and the cheat sheet below are the kit's whole API: don't read `kit.css`, `kit.js` or `assemble.py`.
+
 Every `explain-with-*` skill writes **one fragment file** per chapter (e.g. `story`, `code`, `fragile`, `deps`,
 `complex`, `decide`, `clips`, `slides`, `video`). `assemble.py` merges the fragments into one page: the overview
 on top, then the chapters, either as one scrollable page (`--page --toc`, the default for `explain-visually`) or
@@ -95,7 +97,11 @@ name given with `--section NAME=FILE`.
 | small bars | `<div class="ev-bars">` of `ev-k` / `<span class="ev-bar [is-cap]"><i style="--v:40%">` / `ev-v` |
 | facts | `<dl class="ev-facts"><dt>…</dt><dd>…</dd></dl>` |
 | jump list | `<ul class="ev-jump"><li><a href="#NAME-x"><span class="ev-n">1</span>Label</a></li></ul>` |
-| text + sticky panel | `<div class="ev-side"><div>…steps / cards…</div><div class="ev-stick">…panel…</div></div>` — text left, panel right. At rest the panel is centred on the text column's first child (or its `[data-ev-anchor]` element) with no gap above; while scrolling it sticks in the vertical centre below the top bar. Don't pad the top of the text column; pad the bottom so the last step can reach the middle. Scroll steps are `<div class="ev-step">` driven by `EV.steps(panel.querySelectorAll(".ev-step"), function (i, el) { … })` (marks the current one, right in both scroll directions). The panel's first state is step 1's and never changes before step 2 is current. Stacks below 900px (override the stacking per skill, e.g. pin the graphic at the top on phones) |
+| text + sticky panel | `<div class="ev-side"><div>…steps / cards…</div><div class="ev-stick">…panel…</div></div>`: text left, panel right, panel centred on the first text box at rest and stuck in the vertical centre while scrolling. Stacks below 900px. Don't pad or space it yourself |
+| story (scroll steps) | `<div class="ev-side ev-side--pin" data-ev-story>` with `<div class="ev-step">` boxes left and one SVG in the `ev-stick`. No script: the kit drives the steps, sets `data-step` on the panel and applies `data-on="2-4"` / `data-hl="3"` / `data-say="a\|b\|\|d"` on elements inside it. `ev-side--pin` spaces the steps and pins the panel on phones. See `explain-with-storytelling` |
+| own scroll steps | `EV.steps(panel.querySelectorAll(".ev-step"), function (i, el) { … })` marks the current step and calls back in both scroll directions (code walkthrough). Not an `IntersectionObserver` |
+| hero / numbers | `<div class="ev-bars ev-bars--hero">` of `<span class="ev-k">ESLint</span><span class="ev-bar [is-good\|is-muted\|is-cap]"><i style="--v:100%"></i></span><span class="ev-v"><b>44.0 s</b></span>`; `--v` is the value as % of the largest, so bars are to scale. HTML, so it stays legible on phones |
+| options / before-after | generated: `python preview.py decide.json --out frag-decide.html` (see "Preview chapters from JSON") |
 | wide tab | add `ev-wide` to the section to drop the 720px reading width |
 
 ## 7. The overview (coordinator only)
@@ -129,10 +135,33 @@ python assemble.py --page --toc --title "Backoff explainer" --overview overview.
 - `--toc` adds a sticky chapter list on the left (≥1160px) that collapses to a sticky top bar with a dropdown below that.
   Entries: Overview (`#overview`), one per section, plus a sub-entry for every element in the fragment with
   `id` + `data-toc="Short label"` (story scene groups, code steps, details). Active entry follows the scroll.
-- Sticky things inside a fragment must sit below whatever is stuck to the top: use `EV.stickyTop()` (px; tab bar or
-  chapter bar, 0 if none; also in CSS as `var(--ev-sticky-top)`), and re-measure on resize.
-- Side panels (story graphic, code panel, preview) go on the **right**, text on the **left**, and the panel is
-  stuck in the **vertical centre** of the viewport below the top bar. Use `ev-side` + `ev-stick` for this. The panel
-  shows from the start of the chapter, level with the first text box, never after a gap.
-- Scroll-driven steps (story, code walkthrough) use `EV.steps`, not an `IntersectionObserver`: an observer misses
-  the gaps between steps and leaves the panel on the wrong step when scrolling back up.
+- Side panels (story graphic, code panel, preview) go on the **right** with `ev-side` + `ev-stick`; the kit
+  handles sticking, centring, the top bar offset (`EV.stickyTop()`, `var(--ev-sticky-top)`) and phone stacking.
+
+## 10. Preview chapters from JSON
+
+Decision (options) and before/after chapters are generated, with no HTML, CSS or script of their own:
+
+```json
+{"name": "decide", "label": "Decision", "hint": "3 options", "title": "Which way to go",
+ "lede": "One sentence framing the question.",
+ "options": [
+   {"id": "a", "title": "A · Option name", "recommended": true, "summary": "One line.",
+    "chips": [["ok", "263 rules kept"], ["risk", "JS plugins alpha"]],
+    "rows": [{"kind": "ok", "label": "Keeps", "items": ["…"]},
+             {"kind": "removed", "label": "Loses", "items": ["…"]},
+             {"kind": "decision", "label": "Fix first", "items": ["…"]},
+             {"kind": "risk", "label": "Risks", "items": ["…"]}],
+    "effort": "~1–2 days: what the work is"}],
+ "flip": ["What would change the recommendation"],
+ "details": [{"kind": "list", "title": "Sources", "html": "<ul><li><a href=\"https://…\">…</a></li></ul>"}]}
+```
+
+Row kinds: `ok new removed risk decision neutral`; chip kinds as in the cheat sheet. `"selected": true` picks the
+starting card (default: the recommended one). Text may contain inline `<b>`, `<code>`, `<a href>`.
+
+## 11. Checking
+
+`python check.py index.html` opens the page on a desktop and a phone and lists only real problems (overflow,
+cut-off panels or code, unreadable SVG labels, story panel out of view, console errors). Fix what it lists, run
+it once more, stop.

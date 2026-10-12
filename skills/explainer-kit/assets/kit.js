@@ -12,6 +12,9 @@
                                        calls fn when it changes (both scroll directions; first step at rest)
      EV.stickyTop() -> px              height of the sticky bar at the top (tab bar / chapter bar), 0 if none;
                                        also kept in the CSS variable --ev-sticky-top on <html>
+   Wired without any fragment script:
+     .ev-side[data-ev-story]           story steps: EV.steps + data-step on the panel + data-on/-hl/-say states
+     .ev-pick                          option / before-after cards that switch the panel next to them
    Events dispatched on each .ev-tab-content: "ev:tabshow" / "ev:tabhide" (detail: {tab, first}). */
 (function () {
   "use strict";
@@ -260,10 +263,17 @@
     els = Array.prototype.slice.call(els);
     if (!els.length) return;
     var current = -1, queued = false;
+    var pinSide = els[0].closest(".ev-side--pin");
+    var pin = pinSide && pinSide.querySelector(":scope > .ev-stick");
+    function readingTop() {
+      var top = EV.stickyTop();
+      if (pin && getComputedStyle(pin).order === "-1") top = Math.max(top, pin.getBoundingClientRect().bottom);
+      return top;
+    }
     function update() {
       queued = false;
       if (!els[0].getClientRects().length) return;   // hidden tab
-      var top = EV.stickyTop(), line = top + (window.innerHeight - top) / 2, i = 0;
+      var top = readingTop(), line = top + (window.innerHeight - top) / 2, i = 0;
       els.forEach(function (el, k) { if (el.getBoundingClientRect().top <= line) i = k; });
       if (i === current) return;
       current = i;
@@ -557,6 +567,64 @@
     syncStickyTop();
     window.addEventListener("resize", syncStickyTop);
     document.querySelectorAll(".ev-side").forEach(initSide);
+    document.querySelectorAll(".ev-side[data-ev-story]").forEach(initStory);
+    document.querySelectorAll(".ev-pick").forEach(initPick);
+  }
+
+  /* Story without script: for step n (1-based) the panel gets data-step="n", and every element inside it with
+     data-on="2-4" is shown only on those steps ("3-" = from 3 on, "2,5" = just those), data-hl="…" (same syntax)
+     gets .is-hl, and data-say="t1|t2|…" shows the text for step n (an empty item keeps the previous text).
+     Everything is set from n alone, so scrolling back restores earlier states exactly. */
+  function stepMatches(spec, n) {
+    return spec.split(",").some(function (part) {
+      var m = part.trim().match(/^(\d*)(-?)(\d*)$/);
+      if (!m || !(m[1] || m[3])) return false;
+      var lo = m[1] ? +m[1] : 1, hi = m[2] ? (m[3] ? +m[3] : Infinity) : lo;
+      return n >= lo && n <= hi;
+    });
+  }
+  function initStory(side) {
+    var stick = side.querySelector(":scope > .ev-stick");
+    if (!stick) return;
+    EV.steps(side.querySelectorAll(".ev-step"), function (i) {
+      var n = i + 1;
+      stick.setAttribute("data-step", n);
+      stick.querySelectorAll("[data-on]").forEach(function (el) {
+        el.classList.toggle("is-off", !stepMatches(el.getAttribute("data-on"), n));
+      });
+      stick.querySelectorAll("[data-hl]").forEach(function (el) {
+        el.classList.toggle("is-hl", stepMatches(el.getAttribute("data-hl"), n));
+      });
+      stick.querySelectorAll("[data-say]").forEach(function (el) {
+        var texts = el.getAttribute("data-say").split("|"), text = "";
+        for (var k = 0; k < n && k < texts.length; k++) if (texts[k].trim()) text = texts[k].trim();
+        el.textContent = text;
+      });
+    });
+  }
+
+  /* Pick cards: .ev-pick-card[role=tab][aria-controls] switch the .ev-pick-panel they point at (click, arrow keys). */
+  function initPick(pick) {
+    var cards = Array.prototype.slice.call(pick.querySelectorAll(".ev-pick-card"));
+    function select(card, focus) {
+      cards.forEach(function (c) {
+        var on = c === card, panel = document.getElementById(c.getAttribute("aria-controls"));
+        c.setAttribute("aria-selected", String(on));
+        c.tabIndex = on ? 0 : -1;
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) card.focus();
+    }
+    cards.forEach(function (card, i) {
+      card.addEventListener("click", function () { select(card); });
+      card.addEventListener("keydown", function (e) {
+        var step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        select(cards[(i + step + cards.length) % cards.length], true);
+      });
+    });
+    select(cards.filter(function (c) { return c.getAttribute("aria-selected") === "true"; })[0] || cards[0]);
   }
   /* Mirrors EV.stickyTop() into CSS so sticky panels (.ev-stick) can sit below the top bar without script. */
   function syncStickyTop() { root.style.setProperty("--ev-sticky-top", EV.stickyTop() + "px"); }
