@@ -1,0 +1,33 @@
+docs/explain-visually-loop/README.md
+  s_ed05da56bfc65f::t_e66d784cd5c511 50-52
+  s_ed05da56bfc65f::t_57f2a31604a2a7 30-32
+docs/explain-visually-loop/tools/score.py
+  s_ed05da56bfc65f::t_b4659f06076968 63
+  s_ed05da56bfc65f::t_016c7efb20b05f 1-62,64-363
+docs/explain-visually-loop/scoring.md
+  s_ed05da56bfc65f::t_77a057dbe36a8a 1-97
+docs/explain-visually-loop/tools/compare.py
+  s_ed05da56bfc65f::t_edd5e255d336c1 1-86
+docs/explain-visually-loop/tools/measure.py
+  s_ed05da56bfc65f::t_dfab0c8400e05b 80-87,94-95
+docs/explain-visually-loop/tools/shoot.py
+  s_ed05da56bfc65f::t_19d816cc4d722b 60-62
+  s_ed05da56bfc65f::t_e4e64f367a1413 5-9,20,51-55,63-64,69-75,78-143,165-168
+  s_ed05da56bfc65f::t_2f52e12a394827 24-34,40-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "64a0b3296741e5e9533aa69b56da0eaa0a4ec25f",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
