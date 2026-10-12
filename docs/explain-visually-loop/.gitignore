@@ -7,3 +7,5 @@ experiments/*/runs/
 experiments/*/blind/
 experiments/*/verify/
 experiments/*/tmp-*/
+runs/
+__pycache__/
