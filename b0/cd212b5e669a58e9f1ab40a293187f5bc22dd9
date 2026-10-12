@@ -1,0 +1,29 @@
+docs/explain-visually-loop/README.md
+  s_ed05da56bfc65f::t_c7d0c8f40cf2e4 30-32,50-52
+docs/explain-visually-loop/scoring.md
+  s_ed05da56bfc65f::t_57e2f42cb4351a 4-6,9-13,16-18,23-25,27,31-33,39-40,43-45,51-52,56-64,68,70-76,80-81,83,85-88,92-97
+docs/explain-visually-loop/tools/compare.py
+  s_ed05da56bfc65f::t_aaabe613d14352 1-86
+docs/explain-visually-loop/tools/measure.py
+  s_ed05da56bfc65f::t_3bc9a0b86e668c 80-87,94-95
+docs/explain-visually-loop/tools/score.py
+  s_ed05da56bfc65f::t_b2b594c66f54d0 1,4-17,24-25,32,39-40,44-45,47-50,53-54,63,65,67-78,92,94,96-97,103-104,107-108,112-114,116-117,120-122,124-129,131-134,137-138,141-149,151-158,170,175,179,181,183,185-187,191,195,218-220,226-237,250-251,253-254,256,259,261-264,266-282,285-287,294,298-306,310-311,314,325-328,337,339,341,350,353,357-359
+docs/explain-visually-loop/tools/shoot.py
+  s_ed05da56bfc65f::t_7c8a27995d0352 24-34,40-50,60-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b0cd212b5e669a58e9f1ab40a293187f5bc22dd9",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
