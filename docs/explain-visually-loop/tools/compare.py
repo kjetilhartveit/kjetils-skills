@@ -48,7 +48,7 @@ def mean_row(label: str, rows: list[dict]) -> dict:
     out = {"name": f"mean of {len(rows)}", "label": label}
     for column in COLUMNS:
         values = [r[column] for r in rows if r[column] is not None]
-        out[column] = round(mean(values), 1) if values else None
+        out[column] = round(mean(values), 2 if column == "cost" else 1) if values else None
     return out
 
 
