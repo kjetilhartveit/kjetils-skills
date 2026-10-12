@@ -1,0 +1,44 @@
+docs/explain-visually-loop/tools/verifier-prompt.md
+  s_8ee97b5ed7a920::t_505c4f1d09e1d4 1-35
+docs/explain-visually-loop/problems.md
+  s_8ee97b5ed7a920::t_d3ee1ee517777b 1-59
+docs/explain-visually-loop/rubric.md
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-145
+docs/explain-visually-loop/tools/run_iteration.sh
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-9
+docs/explain-visually-loop/README.md
+  s_8ee97b5ed7a920::t_c32aaef1928d22 14,16,18-21,32,49-55,57-60
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-13,15,17,22-31,33-48,56
+docs/explain-visually-loop/.gitignore
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-9
+docs/explain-visually-loop/tools/run_explainer.sh
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-79
+docs/explain-visually-loop/tools/shoot.py
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-76
+docs/explain-visually-loop/tools/metrics.py
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-102
+docs/explain-visually-loop/02-qwen-session-analysis.md
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-120
+docs/explain-visually-loop/tools/analyse_session.py
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-341
+docs/explain-visually-loop/tools/run_chunk.sh
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-59
+docs/explain-visually-loop/01-baseline-analysis.md
+  s_8ee97b5ed7a920::t_ae86361e5e9e3c 1-90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e1d7ff2813e1d318ca1702fa7a96e42bb10d2c49",
+  "prompts": {},
+  "sessions": {
+    "s_8ee97b5ed7a920": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "20d1f825-7b8d-4e1d-a29b-7f9b9cc839a6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
