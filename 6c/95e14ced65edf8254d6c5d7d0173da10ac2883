@@ -1,0 +1,45 @@
+docs/explain-visually-loop/scoring.md
+  s_19499c53c7aaa6::t_d17e169a29f0fe 78-81
+  s_ed05da56bfc65f::t_bdabfaf4b0483e 1-77,82-94
+docs/explain-visually-loop/tools/shoot.py
+  s_ed05da56bfc65f::t_019c3ea4e305f7 99-104
+  s_e57e108fc47107::t_ad2e6d2c308f3b 7,95
+skills/explain-visually/SKILL.md
+  s_ed05da56bfc65f::t_2803d8aea3229c 9-12
+skills/explain-with-storytelling/SKILL.md
+  s_ed05da56bfc65f::t_baf6a6f97c3321 38-39,50-53
+skills/explainer-kit/assets/kit.css
+  s_ed05da56bfc65f::t_8e93f249a23a50 444-445,585-586
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6c95e14ced65edf8254d6c5d7d0173da10ac2883",
+  "prompts": {},
+  "sessions": {
+    "s_19499c53c7aaa6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "61c91aac-948d-41b2-82b4-c663a80afcb4",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    },
+    "s_e57e108fc47107": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "agent-ae7c940a4df47e7bb",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    },
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
