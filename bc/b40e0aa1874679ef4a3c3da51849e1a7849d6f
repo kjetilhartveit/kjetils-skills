@@ -1,0 +1,29 @@
+docs/explain-visually-loop/reports/b-fable.md
+  s_ed05da56bfc65f::t_d94b107275542d 81-91
+  s_ed05da56bfc65f::t_4a7774264f0213 1-80,92-105
+  s_ed05da56bfc65f::t_2445b57b113135 106-147
+docs/explain-visually-loop/reports/b-fable/index.html
+  s_ed05da56bfc65f::t_1933d59804f83b 1-1708
+docs/explain-visually-loop/reports/b-fable/measures.json
+  s_ed05da56bfc65f::t_dc0409ed91034f 1-32
+docs/explain-visually-loop/reports/b-fable/result.json
+  s_ed05da56bfc65f::t_6bd4282bb5f916 1-108
+docs/explain-visually-loop/reports/b-fable/score.json
+  s_ed05da56bfc65f::t_3c570cb3aad8bf 1-157
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bcb40e0aa1874679ef4a3c3da51849e1a7849d6f",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
