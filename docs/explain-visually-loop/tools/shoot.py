@@ -21,21 +21,33 @@ SMALLEST_READABLE_SVG_TEXT_PX = 9
 
 CHECKS_JS = """
 () => {
-  const vw = document.documentElement.clientWidth;
-  const overflow = [...document.querySelectorAll('body *')]
-    .filter(el => {
-      const r = el.getBoundingClientRect();
-      return r.width > 0 && r.right > vw + 1 && !el.closest('.ev-code-scroll, .ev-table-wrap, .ev-tablist, .ev-stick');
-    })
-    .slice(0, 10)
-    .map(el => el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ').join('.') : ''));
+  const vw = document.documentElement.clientWidth, vh = window.innerHeight;
+  const label = el => el.tagName.toLowerCase()
+    + (typeof el.className === 'string' && el.className ? '.' + el.className.trim().split(/\\s+/).join('.') : '')
+    + ' (' + Math.round(el.getBoundingClientRect().width) + 'px)';
+  const over = [...document.querySelectorAll('body *')].filter(el => {
+    const r = el.getBoundingClientRect();
+    if (!(r.width > 0 && r.right > vw + 1)) return false;
+    const scroller = el.closest('.ev-code-scroll, .ev-table-wrap, .ev-tablist');
+    return !(scroller && scroller.getBoundingClientRect().right <= vw + 1);
+  });
+  const overflow = over.filter(el => !over.some(o => o !== el && o.contains(el))).slice(0, 10).map(label);
   const clippedCode = [...document.querySelectorAll('.ev-code')]
     .filter(el => {
       const s = el.querySelector('.ev-code-scroll') || el;
       return s.scrollWidth > s.clientWidth + 1;
     }).length;
-  const clippedSticky = [...document.querySelectorAll('.ev-stick')]
-    .filter(el => el.scrollHeight > el.clientHeight + 1).length;
+  const sticks = [...document.querySelectorAll('.ev-stick')];
+  const clippedSticky = sticks.filter(el => el.scrollHeight > el.clientHeight + 1).length;
+  const pinnedShare = Math.max(0, ...sticks
+    .filter(el => getComputedStyle(el).position === 'sticky')
+    .map(el => el.getBoundingClientRect().height / vh));
+  const steps = [...document.querySelectorAll('.ev-step')];
+  let largestStepGap = 0;
+  for (let i = 1; i < steps.length; i++) {
+    const a = steps[i - 1].getBoundingClientRect(), b = steps[i].getBoundingClientRect();
+    if (steps[i].parentElement === steps[i - 1].parentElement) largestStepGap = Math.max(largestStepGap, b.top - a.bottom);
+  }
   const svgTexts = [...document.querySelectorAll('svg text')].filter(t => t.getBoundingClientRect().width > 0);
   const effectiveSize = t => {
     const ctm = t.getScreenCTM();
@@ -45,7 +57,9 @@ CHECKS_JS = """
     pageWidth: document.documentElement.scrollWidth, viewportWidth: vw,
     horizontalOverflow: document.documentElement.scrollWidth > vw + 1, overflowingElements: overflow,
     codeBlocks: document.querySelectorAll('.ev-code').length, codeBlocksScrollingSideways: clippedCode,
-    stickyPanels: document.querySelectorAll('.ev-stick').length, stickyPanelsCutOff: clippedSticky,
+    stickyPanels: sticks.length, stickyPanelsCutOff: clippedSticky,
+    pinnedPanelViewportShare: Math.round(pinnedShare * 100) / 100,
+    stepCount: steps.length, largestStepGapPx: Math.round(largestStepGap),
     svgTexts: svgTexts.length,
     svgTextsTooSmall: svgTexts.filter(t => effectiveSize(t) < SMALLEST).length,
     sections: [...document.querySelectorAll('.ev-part-head')].map(h => h.id),

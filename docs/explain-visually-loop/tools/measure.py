@@ -77,12 +77,22 @@ def layout_summary(report: dict) -> dict:
             problems.append(f"{key}: {view['stickyPanelsCutOff']} sticky panel(s) cut off")
         if view.get("codeBlocksScrollingSideways"):
             problems.append(f"{key}: {view['codeBlocksScrollingSideways']} code block(s) scroll sideways")
+        if key.startswith("phone") and view.get("pinnedPanelViewportShare", 0) > 0.6:
+            problems.append(f"{key}: pinned panel takes {round(view['pinnedPanelViewportShare'] * 100)}% of the viewport")
+        if key.startswith("phone") and view.get("svgTexts") and view["svgTextsTooSmall"] / view["svgTexts"] > 0.1:
+            problems.append(f"{key}: {view['svgTextsTooSmall']}/{view['svgTexts']} SVG labels under 9px")
+        for group in view.get("steps", []):
+            bad = max(group["panelOutOfView"], group["stepCovered"])
+            if bad:
+                problems.append(f"{key}: {group['section']}: panel out of view or covering the step on {bad}/{group['steps']} steps")
         for error in view.get("errors", []):
             problems.append(f"{key}: console error: {error[:160]}")
     return {
         "layout_problems": problems,
         "page_height_desktop": report.get("desktop-dark", {}).get("pageHeight"),
         "page_height_phone": report.get("phone-dark", {}).get("pageHeight"),
+        "largest_step_gap_desktop": report.get("desktop-dark", {}).get("largestStepGapPx"),
+        "pinned_panel_share_phone": report.get("phone-dark", {}).get("pinnedPanelViewportShare"),
     }
 
 
