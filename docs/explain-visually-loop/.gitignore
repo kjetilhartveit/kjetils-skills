@@ -1,0 +1,9 @@
+# Run outputs and transcripts stay local: they contain details of the test project and are large.
+inputs/
+iterations/
+shots/
+archive/*/runs/
+experiments/*/runs/
+experiments/*/blind/
+experiments/*/verify/
+experiments/*/tmp-*/
