@@ -27,6 +27,7 @@ is the real thing (research, running the tools) and is only for a final check.
 | --- | --- |
 | `tools/run.py` | Runs one candidate: `claude -p` in the test project with the candidate skills exposed as files. Writes the transcript, `result.json` (wall time, turns, cost, tokens per model, tool calls) and the page. |
 | `tools/measure.py` | Deterministic page measures (bytes, words, chapters, steps, code blocks, chips, toggles, links) plus the layout checks and screenshots from `shoot.py`. Works on a run folder or any `.html`. |
+| `tools/score.py` | One comparable score per run or page: deterministic checks + a blind Opus judge + speed + page economy. Rubric in `scoring.md`. |
 | `tools/shoot.py` | Playwright screenshots (desktop and phone, dark and light) and `report.json` with overflow, cut-off panels and console errors. |
 | `tools/analyse_session.py` | Token and time breakdown of an OpenCode transcript export (used for `02-…`). |
 | `inputs/` (local only) | Facts file, the baseline and Qwen transcripts, and `corpus/` with four finished pages: `baseline-opus.html` (the good one), `qwen.html` (slow and bloated), `opus-1.html` / `opus-2.html` (Opus with the current skills: 7 chapters, ~5,000 words, i.e. the current skills over-produce even on a strong model). |
