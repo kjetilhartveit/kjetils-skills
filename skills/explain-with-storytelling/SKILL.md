@@ -5,56 +5,51 @@ description: Use when asked to explain visually with storytelling.
 
 # Explain with Storytelling
 
-A scroll-driven story ("scrollytelling"): short text steps on the left scroll past one sticky graphic on the
-right, held in the vertical centre of the viewport. As each step scrolls into view, the graphic changes to show
-it. Best for giving the big picture before the details.
+A scroll-driven story: short text steps on the left scroll past one sticky graphic on the right. As each step
+reaches the middle, the graphic changes to show it. On phones the kit pins the graphic at the top and the steps
+scroll under it. Best for the big picture before the details.
 
 ## Use this skill when
 
 - The user asks for a visual explanation of changes with storytelling.
 - Used by an orchestrator to explain changes visually with storytelling.
 
-## Structure
+## Story
 
-- 5–9 steps. Each step is 1–2 short sentences: one idea per step.
-- **One graphic** that evolves through the whole story. Steps change its state (highlight, add, remove, count,
-  move); they don't swap in unrelated pictures. Group steps into 2–4 scenes if the graphic changes a lot.
-- Order: the situation today → what goes wrong → the change → the result → the consequences or risks.
-- End when the story ends. Don't append a block of details at the end of the story; code, tables and traces
-  belong in the code walkthrough or preview chapters.
+- 5–7 steps, 1–2 short sentences each, one idea per step. Explain jargon in a few words the first time.
+- An arc: the situation today → what goes wrong or costs → the change → the result → the catch or risk.
+- **One graphic** (one SVG) that evolves through all steps: things appear, get highlighted, struck or counted.
+  Not a dashboard of every fact at once, and not a different picture per step.
+- Concrete and to scale (real times, real counts); label things on the graphic itself; one big number that
+  updates with the story helps.
+- Don't repeat the overview's numbers in every step, and don't append a details block; it ends when the story ends.
 
-## The graphic
+## Build it (no script, no layout CSS)
 
-- Concrete and to scale: real timelines, real counts, the actual steps of a process with the new one
-  highlighted. Avoid abstract boxes-and-arrows when a concrete picture is possible.
-- Big numbers that update with the story (e.g. a counter) help the reader keep track.
-- Label things on the graphic itself instead of using a separate legend.
-- On phones, pin the graphic at the top and scroll the step cards under it; keep labels legible at 390px.
+```html
+<section class="ev-tab-content" data-tab="story" data-label="Story" data-hint="6 steps" data-part-title="…">
+<div class="ev-side ev-side--pin" data-ev-story>
+  <div>
+    <div class="ev-step" id="story-today" data-toc="Today"><b>Today:</b> one or two sentences.</div>
+    <div class="ev-step">…</div>
+  </div>
+  <div class="ev-stick"><figure class="ev-visual"><svg class="ev-svg" viewBox="0 0 440 320" role="img" aria-label="…">
+    <text x="20" y="44" class="ev-t-lg" data-say="44.0 s|5.3 s||3.3 s">44.0 s</text>
+    <rect x="20" y="70" width="400" height="28" class="ev-node" data-hl="1"/>
+    <rect x="20" y="110" width="48" height="28" class="ev-node is-new" data-on="2-" data-hl="2,5"/>
+    <text x="20" y="180" class="ev-t-risk" data-on="3">! what goes wrong</text>
+  </svg></figure></div>
+</div>
+</section>
+```
 
-## Text steps
-
-- Fully readable from the moment they enter until they're nearly out of view. Never dim inactive steps; the
-  current one gets a mild marker (the kit's `ev-step.is-active`: accent edge and a faint tint).
-- Larger text than body copy, high contrast, short lines.
-
-## Motion
-
-- Transitions between states are short (≈300–800 ms) and explain the change: things grow, slide in or get struck
-  through. No decorative motion.
-- With reduced motion, swap states instantly.
-- The page must look complete before any scrolling (the first step's state is visible at rest).
-- The graphic's first state belongs to step 1 and must not change while step 1 is current: no intro state, no
-  build-up as step 1 reaches the middle. The first change happens when step 2 becomes current.
-- Scrolling back up restores the earlier states exactly: each state is set from the step number alone, never
-  built on top of the previous state.
-
-## Building it
-
-- Build it as a fragment with the `explainer-kit` skill (tokens, `EV.onShow`). Lay it out with the kit's
-  `ev-side` (steps left) + `ev-stick` (graphic right, sticky and vertically centred below the top bar). The first
-  step starts at the top of its column, level with the graphic (no top padding or spacer); add bottom padding so
-  the last step can reach the middle. Make steps `ev-step` boxes and drive them with
-  `EV.steps(steps, function (i) { graphic.dataset.step = i + 1; })` (not an `IntersectionObserver`, which gets
-  the reverse scroll wrong); key the graphic's states in CSS on the `data-step` attribute.
-- Give scenes `id` + `data-toc` so they appear in the chapter list.
-- Check with screenshots at several scroll positions (Playwright, or a page that forces each step).
+- The kit wires `data-ev-story`: for step n it sets `data-step="n"` on the panel and, inside it, shows
+  `data-on` elements only on their steps (`2-4`, `3-` = from 3 on, `2,5`), adds `.is-hl` on `data-hl` steps and
+  sets `data-say` text to the n-th item (`a|b||d`; an empty item keeps the previous text). Step 1's state is what
+  the page shows at rest; scrolling back restores states exactly. Use only these attributes and the kit's SVG
+  classes (`ev-node`, `ev-wire`, `ev-t-*`, `ev-f-*`); add a scoped `<style>` keyed on `[data-step="3"]` only for
+  what the attributes can't express.
+- `ev-side--pin` spaces the steps and pins the graphic on phones; don't add padding, spacers or media queries.
+- Keep the SVG compact so it stays legible when pinned on a phone: `viewBox` about 440 × 300 (at most 480 wide),
+  labels at the kit's default size (15) or larger, no labels smaller than `ev-t-xs`.
+- Give the first step of each scene `id` + `data-toc` so it shows in the chapter list.

@@ -27,7 +27,8 @@ today's code become the proposed code.
 
 ## The code panel
 
-- Show real code from the codebase (or the proposed code), with the file path in the panel header.
+- Show real code from the codebase (or the proposed code), with the file path in the panel header. 3–4 snippets
+  of ≤ 15 lines each are plenty.
 - Animate with **highlights, not content shifts**: dim unfocused lines, glide a focus band to the new range,
   cross-fade when the file changes. Don't grow or collapse lines while the reader is looking.
 - The panel's first state (file and highlighted lines) belongs to step 1 and must not change while step 1 is
@@ -41,7 +42,8 @@ today's code become the proposed code.
 
 ## Phones
 
-- Below the two-column width, drop the sticky panel and show each step's code slice inline under the step.
+- Add `ev-side--pin` to pin the code panel above the steps on phones; keep lines short (≤ 70 characters) so
+  nothing scrolls sideways.
 
 ## Building it
 
