@@ -24,11 +24,12 @@ right that switches when the reader picks a card. Switching back and forth makes
 
 - Every option has the **same rows** in the same order so only the differences change: for a decision usually
   Keeps (`ok`), Loses (`removed`), Fix first (`decision`, concrete actions), Risks (`risk`), plus `effort`
-  (hours or days, and what the work is). Short items, real names and numbers from the facts.
+  (hours or days, and what the work is). 2–4 short items per row, real names and numbers from the facts:
+  every finding that matters for that option belongs in one of its rows.
 - Fragility, dependencies and complexity belong in these rows (e.g. "Fix first: port 3 path checks into the local
   plugin"), not in chapters of their own.
-- `flip`: what would change the recommendation (1–3 items). `details`: one "Sources" group with links, plus
-  at most one more group (e.g. "How it was measured").
+- `flip`: what would change the recommendation (1–3 items). `details`: "How it was measured" (method, versions,
+  conditions, what was not measured) and "Sources" (links).
 - Use real content. Label an illustration as one.
 
 ## Build it from JSON

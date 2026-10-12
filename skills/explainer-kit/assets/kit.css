@@ -568,7 +568,7 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 /* Story pin (.ev-side--pin): spaces the steps so each one can reach the middle. Below 900px the panel moves
    above the steps and sticks under the top bar, capped at 42% of the screen (its SVG scales down to fit), and
    the steps scroll under it; EV.steps then reads the step below the pinned panel. */
-.ev-side--pin > :not(.ev-stick) { display: flex; flex-direction: column; gap: 22vh; padding-bottom: 35vh; }
+.ev-side--pin > :not(.ev-stick) { display: flex; flex-direction: column; gap: 12vh; padding-bottom: 30vh; }
 @media (max-width: 899px) {
   .ev-side--pin > .ev-stick {
     order: -1; position: sticky; top: var(--ev-sticky-top, 0px); z-index: 3; max-height: 42vh; overflow: hidden;
