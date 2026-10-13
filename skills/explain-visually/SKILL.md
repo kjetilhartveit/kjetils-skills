@@ -5,81 +5,84 @@ description: Use when the user asks for a visual explanation or to 'explain visu
 
 # Explain Visually
 
-The goal: the reader quickly understands what changes, how it works and why, without reading every line of code,
-and can still dig into the details. Show rather than tell, concise first, details on demand.
+The goal: the reader quickly understands what changes, how it works and why, and can decide, without reading
+every line of code. Show rather than tell, concise first, details on demand. One page, ~1,000–1,500 words:
+short story steps, and the detail a decision needs in the option rows and toggles.
 
-This skill coordinates. The look comes from the `explainer-kit` skill and each chapter follows its own
-`explain-with-*` skill.
+Say exactly what the facts say, above all in the headline:
+
+- "Migrated" is not "kept" or "working"; "honoured" is not "unchanged". Name exceptions in the same sentence:
+  "263 rules migrate; 1 must be switched off".
+- A number measured under changed conditions is not "the same": "5.3 s, after switching that rule off".
+- What holds for some members doesn't hold for the group: name them ("react-x and react-jsx load as plugins").
+- Write for a reader new to the tools: gloss each tool or term the first time it appears, in a few words in
+  the same sentence ("tsgolint, Oxc's type-checking helper"), in the story and in option rows alike.
+
+The look comes from the `explainer-kit` skill; each chapter follows its `explain-with-*` skill.
 
 ## Use this skill when
 
 - The user asks for a visual explanation, an explainer or "explain this visually".
 - Explaining a code change, a proposal, a plan or an architecture decision so the user can make informed decisions.
 
-## 1. Gather the facts
+## 1. Gather the facts into `facts.md`
 
-- Gather enough relevant information to back every statement: read the code, docs, plans and history.
-  Facts over guesswork and opinions; substance over fluff.
-- Collect references to source material (`file:line`, docs, links) and the real code snippets you'll show.
-- Note any decisions the user has to make, and the long-term effects: fragility (what can break and when),
-  dependencies (what now depends on what) and complexity (what's added or removed, and is it worth it).
+- If a facts file already exists (e.g. the task gives you one), it is your source of truth: skip to step 2.
+- Otherwise append each fact to `facts.md` in the working folder **as you find it**, one line with its source
+  (`file:line`, link, or the command you ran). Don't restate facts in your thinking; write them down once.
+- Get numbers from commands (`grep -c`, `jq`, a timed run), not by counting by hand.
+- Measure on the real repo when it is cheap (a scratch copy or worktree, never the repo itself). Note method and
+  versions. Never stretch one measurement into "every" or "all".
+- Budget: at most 3 web searches and 3 page fetches; stop when every claim you plan to make has a source.
+- Note what the user must decide, the effort per option, the risks with their fixes, and what would change the
+  recommendation.
 
-## 2. Write the content brief
+## 2. Plan the page (no separate brief)
 
-Write a short markdown brief in the scratchpad. It is the single source of truth for every chapter, so chapters
-can be built in parallel and stay consistent:
+Write the plan as the first lines of `notes.md` (≤ 15 lines): the one-sentence answer and its main cost, the 3–5
+key numbers (each gets **one** home on the page), the 4–8 terms to gloss, the one real snippet to show (config or
+code the reader would change, ≤ 8 lines), and one line per chapter. Chapters:
 
-- The one-sentence answer and the key numbers.
-- Per chapter: what it must show, the facts, the real code (with paths), and sources.
-- What is a fact and what is an illustration.
+| Chapter  | Built with                                 | Section  | When                                                   |
+| -------- | ------------------------------------------ | -------- | ------------------------------------------------------ |
+| Overview | this skill (kit overview)                  | —        | always                                                 |
+| Story    | `explain-with-storytelling`                | `story`  | always: 5–7 steps, one evolving graphic                |
+| Code     | `explain-with-code-walkthrough`            | `code`   | only when the change *is* code the reader must see     |
+| Decision | `explain-with-preview`, options (JSON)     | `decide` | when the user has something to decide                  |
 
-## 3. The page
+- At most **3 chapters** after the overview. Fragility, dependencies and complexity go into the decision options'
+  rows (keeps / loses / fix first / risks), not into chapters of their own. A separate before/after chapter
+  (`explain-with-preview`) only replaces Code when there is no decision.
+- **Overview:** a headline that states the answer and its main cost ("lint 44 s → 5.3 s; 1 rule and 3 checks to
+  port"), one sentence, one hero (to scale; for
+  numbers use the kit's HTML `ev-bars ev-bars--hero`, which stays legible on phones), and one key line with at most
+  one "Decide" callout. No grid of info boxes.
+- Only add `explain-with-section-clips`, `-slides` or `-video` when the user asks for them.
 
-One scrollable page with a sticky chapter list on the left. Chapters, in this order:
+## 3. Build the chapters yourself
 
-| #   | Chapter      | Built with                           | Section name | When                                       |
-| --- | ------------ | ------------------------------------ | ------------ | ------------------------------------------ |
-| —   | Overview     | this skill (kit overview component)  | —            | always                                     |
-| 1   | Story        | `explain-with-storytelling`          | `story`      | always: the big picture                    |
-| 2   | Code         | `explain-with-code-walkthrough`      | `code`       | when code changes                          |
-| 3   | Fragility    | `explain-with-preview`, before/after | `fragile`    | when relevant                              |
-| 4   | Dependencies | `explain-with-preview`, before/after | `deps`       | when relevant                              |
-| 5   | Complexity   | `explain-with-preview`, before/after | `complex`    | when relevant                              |
-| 6   | Decision     | `explain-with-preview`, options      | `decide`     | only when the user has something to decide |
+- Read `explainer-kit/assets/FRAGMENT-CONTRACT.md` and the chapter skills you use, all in one turn. The contract
+  is the whole API: **never read `kit.css`, `kit.js`, `assemble.py` or `SCRIPTS-AND-TABS.md`** for this page.
+- Write the chapters yourself, one file each, in order, each with the Write tool (never a shell heredoc: one
+  stray quote fails the whole command and every file has to be written again). Don't start subagents for a page this size.
+- Use kit components as they are; no new themes, fonts or components, and no layout CSS of your own.
+- Show the real snippet from your plan as the recommended option's `code` in the decision JSON (and the cautious
+  option's, if it changes config), not as a chapter of its own.
+- References go in the details: file paths in code headers, links in the decision's Sources toggle.
 
-- **Overview:** a headline that states the answer, one sentence, one hero visual (the most telling concrete
-  picture, drawn to scale), and one key line with at most one "Decide" callout. No grid of info boxes.
-- Skip chapters that don't apply instead of filling them. Don't repeat the overview inside the chapters.
-- Only add `explain-with-section-clips`, `explain-with-slides` or `explain-with-video` when the user asks for them.
-  Slides and video are usually separate pages.
-
-## 4. Build the chapters
-
-- Load the `explainer-kit` skill and read its `FRAGMENT-CONTRACT.md`. Use the kit as is: don't design new themes,
-  fonts or components for one page.
-- When subagents are available, build the chapters **in parallel**: one subagent per chapter, each given the brief,
-  its `explain-with-*` skill, the kit path, its section name and an output file. Build the three before/after
-  chapters together from one template plus data.
-- Every chapter follows the kit's shared rules: concise first; details in toggles that name their contents;
-  visual details (highlighted code, chips, compact tables); no faded text; motion only when it explains.
-- Put references in the details: file paths in code headers, `file:line` and links in the toggles.
-
-## 5. Assemble, check and publish
+## 4. Assemble, check once, publish
 
 ```bash
-python <explainer-kit>/assets/assemble.py --page --toc --title "Short name" --overview overview.html \
-  --section story=frag-story.html --section code=frag-code.html \
-  --section fragile=frag-fragile.html --section deps=frag-deps.html --section complex=frag-complex.html \
-  --section decide=frag-decide.html --out index.html
+python <kit>/assets/preview.py decide.json --out frag-decide.html
+python <kit>/assets/assemble.py --page --toc --title "Short name" --overview overview.html \
+  --section story=frag-story.html --section decide=frag-decide.html --out index.html
+python <kit>/assets/check.py index.html
 ```
 
-- Fix any contract errors the assembler reports.
-- Check the facts on the page against the brief (claims, counts, file lists). Agents drift.
-- Look at the page once (screenshot or artifact preview) in dark and on a phone width; fix what's broken.
-  Don't iterate on polish.
-- Publish the single page as an artifact.
-
-## Keep it fast
-
-- The kit, the chapter skills and the brief remove most of the work: agents only write content and visuals.
-- Parallel chapters, one screenshot pass and no redesign keep a full explainer to a few minutes per chapter.
+- Run these only after every file write has returned, as one chained command.
+- Fix the contract errors the assembler reports.
+- Run `check.py` once. Fix only the problems it lists, run it once more, then stop. Don't take or study
+  screenshots to hunt for other issues and don't write your own browser scripts.
+- Read your page text once against `facts.md`: counts, names, no "every/all" the facts don't support.
+- Publish the single page as an artifact (unless told to just write the file). Reply in at most 5 lines: the
+  answer, the page path, and anything unchecked.

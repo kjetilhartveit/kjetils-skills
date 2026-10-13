@@ -441,6 +441,8 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-tab-content { max-width: var(--ev-read-w); min-width: 0; }
 .ev-tab-content:focus, .ev-tab-content:focus-visible { outline: none; }
 .ev-tab-content.ev-wide { max-width: none; }
+/* Two-column chapters (story, code walkthrough, preview) need the full page width for their panel */
+.ev-tab-content:has(.ev-side) { max-width: none; }
 .ev-standalone { padding-block-start: var(--ev-s4); }
 
 /* ==========================================================================
@@ -534,7 +536,7 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-visual > svg { display: block; width: 100%; height: auto; }
 
 /* Side-by-side: text on the left, a sticky panel (.ev-stick) on the right. At rest the panel is centred on the
-   first text box (the column's first child, or its [data-ev-anchor] element); while scrolling it sticks in the
+   first text box (the column's first child, or its [data-ev-anchor] element), or top-aligned with it when taller; while scrolling it sticks in the
    vertical centre of the viewport below the top bar, so both arrive in the middle together.
    kit.js sets --ev-stick-h (panel height) and the alignment margins; --ev-sticky-top is the top bar height.
    Below 900px the columns stack and the panel is no longer sticky. */
@@ -562,6 +564,96 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
   .ev-side > * { margin-top: 0; }
   .ev-stick { position: static; max-height: none; overflow: visible; }
 }
+
+/* Story pin (.ev-side--pin): spaces the steps so each one can reach the middle. Below 900px the panel moves
+   above the steps and sticks under the top bar, capped at 42% of the screen (its SVG scales down to fit), and
+   the steps scroll under it; EV.steps then reads the step below the pinned panel. */
+/* Bottom padding only as far as the panel needs to stay fully in view while the last step reaches the middle,
+   so the story doesn't end in an empty band. */
+.ev-side--pin > :not(.ev-stick) {
+  display: flex; flex-direction: column; gap: 12vh;
+  padding-bottom: max(var(--ev-s5), calc(var(--ev-stick-h, 50vh) / 2 - 25vh));
+}
+@media (max-width: 899px) {
+  .ev-side--pin > .ev-stick {
+    order: -1; position: sticky; top: var(--ev-sticky-top, 0px); z-index: 3; max-height: 42vh; overflow: hidden;
+    margin-inline: calc(-1 * var(--ev-gutter)); padding: var(--ev-s2) var(--ev-gutter);
+    background: var(--ev-bg); border-bottom: 1px solid var(--ev-line);
+  }
+  .ev-side--pin > .ev-stick svg { display: block; width: 100%; max-height: calc(42vh - 2 * var(--ev-s2)); }
+  .ev-side--pin > :not(.ev-stick) { gap: 18vh; padding-block: var(--ev-s5) 30vh; }
+}
+
+/* Story states set by kit.js from data-on / data-hl (see .ev-side[data-ev-story]) */
+.ev-stick [data-on] { transition: opacity .4s var(--ev-ease); }
+.ev-stick .is-off { opacity: 0; visibility: hidden; }
+.ev-stick .ev-node.is-hl { fill: var(--ev-accent-soft); stroke: var(--ev-accent-fill); stroke-width: 2; }
+.ev-stick rect.is-hl:not(.ev-node) { stroke: var(--ev-fg); stroke-width: 2; }
+.ev-stick text.is-hl { fill: var(--ev-accent); font-weight: 600; }
+.ev-stick .ev-wire.is-hl { stroke: var(--ev-accent-fill); stroke-dasharray: none; }
+@media (prefers-reduced-motion: reduce) { .ev-stick [data-on] { transition: none; } }
+
+/* Hero bars: ev-bars at hero size, as HTML so the labels stay legible on phones. Bars are to scale (--v). */
+.ev-bars--hero { font-size: 15px; gap: 12px 14px; }
+.ev-bars--hero > .ev-bar { height: 16px; border-radius: 4px; }
+.ev-bars--hero > .ev-bar > i { border-radius: 4px; }
+.ev-bars > .ev-bar.is-good > i { background: var(--ev-new); }
+.ev-bars > .ev-bar.is-muted > i { background: var(--ev-line-strong); }
+.ev-bars > .ev-k b, .ev-bars > .ev-v b { color: var(--ev-fg); }
+@media (max-width: 520px) { .ev-bars--hero { font-size: 13.5px; gap: 10px; } }
+
+/* Pick (options or before/after): cards on the left switch the panel on the right (kit.js wires .ev-pick).
+   Usually generated from JSON by assets/preview.py. */
+.ev-pick-cards { display: flex; flex-direction: column; gap: var(--ev-s3); }
+.ev-pick-card {
+  all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; cursor: pointer;
+  padding: var(--ev-s4); border: 1px solid var(--ev-line); border-radius: var(--ev-radius); background: var(--ev-surface);
+  transition: border-color .2s, background-color .2s;
+}
+.ev-pick-card:hover { border-color: var(--ev-line-strong); }
+.ev-pick-card:focus-visible { outline: 2px solid var(--ev-accent); outline-offset: 2px; }
+.ev-pick-card[aria-selected="true"] {
+  border-color: color-mix(in srgb, var(--ev-accent) 55%, var(--ev-line));
+  background: color-mix(in srgb, var(--ev-accent-soft) 55%, var(--ev-surface));
+  box-shadow: inset 3px 0 0 var(--ev-accent-fill);
+}
+.ev-pick-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-weight: 600; color: var(--ev-fg); }
+.ev-pick-sum { font-size: var(--ev-fs-sm); color: var(--ev-muted); }
+.ev-pick-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+/* The cards column also holds the "What would change this" callout, so it fills the space beside a tall panel.
+   The panel is never a scroll box: when it is taller than the cards it simply scrolls with the page. */
+.ev-pick > :first-child { display: flex; flex-direction: column; gap: var(--ev-s5); }
+.ev-pick > .ev-stick { max-height: none; overflow: visible; }
+.ev-pick .ev-callout { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 899px) {
+  .ev-pick > :first-child { display: contents; }
+  .ev-pick > .ev-stick { order: 1; }
+  .ev-pick .ev-callout { order: 2; }
+}
+.ev-pick-panel {
+  display: flex; flex-direction: column; gap: var(--ev-s4); padding: var(--ev-s5);
+  border: 1px solid var(--ev-line-strong); border-radius: var(--ev-radius); background: var(--ev-surface);
+  animation: ev-pick-in .25s var(--ev-ease);
+}
+.ev-pick-panel[hidden] { display: none; }
+.ev-pick-panel > h3 { font-size: var(--ev-fs-h3); font-weight: 600; }
+.ev-pick-rows { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--ev-s3) var(--ev-s4); margin: 0; font-size: var(--ev-fs-sm); }
+.ev-pick-rows > dt { font: 500 var(--ev-fs-xs)/1.9 var(--ev-font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--c, var(--ev-faint)); }
+.ev-pick-rows > dt::before { content: var(--g, "·"); display: inline-block; width: 1.4em; font-weight: 700; }
+.ev-pick-rows > dd { margin: 0; color: var(--ev-fg); }
+.ev-pick-rows ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.ev-pick-rows [data-kind="ok"], .ev-pick-rows [data-kind="new"] { --c: var(--ev-new); }
+.ev-pick-rows [data-kind="ok"] { --g: "✓"; }
+.ev-pick-rows [data-kind="new"] { --g: "+"; }
+.ev-pick-rows [data-kind="removed"] { --c: var(--ev-risk); --g: "−"; }
+.ev-pick-rows [data-kind="risk"] { --c: var(--ev-risk); --g: "!"; }
+.ev-pick-rows [data-kind="decision"] { --c: var(--ev-decide); --g: "◆"; }
+@media (max-width: 520px) {
+  .ev-pick-rows { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .ev-pick-rows > dd { margin-bottom: var(--ev-s3); }
+}
+@keyframes ev-pick-in { from { opacity: .4; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ev-pick-panel { animation: none; } }
 
 /* Jump list: horizontal section index at the top of a tab */
 .ev-jump { display: flex; flex-wrap: wrap; gap: var(--ev-s2); margin-bottom: var(--ev-s7); padding: 0; list-style: none; }
@@ -608,6 +700,8 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-callout--decision { --c: var(--ev-decide); --cs: var(--ev-decide-soft); }
 .ev-callout--risk { --c: var(--ev-risk); --cs: var(--ev-risk-soft); }
 .ev-callout--new { --c: var(--ev-new); --cs: var(--ev-new-soft); }
+.ev-callout ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+@media (max-width: 520px) { .ev-callout { grid-template-columns: minmax(0, 1fr); } }
 
 /* ==========================================================================
    Details toggle: the summary names what is inside
@@ -735,6 +829,9 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-ln-n { flex: none; width: 3.4em; padding-right: .9em; text-align: right; color: var(--ev-faint); opacity: .7; user-select: none; }
 .ev-ln-g { flex: none; width: 1.3em; text-align: center; color: var(--ev-faint); user-select: none; font-weight: 700; }
 .ev-ln-c { flex: 1; white-space: pre; padding-right: 20px; }
+/* Wrapping code (.ev-code--wrap): long lines wrap instead of scrolling sideways; for short snippets in narrow panels */
+.ev-code--wrap pre > code { min-width: 0; }
+.ev-code--wrap .ev-ln-c { min-width: 0; padding-right: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .ev-ln.is-add { background: var(--ev-new-soft); }
 .ev-ln.is-add .ev-ln-g, .ev-ln.is-add .ev-ln-n { color: var(--ev-new); opacity: 1; }
 .ev-ln.is-del { background: var(--ev-risk-soft); }

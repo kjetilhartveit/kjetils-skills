@@ -1,0 +1,127 @@
+{
+  "page": "runs/a-v3b/20261013-010725-sonnet-facts/out/index.html",
+  "overall": 91.1,
+  "quality": 87.3,
+  "quality_basis": "checks + judge",
+  "speed": 99.7,
+  "economy": 91.8,
+  "checks": {
+    "score": 100.0,
+    "facts": {
+      "points": 40.0,
+      "max": 40,
+      "found": {
+        "names the Oxc formatter oxfmt": true,
+        "oxlint migrator keeps 263 rules": true,
+        "Biome keeps 163 (or 152) of 295 rules / about half": true,
+        "lint time compared in seconds": true,
+        "react-x typed rule crashes / must be dropped": true,
+        "Biome ignores eslint-disable comments": true,
+        "low-risk path: oxfmt first, keep ESLint": true,
+        "formatting is not enforced today / drift": true,
+        "JS plugins are alpha (risk)": true,
+        "effort sized per option": true,
+        "lost no-restricted-syntax path checks": true,
+        "what would change the recommendation": true,
+        "links to oxc.rs / biomejs.dev sources": true
+      },
+      "overclaims": []
+    },
+    "layout": {
+      "points": 30,
+      "max": 30,
+      "problems": []
+    },
+    "structure": {
+      "points": 30,
+      "max": 30,
+      "checks": {
+        "at most 4 chapters": 8,
+        "story with 4-9 steps": 5,
+        "decision chapter": 5,
+        "not thin (>= 900 words)": 4,
+        "no literal colours in fragments": 4,
+        "toggles name their contents": 4
+      }
+    }
+  },
+  "judge": {
+    "score": 80.5,
+    "model": "opus",
+    "cost_usd": 0.2818864,
+    "verdict": {
+      "headline": {
+        "score": 8,
+        "why": "The headline and lede, both visible before scrolling, name the tool (Oxlint + oxfmt), give 44.0 s → 5.3 s, state the cost (alpha JS plugins, 1 rule dropped, 3 path checks) and the Biome comparison (163 of 295). They also correct the 'oxprettier' name, and the hero bar chart is to scale. However, 'and 263 rules keep working' overclaims: one migrated rule crashes and has to be switched off."
+      },
+      "accuracy": {
+        "score": 7,
+        "why": "Mostly faithful: keeps/loses/fix-first lists, Biome gaps, the oxfmt-first path and 'what would change' all match facts.md. There are some overclaims. '263 rules keep working' ignores the crashing react-x rule and the new false positives. 'Oxlint runs the same lint in 5.3 s' is not quite true, because 5.3 s was measured after dropping a rule and with the selectors missing. 'Oxlint's React … rules run as alpha JS plugins' is wrong because eslint-plugin-react is built in; only react-x and react-jsx are JS plugins. Saying the 2.3 s oxfmt check took place 'against Prettier' leaves out that the run flagged 1,028 files because of CRLF."
+      },
+      "numbers": {
+        "score": 9,
+        "why": "All figures match facts.md: 44.0, 5.3, 3.3, 263/276, 163/295 (55 %), 132 lost, 98 + 34, 190 files, 2.3 s vs 10.2 s, 3 code files, 25 files, 149 drifted, 1,028, ~203 disables, and the 47.3 s and 4.75–4.92 s corroborating runs. The page notes that the rule-count bases differ and that warm-cache timing was not measured. One small issue: the migrator bars set 263/276 next to 163/295 as lengths on a shared absolute scale, which invites comparing different bases."
+      },
+      "story": {
+        "score": 8,
+        "why": "The story has a clear arc (today → gap → Oxlint → Biome → catch → safe first step) and one sticky graphic that builds up step by step: ESLint bar, then Oxlint, then Biome, then rule bars. The lint bars are to scale. The final step only adds a text line for oxfmt vs Prettier rather than a visual, and the 'catch' marker isn't visible in the final shot. Navigation labels lag behind the active step (the phone header shows 'Story · Oxlint' while the Biome step is active)."
+      },
+      "decision": {
+        "score": 9,
+        "why": "Three options, with A recommended and C as the cautious choice. Each has keeps/loses/fix-first/risks/effort in days, and there is a concrete 'what would change this' list. Risks come with fixes such as pinning versions and adding .gitattributes. B's risks are mostly restated losses, and the open decisions (RuleTester port, format:check) are only partly covered."
+      },
+      "concision": {
+        "score": 8,
+        "why": "Around 1,100 words, the answer comes immediately, and details sit in the option panels and the methods section. Some numbers repeat across the hero, story and option chips (44.0/5.3/3.3, 263, 163/295, 2.3 vs 10.2), but not excessively. Nothing a decision needs is missing."
+      },
+      "visual": {
+        "score": 8,
+        "why": "Clean, legible layout in both themes and on the phone, with to-scale bars and a sticky graphic that works on mobile. The story chapter has large empty areas on desktop. The decision detail panel only shows one option at a time. The nav highlight doesn't match the active step."
+      },
+      "factual_errors": [
+        "'263 rules keep working' (headline): facts say react-x/no-leaked-conditional-rendering crashed on 190 files and must be turned off, and migration adds new false positives (2 testing-library, 1 import, 1 no-unsafe-argument).",
+        "'Oxlint runs the same lint in 5.3 s': the 5.3 s run came after dropping the typed react-x rule and without the no-restricted-syntax selectors, so it is not the same lint.",
+        "'Oxlint's React, testing-library and local rules run as alpha JS plugins': facts say react (eslint-plugin-react), react-hooks, jsx-a11y, import and nextjs are built in; only react-x, react-jsx, testing-library and local rules are JS plugins.",
+        "'A format check took 2.3 s against Prettier's 10.2 s' (presented as a clean comparison): the 2.3 s oxfmt run flagged 1,028 of 1,030 files on the CRLF checkout, before the LF fix."
+      ]
+    }
+  },
+  "economy_parts": {
+    "score": 91.8,
+    "parts": {
+      "words": 95.3,
+      "bytes": 100.0,
+      "chapters": 80
+    }
+  },
+  "speed_parts": {
+    "score": 99.7,
+    "parts": {
+      "output_tokens_total": 100.0,
+      "wall_s": 100.0,
+      "num_turns": 97.1,
+      "total_cost_usd": 100.0,
+      "input_tokens_total": 100.0
+    },
+    "raw": {
+      "output_tokens_total": 9189,
+      "wall_s": 70,
+      "num_turns": 12,
+      "total_cost_usd": 0.2861061,
+      "input_tokens_total": 271757
+    }
+  },
+  "page_measures": {
+    "visible_words": 972,
+    "bytes": 101100,
+    "sections": [
+      "story",
+      "decide"
+    ],
+    "steps": 6,
+    "code_blocks": 3,
+    "tables": 0,
+    "chips": 10,
+    "toggles": 2
+  }
+}

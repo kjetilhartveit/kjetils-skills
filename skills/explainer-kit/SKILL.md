@@ -22,11 +22,12 @@ All in `assets/` next to this file:
 
 | File | What it is |
 |---|---|
-| `kit.css` | Design tokens (themes), type scale, spacing and every shared component, prefixed `ev-` |
-| `kit.js` | Theme switcher, chapter list (TOC), tabs, code-block builder with highlighting, clip player (`EV.clip`), `EV.onShow` / `EV.onHide`, `EV.stickyTop()` |
-| `shell.html` | Page template used by the assembler |
+| `FRAGMENT-CONTRACT.md` | The rules every fragment follows and the component cheat sheet. **Read it before writing a fragment; it is the whole API.** |
+| `SCRIPTS-AND-TABS.md` | Only for fragments with their own script (clips, slides, video, code walkthrough) and tabbed pages |
 | `assemble.py` | Builds the final page from an overview and fragments, and validates the contract |
-| `FRAGMENT-CONTRACT.md` | The rules every fragment follows, plus a component cheat sheet. **Read it before writing a fragment.** |
+| `preview.py` | Generates a decision (options) or before/after chapter from JSON |
+| `check.py` | Opens the assembled page on a desktop and a phone and lists only what to fix |
+| `kit.css`, `kit.js`, `shell.html` | The styles, behaviour and page template the assembler inlines. Don't read them to write a page |
 
 ## Themes
 
@@ -74,6 +75,6 @@ python assets/assemble.py --standalone frag-slides.html --title "Short name" --o
 
 ## Changing the kit
 
-- If a chapter needs a component the kit lacks, add it to `kit.css` / `kit.js` (with the `ev-` prefix) and the
-  cheat sheet in `FRAGMENT-CONTRACT.md`, instead of styling it inside one fragment.
-- Re-run `assemble.py` on an existing page afterwards to check nothing broke.
+- Only when the user asks for a kit change, not while building one page: a page uses the kit as it is.
+- Add new components to `kit.css` / `kit.js` with the `ev-` prefix and to the cheat sheet in `FRAGMENT-CONTRACT.md`,
+  then re-run `assemble.py` and `check.py` on an existing page.

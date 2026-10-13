@@ -5,9 +5,8 @@ description: Use when asked to explain visually with a preview.
 
 # Explain with Preview
 
-A two-column chapter: a short takeaway and a few clickable cards on the left, and a sticky preview panel on the
-right, held in the vertical centre of the viewport, that switches when the reader picks a card. Switching back and
-forth makes the differences obvious.
+A two-column chapter: a short framing sentence and a few clickable cards on the left, and a sticky panel on the
+right that switches when the reader picks a card. Switching back and forth makes the differences obvious.
 
 ## Use this skill when
 
@@ -16,40 +15,33 @@ forth makes the differences obvious.
 
 ## Two modes
 
-| Mode               | Cards                                                       | Default selection      | Extras                                                   |
-| ------------------ | ----------------------------------------------------------- | ---------------------- | -------------------------------------------------------- |
-| Options (decision) | One per option, usually 2–3                                 | The recommended option | A "Recommended" badge, 2–3 pro/con chips per option      |
-| Before / after     | Exactly two: "Before · today" and "After · with the change" | After                  | No badge; each card has a one-line summary of that state |
+| Mode               | Cards                                                      | Starts on              |
+| ------------------ | ---------------------------------------------------------- | ---------------------- |
+| Options (decision) | One per option, 2–3, including a cautious / low-risk one   | The recommended option |
+| Before / after     | Exactly two: "Before · today" and "After · with the change" | After (`"selected"`)   |
 
-## Left column
+## Content
 
-- One sentence that frames the question (decision) or the takeaway (before/after).
-- The cards: clearly clickable, keyboard accessible (arrow keys), the selected one visibly highlighted.
-- Keep it short. Detail belongs in the panel or in one `ev-more` toggle that names its contents.
+- Every option has the **same rows** in the same order so only the differences change: for a decision usually
+  Keeps (`ok`), Loses (`removed`), Fix first (`decision`, concrete actions), Risks (`risk`), plus `effort`
+  (hours or days, and what the work is). 2–4 short items per row, real names and numbers from the facts:
+  every finding that matters for that option belongs in one of its rows.
+- Fragility, dependencies and complexity belong in these rows (e.g. "Fix first: port 3 path checks into the local
+  plugin"), not in chapters of their own.
+- Gloss a tool or term in the row where it first appears ("nursery (Biome's unstable rules)").
+- `code` (optional per option): ≤ 8 real lines of the config or code that option adds or changes, with its file
+  path. Give the recommended option one when the change is config or code.
+- `flip`: what would change the recommendation (1–3 items). `details`: "How it was measured" (the commands,
+  versions, machine, single or repeated runs, what was not measured) and "Sources" (links).
+- Use real content. Label an illustration as one.
 
-## Preview panel
+## Build it from JSON
 
-- Shows the **whole picture for the selected state** in a layout that stays identical between states, so only
-  the differences change when switching.
-- Mark what differs between states (an accent bar, a "changed" chip) and give the switch a short cross-fade.
-  Respect reduced motion.
-- Pick the content for the topic:
-  - Decision: the code change for that option (or "no code change"), plus what happens in practice.
-  - Fragility: every failure case as a row, with what the system does in that state and an outcome chip
-    (fails safe, slows down, alarm reports it, needs a decision).
-  - Dependencies: one small diagram of what depends on what; new edges and modules highlighted.
-  - Complexity: the code each piece adds (empty slots before, `+` lines after) and a small tally, including
-    what is _not_ added.
-- Use real content. If a visual has to be illustrative, label it as an illustration.
+Write the chapter as JSON and generate the fragment; no HTML, CSS or script by hand:
 
-## Phones
+```bash
+python <explainer-kit>/assets/preview.py decide.json --out frag-decide.html
+```
 
-- Show the panel inline under the cards.
-
-## Building it
-
-- Build it as a fragment with the `explainer-kit` skill; lay it out with the kit's `ev-side` (cards left) +
-  `ev-stick` (panel right, sticky and vertically centred below the top bar). Put `data-ev-anchor` on the card list
-  so the panel starts level with the cards, with no gap above it.
-- When several chapters use this pattern (e.g. fragility, dependencies and complexity), generate them from one
-  template plus per-chapter data so they look like a series and are fast to produce.
+The JSON shape is documented at the top of `preview.py` and in the kit's `FRAGMENT-CONTRACT.md` ("Preview
+chapters from JSON"). Text fields may contain inline `<b>`, `<code>` and `<a href>`.
