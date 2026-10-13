@@ -23,6 +23,7 @@ All in `assets/` next to this file:
 | File | What it is |
 |---|---|
 | `FRAGMENT-CONTRACT.md` | The rules every fragment follows and the component cheat sheet. **Read it before writing a fragment; it is the whole API.** |
+| `SCRIPTS-AND-TABS.md` | Only for fragments with their own script (clips, slides, video, code walkthrough) and tabbed pages |
 | `assemble.py` | Builds the final page from an overview and fragments, and validates the contract |
 | `preview.py` | Generates a decision (options) or before/after chapter from JSON |
 | `check.py` | Opens the assembled page on a desktop and a phone and lists only what to fix |

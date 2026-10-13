@@ -47,7 +47,7 @@ today's code become the proposed code.
 
 ## Building it
 
-- Build it as a fragment with the `explainer-kit` skill. Use the kit's code block (`ev-code` with `data-add`,
+- Build it as a fragment with the `explainer-kit` skill (its `SCRIPTS-AND-TABS.md` covers `EV.steps`). Use the kit's code block (`ev-code` with `data-add`,
   `data-hl`, `data-groups`, `data-marks`) for inline and toggle code.
 - Lay it out with the kit's `ev-side` (steps left) + `ev-stick` (code panel right, sticky and vertically centred
   below the top bar). The first step starts at the top of its column, level with the code panel (no top padding or

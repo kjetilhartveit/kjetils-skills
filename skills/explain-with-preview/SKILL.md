@@ -28,8 +28,11 @@ right that switches when the reader picks a card. Switching back and forth makes
   every finding that matters for that option belongs in one of its rows.
 - Fragility, dependencies and complexity belong in these rows (e.g. "Fix first: port 3 path checks into the local
   plugin"), not in chapters of their own.
-- `flip`: what would change the recommendation (1–3 items). `details`: "How it was measured" (method, versions,
-  conditions, what was not measured) and "Sources" (links).
+- Gloss a tool or term in the row where it first appears ("nursery (Biome's unstable rules)").
+- `code` (optional per option): ≤ 8 real lines of the config or code that option adds or changes, with its file
+  path. Give the recommended option one when the change is config or code.
+- `flip`: what would change the recommendation (1–3 items). `details`: "How it was measured" (the commands,
+  versions, machine, single or repeated runs, what was not measured) and "Sources" (links).
 - Use real content. Label an illustration as one.
 
 ## Build it from JSON

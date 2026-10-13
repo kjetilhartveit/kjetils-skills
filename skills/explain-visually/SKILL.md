@@ -9,8 +9,14 @@ The goal: the reader quickly understands what changes, how it works and why, and
 every line of code. Show rather than tell, concise first, details on demand. One page, ~1,000–1,500 words:
 short story steps, and the detail a decision needs in the option rows and toggles.
 
-Say exactly what the facts say: "migrated" is not "kept", "honoured" is not "unchanged". When a number has
-exceptions, name them in the same sentence ("263 rules migrate; 1 must be turned off").
+Say exactly what the facts say, above all in the headline:
+
+- "Migrated" is not "kept" or "working"; "honoured" is not "unchanged". Name exceptions in the same sentence:
+  "263 rules migrate; 1 must be switched off".
+- A number measured under changed conditions is not "the same": "5.3 s, after switching that rule off".
+- What holds for some members doesn't hold for the group: name them ("react-x and react-jsx load as plugins").
+- Write for a reader new to the tools: gloss each tool or term the first time it appears, in a few words in
+  the same sentence ("tsgolint, Oxc's type-checking helper"), in the story and in option rows alike.
 
 The look comes from the `explainer-kit` skill; each chapter follows its `explain-with-*` skill.
 
@@ -33,8 +39,9 @@ The look comes from the `explainer-kit` skill; each chapter follows its `explain
 
 ## 2. Plan the page (no separate brief)
 
-Write the plan as the first lines of `notes.md` (≤ 15 lines): the one-sentence answer, the 3–5 key numbers (each
-gets **one** home on the page), and one line per chapter. Chapters:
+Write the plan as the first lines of `notes.md` (≤ 15 lines): the one-sentence answer and its main cost, the 3–5
+key numbers (each gets **one** home on the page), the 4–8 terms to gloss, the one real snippet to show (config or
+code the reader would change, ≤ 8 lines), and one line per chapter. Chapters:
 
 | Chapter  | Built with                                 | Section  | When                                                   |
 | -------- | ------------------------------------------ | -------- | ------------------------------------------------------ |
@@ -46,17 +53,20 @@ gets **one** home on the page), and one line per chapter. Chapters:
 - At most **3 chapters** after the overview. Fragility, dependencies and complexity go into the decision options'
   rows (keeps / loses / fix first / risks), not into chapters of their own. A separate before/after chapter
   (`explain-with-preview`) only replaces Code when there is no decision.
-- **Overview:** a headline that states the answer and the trade-off, one sentence, one hero (to scale; for
+- **Overview:** a headline that states the answer and its main cost ("lint 44 s → 5.3 s; 1 rule and 3 checks to
+  port"), one sentence, one hero (to scale; for
   numbers use the kit's HTML `ev-bars ev-bars--hero`, which stays legible on phones), and one key line with at most
   one "Decide" callout. No grid of info boxes.
 - Only add `explain-with-section-clips`, `-slides` or `-video` when the user asks for them.
 
 ## 3. Build the chapters yourself
 
-- Read `explainer-kit/SKILL.md` and `explainer-kit/assets/FRAGMENT-CONTRACT.md`, then the chapter skills you use.
-  **Never read `kit.css`, `kit.js` or `assemble.py`**: the contract is the whole API.
+- Read `explainer-kit/assets/FRAGMENT-CONTRACT.md` and the chapter skills you use, all in one turn. The contract
+  is the whole API: **never read `kit.css`, `kit.js`, `assemble.py` or `SCRIPTS-AND-TABS.md`** for this page.
 - Write the chapters yourself, one file each, in order. Don't start subagents for a page this size.
 - Use kit components as they are; no new themes, fonts or components, and no layout CSS of your own.
+- Show the real snippet from your plan as the recommended option's `code` in the decision JSON (and the cautious
+  option's, if it changes config), not as a chapter of its own.
 - References go in the details: file paths in code headers, links in the decision's Sources toggle.
 
 ## 4. Assemble, check once, publish
@@ -68,8 +78,10 @@ python <kit>/assets/assemble.py --page --toc --title "Short name" --overview ove
 python <kit>/assets/check.py index.html
 ```
 
+- Run these only after every file write has returned, as one chained command.
 - Fix the contract errors the assembler reports.
 - Run `check.py` once. Fix only the problems it lists, run it once more, then stop. Don't take or study
   screenshots to hunt for other issues and don't write your own browser scripts.
 - Read your page text once against `facts.md`: counts, names, no "every/all" the facts don't support.
-- Publish the single page as an artifact (unless told to just write the file).
+- Publish the single page as an artifact (unless told to just write the file). Reply in at most 5 lines: the
+  answer, the page path, and anything unchecked.

@@ -16,28 +16,46 @@ scroll under it. Best for the big picture before the details.
 
 ## Story
 
-- 5–7 steps, 1–2 short sentences each, one idea per step. Explain jargon in a few words the first time.
-- An arc: the situation today → what goes wrong or costs → the change → the result → the catch or risk.
-- **One graphic** (one SVG) that evolves through all steps: things appear, get highlighted, struck or counted.
-  Not a dashboard of every fact at once, and not a different picture per step.
-- Concrete and to scale (real times, real counts); label things on the graphic itself; one big number that
-  updates with the story helps.
+- 5–7 steps, 1–2 short sentences each, one idea per step. Gloss each tool or term the first time it appears, in a
+  few words in the same sentence ("tsgolint, Oxc's type-checking helper,").
+- An arc: the situation today → what it costs → the change → the result → the catch → what to do first.
+- **One graphic** (one SVG) that evolves through all steps, and **every step changes something visible** on it
+  (a bar appears, a value turns red, the counter moves, the caption changes). Not a dashboard of every fact at once,
+  and not a different picture per step.
+- It **fills its panel from step 1**: draw the whole frame (labels, empty tracks, axis) at rest and fill it in as the
+  story goes, so there is never a small drawing in a large empty panel.
+- To scale and honest: bars on one scale share a unit and a base (seconds with seconds; counts out of different
+  totals become each one's % of its own total, labelled "263 of 276"). Label things on the graphic itself.
 - Don't repeat the overview's numbers in every step, and don't append a details block; it ends when the story ends.
 
-## Build it (no script, no layout CSS)
+## Build it from this template (no script, no layout CSS)
+
+Copy it and change the labels, values and steps. It is a counter, to-scale rows whose empty tracks show from
+step 1, and a caption line that changes every step. Bar width = value ÷ largest × 300 (the track is 300 wide).
 
 ```html
 <section class="ev-tab-content" data-tab="story" data-label="Story" data-hint="6 steps" data-part-title="…">
 <div class="ev-side ev-side--pin" data-ev-story>
   <div>
     <div class="ev-step" id="story-today" data-toc="Today"><b>Today:</b> one or two sentences.</div>
-    <div class="ev-step">…</div>
+    <div class="ev-step">…</div>  <!-- one per step; first step of each scene gets id + data-toc -->
   </div>
   <div class="ev-stick"><figure class="ev-visual"><svg class="ev-svg" viewBox="0 0 440 320" role="img" aria-label="…">
-    <text x="20" y="44" class="ev-t-lg" data-say="44.0 s|5.3 s||3.3 s">44.0 s</text>
-    <rect x="20" y="70" width="400" height="28" rx="4" class="ev-f-line" data-hl="1"/>
-    <rect x="20" y="110" width="48" height="28" rx="4" class="ev-f-acc" data-on="2-" data-hl="2,5"/>
-    <text x="20" y="180" class="ev-t-risk" data-on="3">! what goes wrong</text>
+    <text x="20" y="62" class="ev-t-num" data-say="38 s||6 s|4 s||6 s">38 s</text>
+    <text x="20" y="92" class="ev-t-muted" data-say="Build today (Webpack)|…|…|…|…|…">Build today (Webpack)</text>
+    <!-- row: label, empty track (always shown), bar (shown from its step), value right-aligned -->
+    <text x="20" y="139">Webpack</text>
+    <rect x="100" y="122" width="300" height="24" rx="4" class="ev-f-sunken"/>
+    <rect x="100" y="122" width="300" height="24" rx="4" class="ev-f-line" data-hl="1,2"/>
+    <text x="420" y="139" text-anchor="end" class="ev-t-b">38 s</text>
+    <text x="20" y="183">Vite</text>
+    <rect x="100" y="166" width="300" height="24" rx="4" class="ev-f-sunken"/>
+    <rect x="100" y="166" width="47" height="24" rx="4" class="ev-f-acc" data-on="3-" data-hl="3"/>
+    <text x="420" y="183" text-anchor="end" class="ev-t-b" data-on="3-">6 s</text>
+    <!-- … one row per thing compared, 44 px apart … -->
+    <line x1="20" y1="252" x2="420" y2="252" class="ev-wire"/>
+    <text x="20" y="284" class="ev-t-risk" data-on="5">! the catch, in a few words</text>
+    <text x="20" y="284" class="ev-t-new" data-on="6">✓ the first step to take</text>
   </svg></figure></div>
 </div>
 </section>
@@ -46,12 +64,11 @@ scroll under it. Best for the big picture before the details.
 - The kit wires `data-ev-story`: for step n it sets `data-step="n"` on the panel and, inside it, shows
   `data-on` elements only on their steps (`2-4`, `3-` = from 3 on, `2,5`), adds `.is-hl` on `data-hl` steps and
   sets `data-say` text to the n-th item (`a|b||d`; an empty item keeps the previous text). Step 1's state is what
-  the page shows at rest; scrolling back restores states exactly. Use only these attributes and the kit's SVG
-  classes; add a scoped `<style>` keyed on `[data-step="3"]` only for what the attributes can't express.
-- Bars and blocks are filled rects (`ev-f-acc` the point, `ev-f-new` good, `ev-f-risk` bad, `ev-f-line` neutral,
-  `ev-f-sunken` track); boxes in a diagram are `ev-node` (+ `is-acc`, `is-new`, `is-risk`), arrows `ev-wire`.
-  `data-hl` outlines a rect or accents a node / text.
+  the page shows at rest; scrolling back restores states exactly. Add a scoped `<style>` keyed on
+  `[data-step="3"]` only for what the attributes can't express.
+- Fills: `ev-f-acc` the point, `ev-f-new` good, `ev-f-risk` bad, `ev-f-line` neutral, `ev-f-sunken` empty track.
+  For a flow instead of numbers, use boxes (`<rect class="ev-node">` + `is-acc|is-new|is-risk`) joined by
+  `ev-wire` lines, in the same frame-first way.
+- Text: `ev-t-num` only for the one counter; labels at the default size (15) or `ev-t-sm`; nothing below `ev-t-xs`.
+  Keep `viewBox` about 440 × 320 so it stays legible when pinned on a phone.
 - `ev-side--pin` spaces the steps and pins the graphic on phones; don't add padding, spacers or media queries.
-- Keep the SVG compact so it stays legible when pinned on a phone: `viewBox` about 440 × 300 (at most 480 wide),
-  labels at the kit's default size (15) or larger, no labels smaller than `ev-t-xs`.
-- Give the first step of each scene `id` + `data-toc` so it shows in the chapter list.
