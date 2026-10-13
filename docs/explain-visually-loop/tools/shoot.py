@@ -107,6 +107,9 @@ PAGE_TEXT_JS = """
 () => {
   document.querySelectorAll('details').forEach(d => d.open = true);
   document.querySelectorAll('[hidden]').forEach(el => el.hidden = false);
+  document.querySelectorAll('.ev-tab-content *').forEach(el => {
+    if (getComputedStyle(el).visibility === 'hidden') el.style.visibility = 'visible';
+  });
   const svgLabels = [...document.querySelectorAll('svg')]
     .map(svg => [...svg.querySelectorAll('text')].map(t => t.textContent.trim()).filter(Boolean).join(' | '))
     .filter(Boolean);
