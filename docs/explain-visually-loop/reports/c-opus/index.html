@@ -1,0 +1,1696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Oxlint, oxfmt or Biome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+/* explain-visually kit.css
+   Dark-first. Four themes: Violet (default, bare :root), Ocean, Amber, Aurora (dark only).
+   Theme = data-ev-theme on <html>; mode = data-ev-mode ("dark"|"light"), set by kit.js
+   (viewer's own choice > host data-theme > prefers-color-scheme). Without the script the
+   bare :root + prefers-color-scheme / data-theme blocks still give Violet dark or light.
+   Every colour is a token: --ev-bg, --ev-surface, --ev-sunken, --ev-line(-strong), --ev-fg,
+   --ev-muted, --ev-faint, --ev-accent(-fill/-soft), --ev-on-accent, semantic --ev-new(-soft),
+   --ev-risk(-soft), --ev-decide(-soft), code --ev-code-bg + --ev-c-kw/str/fn/com/num, --ev-grad.
+   All components are prefixed ev-. Fragments style ONLY under [data-tab="<name>"]. */
+
+/* ==========================================================================
+   Theme tokens (from the round-3 theme lab; Ocean panels darkened per feedback)
+   ========================================================================== */
+/* Violet (default): dark */
+:root {
+  --ev-font-sans: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --ev-font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --ev-font-display: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --ev-radius: 12px;
+  --ev-bg: #09090b;
+  --ev-surface: #111114;
+  --ev-sunken: #17171c;
+  --ev-line: #24242b;
+  --ev-line-strong: #34343e;
+  --ev-fg: #ededf1;
+  --ev-muted: #a0a0ad;
+  --ev-faint: #80808d;
+  --ev-accent: #b3a8ff;
+  --ev-accent-fill: #8d7dff;
+  --ev-accent-soft: #211d45;
+  --ev-on-accent: #09090b;
+  --ev-new: #4fd18b;
+  --ev-new-soft: #122a1f;
+  --ev-on-new: #09090b;
+  --ev-risk: #f2626a;
+  --ev-risk-soft: #2c1418;
+  --ev-decide: #f2b544;
+  --ev-decide-soft: #2e2412;
+  --ev-code-bg: #0d0d10;
+  --ev-c-kw: #c792ea;
+  --ev-c-str: #a5e3a0;
+  --ev-c-fn: #82aaff;
+  --ev-c-com: #92929f;
+  --ev-c-num: #f78c6c;
+  --ev-grad: linear-gradient(90deg, #8d7dff, #b3a8ff);
+  color-scheme: dark;
+}
+/* Violet light: system preference when the kit's script has not resolved a mode yet */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-ev-mode]) {
+    --ev-bg: #fafafb;
+    --ev-surface: #ffffff;
+    --ev-sunken: #f3f3f7;
+    --ev-line: #e5e5ec;
+    --ev-line-strong: #d3d3dd;
+    --ev-fg: #0b0b10;
+    --ev-muted: #555563;
+    --ev-faint: #666674;
+    --ev-accent: #4231d6;
+    --ev-accent-fill: #5a48ee;
+    --ev-accent-soft: #eeebff;
+    --ev-on-accent: #ffffff;
+    --ev-new: #157a44;
+    --ev-new-soft: #e6f4ec;
+    --ev-on-new: #ffffff;
+    --ev-risk: #c62a36;
+    --ev-risk-soft: #fcebec;
+    --ev-decide: #9a5b00;
+    --ev-decide-soft: #fbf0dc;
+    --ev-code-bg: #f6f6f9;
+    --ev-c-kw: #8a2fc4;
+    --ev-c-str: #2f7d32;
+    --ev-c-fn: #2557c9;
+    --ev-c-com: #666674;
+    --ev-c-num: #b5481f;
+    --ev-grad: linear-gradient(90deg, #5a48ee, #4231d6);
+    color-scheme: light;
+  }
+}
+/* Violet light: host toggle (before script) or resolved mode */
+:root[data-theme="light"]:not([data-ev-mode]), :root[data-ev-mode="light"] {
+  --ev-bg: #fafafb;
+  --ev-surface: #ffffff;
+  --ev-sunken: #f3f3f7;
+  --ev-line: #e5e5ec;
+  --ev-line-strong: #d3d3dd;
+  --ev-fg: #0b0b10;
+  --ev-muted: #555563;
+  --ev-faint: #666674;
+  --ev-accent: #4231d6;
+  --ev-accent-fill: #5a48ee;
+  --ev-accent-soft: #eeebff;
+  --ev-on-accent: #ffffff;
+  --ev-new: #157a44;
+  --ev-new-soft: #e6f4ec;
+  --ev-on-new: #ffffff;
+  --ev-risk: #c62a36;
+  --ev-risk-soft: #fcebec;
+  --ev-decide: #9a5b00;
+  --ev-decide-soft: #fbf0dc;
+  --ev-code-bg: #f6f6f9;
+  --ev-c-kw: #8a2fc4;
+  --ev-c-str: #2f7d32;
+  --ev-c-fn: #2557c9;
+  --ev-c-com: #666674;
+  --ev-c-num: #b5481f;
+  --ev-grad: linear-gradient(90deg, #5a48ee, #4231d6);
+  color-scheme: light;
+}
+
+/* Ocean: dark */
+:root[data-ev-theme="ocean"] {
+  --ev-font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --ev-font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --ev-font-display: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --ev-radius: 8px;
+  --ev-bg: #071422;
+  --ev-surface: #0a1a2b;
+  --ev-sunken: #0d2135;
+  --ev-line: #1d3652;
+  --ev-line-strong: #284868;
+  --ev-fg: #e6f1fa;
+  --ev-muted: #a2b7cb;
+  --ev-faint: #7d97ae;
+  --ev-accent: #4fd8ef;
+  --ev-accent-fill: #2fb8d6;
+  --ev-accent-soft: #0d3045;
+  --ev-on-accent: #04121e;
+  --ev-new: #5ee0a0;
+  --ev-new-soft: #0e2e2c;
+  --ev-on-new: #04121e;
+  --ev-risk: #ff8a7a;
+  --ev-risk-soft: #351c24;
+  --ev-decide: #f5c26b;
+  --ev-decide-soft: #2d2818;
+  --ev-code-bg: #050f1a;
+  --ev-c-kw: #c4a1ff;
+  --ev-c-str: #8ee3b0;
+  --ev-c-fn: #6ad7f0;
+  --ev-c-com: #7d97ae;
+  --ev-c-num: #ffb27a;
+  --ev-grad: linear-gradient(90deg, #2fb8d6, #4fd8ef);
+  color-scheme: dark;
+}
+:root[data-ev-theme="ocean"][data-ev-mode="light"] {
+  --ev-bg: #f3f8fc;
+  --ev-surface: #ffffff;
+  --ev-sunken: #e8f1f8;
+  --ev-line: #d3e2ee;
+  --ev-line-strong: #bcd0e0;
+  --ev-fg: #0b2135;
+  --ev-muted: #46617a;
+  --ev-faint: #526a7f;
+  --ev-accent: #006c8a;
+  --ev-accent-fill: #0a8fb2;
+  --ev-accent-soft: #dff2f8;
+  --ev-on-accent: #03101a;
+  --ev-new: #11795a;
+  --ev-new-soft: #e0f3ec;
+  --ev-on-new: #ffffff;
+  --ev-risk: #b23c2a;
+  --ev-risk-soft: #fbe9e5;
+  --ev-decide: #955700;
+  --ev-decide-soft: #fbefd9;
+  --ev-code-bg: #f0f6fa;
+  --ev-c-kw: #6b3fc0;
+  --ev-c-str: #11795a;
+  --ev-c-fn: #006c8a;
+  --ev-c-com: #526a7f;
+  --ev-c-num: #b23c2a;
+  --ev-grad: linear-gradient(90deg, #0a8fb2, #006c8a);
+  color-scheme: light;
+}
+
+/* Amber: dark */
+:root[data-ev-theme="amber"] {
+  --ev-font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --ev-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --ev-font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --ev-radius: 6px;
+  --ev-bg: #121212;
+  --ev-surface: #1a1a1a;
+  --ev-sunken: #222120;
+  --ev-line: #312f2b;
+  --ev-line-strong: #46423b;
+  --ev-fg: #f0ece6;
+  --ev-muted: #b2aca3;
+  --ev-faint: #9a948b;
+  --ev-accent: #f2b84b;
+  --ev-accent-fill: #e0a030;
+  --ev-accent-soft: #33291a;
+  --ev-on-accent: #1a1206;
+  --ev-new: #8fd18a;
+  --ev-new-soft: #1d2a1c;
+  --ev-on-new: #121212;
+  --ev-risk: #ff8f70;
+  --ev-risk-soft: #36201a;
+  --ev-decide: #ffd27a;
+  --ev-decide-soft: #3a2d14;
+  --ev-code-bg: #0f0f0f;
+  --ev-c-kw: #ffa66b;
+  --ev-c-str: #b8d98c;
+  --ev-c-fn: #8fc7ff;
+  --ev-c-com: #9a948b;
+  --ev-c-num: #f2b84b;
+  --ev-grad: linear-gradient(90deg, #e0a030, #f2b84b);
+  color-scheme: dark;
+}
+:root[data-ev-theme="amber"][data-ev-mode="light"] {
+  --ev-bg: #f6f5f3;
+  --ev-surface: #ffffff;
+  --ev-sunken: #eeece8;
+  --ev-line: #dedad3;
+  --ev-line-strong: #c9c3b8;
+  --ev-fg: #1c1a17;
+  --ev-muted: #5a554d;
+  --ev-faint: #6e685f;
+  --ev-accent: #8a5300;
+  --ev-accent-fill: #b07208;
+  --ev-accent-soft: #fbefd9;
+  --ev-on-accent: #0a0806;
+  --ev-new: #2c7a3a;
+  --ev-new-soft: #e6f2e7;
+  --ev-on-new: #ffffff;
+  --ev-risk: #b23c1c;
+  --ev-risk-soft: #fae8e1;
+  --ev-decide: #8a5300;
+  --ev-decide-soft: #fbefd9;
+  --ev-code-bg: #f4f2ee;
+  --ev-c-kw: #a1410f;
+  --ev-c-str: #2c7a3a;
+  --ev-c-fn: #2858b0;
+  --ev-c-com: #6e685f;
+  --ev-c-num: #8a5300;
+  --ev-grad: linear-gradient(90deg, #b07208, #8a5300);
+  color-scheme: light;
+}
+
+/* Aurora: dark */
+:root[data-ev-theme="aurora"] {
+  --ev-font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --ev-font-mono: "Fira Code", ui-monospace, Consolas, monospace;
+  --ev-font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --ev-radius: 12px;
+  --ev-bg: #0a0e17;
+  --ev-surface: #10151f;
+  --ev-sunken: #151b27;
+  --ev-line: #232c3d;
+  --ev-line-strong: #313c52;
+  --ev-fg: #e8edf6;
+  --ev-muted: #a5afc2;
+  --ev-faint: #8893a8;
+  --ev-accent: #5eead4;
+  --ev-accent-fill: #2dd4bf;
+  --ev-accent-soft: #0f2e33;
+  --ev-on-accent: #04201c;
+  --ev-new: #86efac;
+  --ev-new-soft: #12291f;
+  --ev-on-new: #04201c;
+  --ev-risk: #fb9393;
+  --ev-risk-soft: #2e1a20;
+  --ev-decide: #fcd34d;
+  --ev-decide-soft: #2c2716;
+  --ev-code-bg: #080b12;
+  --ev-c-kw: #c4b5fd;
+  --ev-c-str: #86efac;
+  --ev-c-fn: #5eead4;
+  --ev-c-com: #8893a8;
+  --ev-c-num: #fdba74;
+  --ev-grad: linear-gradient(90deg, #2dd4bf, #a78bfa);
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Scale: type, spacing, widths. Theme-independent.
+   ========================================================================== */
+:root {
+  --ev-fs-xs: 12px;     /* eyebrows, axis labels, meta */
+  --ev-fs-sm: 14px;     /* tables, captions, details body */
+  --ev-fs-base: 16px;   /* running text */
+  --ev-fs-lg: 18.5px;   /* lede */
+  --ev-fs-h3: 15px;     /* group headings inside details */
+  --ev-fs-h2: clamp(22px, 3.2vw, 27px);   /* section takeaway */
+  --ev-fs-h1: clamp(31px, 5.4vw, 50px);   /* overview headline */
+  --ev-s1: 4px; --ev-s2: 8px; --ev-s3: 12px; --ev-s4: 16px; --ev-s5: 24px;
+  --ev-s6: 32px; --ev-s7: 48px; --ev-s8: 64px; --ev-s9: 96px;
+  --ev-gutter: 16px;
+  --ev-page-w: 1040px;  /* topbar, overview, tab bar */
+  --ev-read-w: 720px;   /* tab content column */
+  --ev-radius-sm: calc(var(--ev-radius) * 0.66);
+  --ev-ease: cubic-bezier(.2, .7, .2, 1);
+}
+@media (min-width: 720px) { :root { --ev-gutter: 32px; } }
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 72px; }
+body {
+  margin: 0; background: var(--ev-bg); color: var(--ev-fg);
+  font: 400 var(--ev-fs-base)/1.6 var(--ev-font-sans);
+  padding-inline: var(--ev-gutter); padding-block: 0 var(--ev-s9);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4, p, figure, ul, ol { margin: 0; }
+h1, h2, h3 { text-wrap: balance; font-family: var(--ev-font-display); }
+a { color: var(--ev-accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+code, kbd, samp { font-family: var(--ev-font-mono); font-size: .875em; font-variant-ligatures: none; }
+:not(pre) > code {
+  background: var(--ev-sunken); border: 1px solid var(--ev-line);
+  padding: .06em .36em; border-radius: 5px; overflow-wrap: anywhere;
+}
+b, strong { font-weight: 600; color: var(--ev-fg); }
+:focus-visible { outline: 2px solid var(--ev-accent); outline-offset: 2px; border-radius: 4px; }
+::selection { background: var(--ev-accent-soft); }
+.ev-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ev-mono { font-family: var(--ev-font-mono); font-variant-numeric: tabular-nums; }
+.ev-muted { color: var(--ev-muted); }
+
+/* ==========================================================================
+   Page shell: topbar (doc name + theme switcher), overview, tab bar, panels
+   ========================================================================== */
+.ev-page { max-width: var(--ev-page-w); margin-inline: auto; }
+.ev-topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--ev-s3);
+  padding-block: var(--ev-s4); min-height: 64px;
+}
+.ev-docname {
+  display: flex; align-items: center; gap: var(--ev-s2); min-width: 0;
+  font-size: var(--ev-fs-sm); font-weight: 500; color: var(--ev-muted);
+}
+.ev-docname > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ev-docname::before {
+  content: ""; flex: none; width: 10px; height: 10px; border-radius: 3px;
+  background: var(--ev-grad); box-shadow: 0 0 0 3px var(--ev-accent-soft);
+}
+
+/* Theme switcher (built by kit.js into [data-ev-themes]) */
+.ev-themes { display: flex; align-items: center; gap: var(--ev-s2); flex: none; }
+.ev-themes-group {
+  display: flex; gap: 2px; padding: 3px;
+  background: var(--ev-surface); border: 1px solid var(--ev-line); border-radius: 999px;
+}
+.ev-themes button {
+  appearance: none; display: inline-flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 6px; border-radius: 999px; border: 1px solid transparent;
+  background: transparent; color: var(--ev-muted); cursor: pointer;
+  font: 500 12.5px/1 var(--ev-font-sans);
+}
+.ev-themes button:hover { color: var(--ev-fg); background: var(--ev-sunken); }
+.ev-themes button[aria-pressed="true"] { color: var(--ev-fg); background: var(--ev-sunken); border-color: var(--ev-line-strong); }
+.ev-themes button[aria-pressed="true"] .ev-sw { box-shadow: 0 0 0 2px var(--ev-bg), 0 0 0 3.5px var(--ev-accent-fill); }
+.ev-themes button .ev-nm { display: none; padding-right: 4px; }
+.ev-themes button[aria-pressed="true"] .ev-nm { display: inline; }
+.ev-sw { width: 16px; height: 16px; border-radius: 50%; flex: none; position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px rgb(128 128 128 / .45); }
+.ev-sw i { position: absolute; inset: 0 0 0 50%; }
+.ev-themes .ev-mode { width: 34px; height: 34px; padding: 0; justify-content: center; border: 1px solid var(--ev-line); background: var(--ev-surface); }
+.ev-themes .ev-mode[disabled] { opacity: .45; cursor: default; }
+.ev-themes .ev-mode svg { width: 16px; height: 16px; }
+@media (max-width: 480px) { .ev-themes button[aria-pressed="true"] .ev-nm { display: none; } }
+
+/* ==========================================================================
+   Overview: eyebrow, headline that states the answer, one-sentence lede,
+   ONE hero visual, one compact key line. Nothing else.
+   ========================================================================== */
+.ev-overview {
+  display: flex; flex-direction: column; gap: var(--ev-s5);
+  padding-block: var(--ev-s6) var(--ev-s7);
+}
+.ev-overview > .ev-eyebrow { margin-bottom: calc(-1 * var(--ev-s3)); }
+.ev-headline {
+  font-size: var(--ev-fs-h1); line-height: 1.04; font-weight: 650;
+  letter-spacing: -0.035em; max-width: 21ch;
+}
+.ev-headline em { font-style: normal; color: var(--ev-accent); }
+.ev-lede { font-size: var(--ev-fs-lg); line-height: 1.55; color: var(--ev-muted); max-width: 58ch; }
+.ev-lede b { color: var(--ev-fg); }
+.ev-nowrap { white-space: nowrap; }
+.ev-hero {
+  position: relative; margin-top: var(--ev-s2);
+  padding: clamp(18px, 3.4vw, 36px);
+  border: 1px solid var(--ev-line); border-radius: calc(var(--ev-radius) + 4px);
+  background:
+    radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--ev-accent-soft) 70%, transparent), transparent 62%),
+    var(--ev-surface);
+  overflow: hidden;
+}
+.ev-hero > figcaption, .ev-hero-cap { font-size: var(--ev-fs-sm); color: var(--ev-muted); }
+/* Key line: a single row of short facts; at most one .ev-decide callout */
+.ev-keyline {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--ev-s2) var(--ev-s4);
+  font-size: 15px; color: var(--ev-muted);
+}
+.ev-keyline > span { display: inline-block; }
+.ev-keyline > span:not(.ev-decide)::before {
+  content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; vertical-align: .2em;
+  background: var(--ev-accent-fill); opacity: .75; margin-right: 10px;
+}
+.ev-keyline > span:not(.ev-decide) b { color: var(--ev-fg); }
+.ev-decide {
+  display: inline-flex; align-items: baseline; gap: var(--ev-s2);
+  padding: 6px 14px 6px 12px; border-radius: 18px;
+  background: var(--ev-decide-soft); color: var(--ev-fg);
+  border: 1px solid color-mix(in srgb, var(--ev-decide) 45%, transparent);
+}
+.ev-decide > b:first-child { color: var(--ev-decide); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.ev-decide > b:first-child::before { content: ""; width: 7px; height: 7px; background: currentColor; transform: rotate(45deg) translateY(-1px); }
+@media (min-width: 900px) { .ev-keyline > .ev-decide { margin-left: auto; } }
+
+/* ==========================================================================
+   Tab bar (accessible tabs; kit.js wires keys, hash and events)
+   ========================================================================== */
+.ev-tabbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  margin-inline: calc(-1 * var(--ev-gutter)); padding-inline: var(--ev-gutter);
+  background: color-mix(in srgb, var(--ev-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ev-line);
+}
+.ev-tablist { max-width: var(--ev-page-w); margin-inline: auto; display: flex; gap: var(--ev-s1); overflow-x: auto; scrollbar-width: none; }
+.ev-tablist::-webkit-scrollbar { display: none; }
+.ev-tab {
+  appearance: none; background: transparent; border: 0; cursor: pointer; flex: none;
+  display: inline-flex; align-items: center; gap: var(--ev-s2);
+  padding: 14px 14px 12px; margin-bottom: -1px; color: var(--ev-muted);
+  font: 500 15px/1.2 var(--ev-font-sans);
+  border-bottom: 2px solid transparent; border-radius: 0;
+}
+.ev-tab:first-child { padding-left: 2px; }
+.ev-tab svg { width: 16px; height: 16px; flex: none; opacity: .8; }
+.ev-tab:hover { color: var(--ev-fg); }
+.ev-tab[aria-selected="true"] { color: var(--ev-fg); border-bottom-color: var(--ev-accent-fill); }
+.ev-tab[aria-selected="true"] svg { color: var(--ev-accent); opacity: 1; }
+.ev-tab-hint { font-size: 12.5px; color: var(--ev-faint); font-weight: 400; }
+.ev-tab:focus-visible { outline-offset: -4px; border-radius: 6px; }
+@media (max-width: 640px) { .ev-tab-hint { display: none; } .ev-tab { padding-inline: 12px; } }
+
+.ev-panels { max-width: var(--ev-page-w); margin-inline: auto; padding-block: var(--ev-s7) 0; }
+.ev-tab-content { max-width: var(--ev-read-w); min-width: 0; }
+.ev-tab-content:focus, .ev-tab-content:focus-visible { outline: none; }
+.ev-tab-content.ev-wide { max-width: none; }
+/* Two-column chapters (story, code walkthrough, preview) need the full page width for their panel */
+.ev-tab-content:has(.ev-side) { max-width: none; }
+.ev-standalone { padding-block-start: var(--ev-s4); }
+
+/* ==========================================================================
+   Page mode (assemble.py --page): one scrollable document. Every fragment is
+   visible at once, each opened by a part heading; optional sticky chapter list
+   (--toc) on the left that collapses to a top bar with a dropdown when narrow.
+   <div class="ev-doc ev-doc--toc"><nav class="ev-toc">…</nav>
+     <div class="ev-doc-main"><div class="ev-page" id="overview">…</div>
+       <main class="ev-panels ev-pages"><header class="ev-part-head" id="NAME">…</header><section …></main></div></div>
+   ========================================================================== */
+.ev-doc { max-width: calc(var(--ev-page-w) + 270px); margin-inline: auto; }
+.ev-doc-main { min-width: 0; }
+.ev-doc .ev-page, .ev-doc .ev-panels { max-width: none; }
+.ev-pages { display: flex; flex-direction: column; padding-block: 0; }
+.ev-part-head {
+  display: flex; flex-direction: column; gap: var(--ev-s3);
+  margin-top: var(--ev-s9); padding-top: var(--ev-s6); margin-bottom: var(--ev-s7);
+  border-top: 1px solid var(--ev-line-strong); scroll-margin-top: var(--ev-s4);
+}
+.ev-pages > .ev-part-head:first-child { margin-top: var(--ev-s5); }
+.ev-part-title { font-size: clamp(27px, 4vw, 38px); line-height: 1.1; font-weight: 650; letter-spacing: -0.03em; max-width: 24ch; }
+.ev-part-lede { font-size: var(--ev-fs-lg); line-height: 1.55; color: var(--ev-muted); max-width: 60ch; }
+
+/* Chapter list */
+.ev-toc { font-size: 13.5px; }
+.ev-toc-bar { display: none; }
+.ev-toc-title { font: 500 var(--ev-fs-xs)/1.3 var(--ev-font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ev-faint); margin-bottom: var(--ev-s3); }
+.ev-toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.ev-toc-list > ol { border-left: 1px solid var(--ev-line); }
+.ev-toc a {
+  display: flex; gap: 10px; align-items: baseline; padding: 5px 12px; margin-left: -1px;
+  border-left: 2px solid transparent; color: var(--ev-muted); text-decoration: none; line-height: 1.35;
+}
+.ev-toc a:hover { color: var(--ev-fg); }
+.ev-toc-n { font: 500 11px/1 var(--ev-font-mono); color: var(--ev-faint); font-variant-numeric: tabular-nums; min-width: 1.4ch; }
+.ev-toc li > a.ev-toc-part { color: var(--ev-fg); font-weight: 500; padding-top: 8px; }
+.ev-toc-sub a { padding-left: calc(12px + 1.4ch + 10px); font-size: 13px; padding-block: 4px; }
+.ev-toc a.is-active { color: var(--ev-fg); border-left-color: var(--ev-accent-fill); background: linear-gradient(90deg, var(--ev-accent-soft), transparent); }
+.ev-toc a.is-active .ev-toc-n, .ev-toc a.is-in .ev-toc-n { color: var(--ev-accent); }
+.ev-toc a:focus-visible { outline-offset: -2px; }
+
+@media (min-width: 1160px) {
+  .ev-doc--toc { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: var(--ev-s7); }
+  .ev-toc {
+    position: sticky; top: env(safe-area-inset-top, 0px); align-self: start;
+    max-height: 100vh; overflow-y: auto; padding-block: 84px var(--ev-s5); scrollbar-width: thin;
+  }
+}
+@media (max-width: 1159.98px) {
+  .ev-toc {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+    margin-inline: calc(-1 * var(--ev-gutter));
+    background: color-mix(in srgb, var(--ev-bg) 90%, transparent);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ev-line);
+  }
+  .ev-toc-bar {
+    display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px var(--ev-gutter); background: none; border: 0; color: var(--ev-fg); cursor: pointer; text-align: left;
+    font: 500 14px/1.3 var(--ev-font-sans);
+  }
+  .ev-toc-now { display: flex; gap: 10px; align-items: baseline; min-width: 0; }
+  .ev-toc-now .ev-toc-n { color: var(--ev-accent); }
+  .ev-toc-now .ev-toc-lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ev-toc-now .ev-toc-sep { color: var(--ev-faint); }
+  .ev-toc-bar svg { width: 16px; height: 16px; flex: none; color: var(--ev-muted); }
+  .ev-toc.is-open .ev-toc-bar svg { transform: rotate(90deg); }
+  .ev-toc-list { display: none; padding: 0 var(--ev-gutter) var(--ev-s4); max-height: calc(100vh - 60px); overflow-y: auto; }
+  .ev-toc.is-open { background: var(--ev-bg); box-shadow: 0 16px 32px -16px rgb(0 0 0 / .35); }
+  .ev-toc.is-open .ev-toc-list { display: block; }
+  .ev-toc-title { display: none; }
+}
+
+/* ==========================================================================
+   Sections inside a tab: takeaway + one visual + short text (+ ev-more)
+   ========================================================================== */
+.ev-secs { display: flex; flex-direction: column; gap: var(--ev-s8); }
+.ev-sec { display: flex; flex-direction: column; gap: var(--ev-s4); scroll-margin-top: 72px; min-width: 0; }
+.ev-sec > * { min-width: 0; }
+.ev-sec-head { display: flex; flex-direction: column; gap: var(--ev-s2); }
+.ev-eyebrow {
+  font: 500 var(--ev-fs-xs)/1.3 var(--ev-font-mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ev-accent);
+}
+.ev-eyebrow .ev-n { color: var(--ev-faint); margin-right: .5em; }
+.ev-takeaway { font-size: var(--ev-fs-h2); line-height: 1.22; font-weight: 600; letter-spacing: -0.02em; }
+.ev-takeaway .ev-chip { vertical-align: .2em; margin-left: 6px; }
+.ev-text { color: var(--ev-muted); max-width: 64ch; }
+.ev-text + .ev-text { margin-top: calc(-1 * var(--ev-s2)); }
+.ev-visual { margin: 0; min-width: 0; }
+.ev-visual > svg { display: block; width: 100%; height: auto; }
+
+/* Side-by-side: text on the left, a sticky panel (.ev-stick) on the right. At rest the panel is centred on the
+   first text box (the column's first child, or its [data-ev-anchor] element), or top-aligned with it when taller; while scrolling it sticks in the
+   vertical centre of the viewport below the top bar, so both arrive in the middle together.
+   kit.js sets --ev-stick-h (panel height) and the alignment margins; --ev-sticky-top is the top bar height.
+   Below 900px the columns stack and the panel is no longer sticky. */
+.ev-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--ev-s7); align-items: start; }
+.ev-side > * { min-width: 0; margin-top: var(--ev-side-shift, 0px); }
+.ev-stick {
+  position: sticky;
+  top: max(calc(var(--ev-sticky-top, 0px) + var(--ev-s4)),
+           calc(var(--ev-sticky-top, 0px) + (100vh - var(--ev-sticky-top, 0px) - var(--ev-stick-h, 0px)) / 2));
+  max-height: calc(100vh - var(--ev-sticky-top, 0px) - 2 * var(--ev-s4)); overflow: auto;
+}
+.ev-step {
+  padding: var(--ev-s4); border: 1px solid var(--ev-line); border-radius: var(--ev-radius); background: var(--ev-surface);
+  transition: border-color .25s, box-shadow .25s, background-color .25s;
+}
+/* Current step (set by EV.steps): mild, never dims the others */
+.ev-step.is-active {
+  border-color: color-mix(in srgb, var(--ev-accent) 45%, var(--ev-line));
+  box-shadow: inset 3px 0 0 var(--ev-accent-fill);
+  background: color-mix(in srgb, var(--ev-accent-soft) 45%, var(--ev-surface));
+}
+@media (prefers-reduced-motion: reduce) { .ev-step { transition: none; } }
+@media (max-width: 899px) {
+  .ev-side { grid-template-columns: minmax(0, 1fr); }
+  .ev-side > * { margin-top: 0; }
+  .ev-stick { position: static; max-height: none; overflow: visible; }
+}
+
+/* Story pin (.ev-side--pin): spaces the steps so each one can reach the middle. Below 900px the panel moves
+   above the steps and sticks under the top bar, capped at 42% of the screen (its SVG scales down to fit), and
+   the steps scroll under it; EV.steps then reads the step below the pinned panel. */
+/* Bottom padding only as far as the panel needs to stay fully in view while the last step reaches the middle,
+   so the story doesn't end in an empty band. */
+.ev-side--pin > :not(.ev-stick) {
+  display: flex; flex-direction: column; gap: 12vh;
+  padding-bottom: max(var(--ev-s5), calc(var(--ev-stick-h, 50vh) / 2 - 25vh));
+}
+@media (max-width: 899px) {
+  .ev-side--pin > .ev-stick {
+    order: -1; position: sticky; top: var(--ev-sticky-top, 0px); z-index: 3; max-height: 42vh; overflow: hidden;
+    margin-inline: calc(-1 * var(--ev-gutter)); padding: var(--ev-s2) var(--ev-gutter);
+    background: var(--ev-bg); border-bottom: 1px solid var(--ev-line);
+  }
+  .ev-side--pin > .ev-stick svg { display: block; width: 100%; max-height: calc(42vh - 2 * var(--ev-s2)); }
+  .ev-side--pin > :not(.ev-stick) { gap: 18vh; padding-block: var(--ev-s5) 30vh; }
+}
+
+/* Story states set by kit.js from data-on / data-hl (see .ev-side[data-ev-story]) */
+.ev-stick [data-on] { transition: opacity .4s var(--ev-ease); }
+.ev-stick .is-off { opacity: 0; visibility: hidden; }
+.ev-stick .ev-node.is-hl { fill: var(--ev-accent-soft); stroke: var(--ev-accent-fill); stroke-width: 2; }
+.ev-stick rect.is-hl:not(.ev-node) { stroke: var(--ev-fg); stroke-width: 2; }
+.ev-stick text.is-hl { fill: var(--ev-accent); font-weight: 600; }
+.ev-stick .ev-wire.is-hl { stroke: var(--ev-accent-fill); stroke-dasharray: none; }
+@media (prefers-reduced-motion: reduce) { .ev-stick [data-on] { transition: none; } }
+
+/* Hero bars: ev-bars at hero size, as HTML so the labels stay legible on phones. Bars are to scale (--v). */
+.ev-bars--hero { font-size: 15px; gap: 12px 14px; }
+.ev-bars--hero > .ev-bar { height: 16px; border-radius: 4px; }
+.ev-bars--hero > .ev-bar > i { border-radius: 4px; }
+.ev-bars > .ev-bar.is-good > i { background: var(--ev-new); }
+.ev-bars > .ev-bar.is-muted > i { background: var(--ev-line-strong); }
+.ev-bars > .ev-k b, .ev-bars > .ev-v b { color: var(--ev-fg); }
+@media (max-width: 520px) { .ev-bars--hero { font-size: 13.5px; gap: 10px; } }
+
+/* Pick (options or before/after): cards on the left switch the panel on the right (kit.js wires .ev-pick).
+   Usually generated from JSON by assets/preview.py. */
+.ev-pick-cards { display: flex; flex-direction: column; gap: var(--ev-s3); }
+.ev-pick-card {
+  all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; cursor: pointer;
+  padding: var(--ev-s4); border: 1px solid var(--ev-line); border-radius: var(--ev-radius); background: var(--ev-surface);
+  transition: border-color .2s, background-color .2s;
+}
+.ev-pick-card:hover { border-color: var(--ev-line-strong); }
+.ev-pick-card:focus-visible { outline: 2px solid var(--ev-accent); outline-offset: 2px; }
+.ev-pick-card[aria-selected="true"] {
+  border-color: color-mix(in srgb, var(--ev-accent) 55%, var(--ev-line));
+  background: color-mix(in srgb, var(--ev-accent-soft) 55%, var(--ev-surface));
+  box-shadow: inset 3px 0 0 var(--ev-accent-fill);
+}
+.ev-pick-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-weight: 600; color: var(--ev-fg); }
+.ev-pick-sum { font-size: var(--ev-fs-sm); color: var(--ev-muted); }
+.ev-pick-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+/* The cards column also holds the "What would change this" callout, so it fills the space beside a tall panel.
+   The panel is never a scroll box: when it is taller than the cards it simply scrolls with the page. */
+.ev-pick > :first-child { display: flex; flex-direction: column; gap: var(--ev-s5); }
+.ev-pick > .ev-stick { max-height: none; overflow: visible; }
+.ev-pick .ev-callout { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 899px) {
+  .ev-pick > :first-child { display: contents; }
+  .ev-pick > .ev-stick { order: 1; }
+  .ev-pick .ev-callout { order: 2; }
+}
+.ev-pick-panel {
+  display: flex; flex-direction: column; gap: var(--ev-s4); padding: var(--ev-s5);
+  border: 1px solid var(--ev-line-strong); border-radius: var(--ev-radius); background: var(--ev-surface);
+  animation: ev-pick-in .25s var(--ev-ease);
+}
+.ev-pick-panel[hidden] { display: none; }
+.ev-pick-panel > h3 { font-size: var(--ev-fs-h3); font-weight: 600; }
+.ev-pick-rows { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--ev-s3) var(--ev-s4); margin: 0; font-size: var(--ev-fs-sm); }
+.ev-pick-rows > dt { font: 500 var(--ev-fs-xs)/1.9 var(--ev-font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--c, var(--ev-faint)); }
+.ev-pick-rows > dt::before { content: var(--g, "·"); display: inline-block; width: 1.4em; font-weight: 700; }
+.ev-pick-rows > dd { margin: 0; color: var(--ev-fg); }
+.ev-pick-rows ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.ev-pick-rows [data-kind="ok"], .ev-pick-rows [data-kind="new"] { --c: var(--ev-new); }
+.ev-pick-rows [data-kind="ok"] { --g: "✓"; }
+.ev-pick-rows [data-kind="new"] { --g: "+"; }
+.ev-pick-rows [data-kind="removed"] { --c: var(--ev-risk); --g: "−"; }
+.ev-pick-rows [data-kind="risk"] { --c: var(--ev-risk); --g: "!"; }
+.ev-pick-rows [data-kind="decision"] { --c: var(--ev-decide); --g: "◆"; }
+@media (max-width: 520px) {
+  .ev-pick-rows { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .ev-pick-rows > dd { margin-bottom: var(--ev-s3); }
+}
+@keyframes ev-pick-in { from { opacity: .4; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ev-pick-panel { animation: none; } }
+
+/* Jump list: horizontal section index at the top of a tab */
+.ev-jump { display: flex; flex-wrap: wrap; gap: var(--ev-s2); margin-bottom: var(--ev-s7); padding: 0; list-style: none; }
+.ev-jump a {
+  display: inline-flex; gap: 8px; align-items: baseline; padding: 5px 12px; border-radius: 999px;
+  border: 1px solid var(--ev-line); color: var(--ev-muted); text-decoration: none; font-size: 13.5px;
+}
+.ev-jump a:hover { color: var(--ev-fg); border-color: var(--ev-line-strong); background: var(--ev-surface); }
+.ev-jump a .ev-n { font-family: var(--ev-font-mono); font-size: 11.5px; color: var(--ev-faint); }
+
+/* ==========================================================================
+   Chips: fixed semantic colours + a glyph, so meaning never rests on colour
+   ========================================================================== */
+.ev-chip {
+  --c: var(--ev-muted); --cs: var(--ev-sunken);
+  display: inline-flex; align-items: center; gap: 5px; vertical-align: middle;
+  padding: 3px 8px; border-radius: 999px; white-space: nowrap;
+  font: 600 11.5px/1.25 var(--ev-font-mono); letter-spacing: .02em;
+  color: var(--c); background: var(--cs);
+  border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+}
+.ev-chip::before { font-weight: 700; }
+.ev-chip--new      { --c: var(--ev-new);    --cs: var(--ev-new-soft); }
+.ev-chip--new::before { content: "+"; }
+.ev-chip--removed  { --c: var(--ev-risk);   --cs: var(--ev-risk-soft); }
+.ev-chip--removed::before { content: "\2212"; }
+.ev-chip--risk     { --c: var(--ev-risk);   --cs: var(--ev-risk-soft); }
+.ev-chip--risk::before { content: "!"; }
+.ev-chip--decision { --c: var(--ev-decide); --cs: var(--ev-decide-soft); }
+.ev-chip--decision::before { content: ""; width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
+.ev-chip--ok       { --c: var(--ev-new);    --cs: transparent; }
+.ev-chip--ok::before { content: "\2713"; }
+.ev-chip--accent   { --c: var(--ev-accent); --cs: var(--ev-accent-soft); }
+.ev-chip--neutral  { --c: var(--ev-muted);  --cs: var(--ev-sunken); }
+
+/* Callout (block): one short paragraph that must not be missed */
+.ev-callout {
+  --c: var(--ev-accent); --cs: var(--ev-accent-soft);
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: baseline;
+  padding: 12px 16px; border-radius: var(--ev-radius); background: var(--cs);
+  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); color: var(--ev-fg); font-size: 15px;
+}
+.ev-callout > :first-child { color: var(--c); font: 600 var(--ev-fs-xs)/1.6 var(--ev-font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.ev-callout--decision { --c: var(--ev-decide); --cs: var(--ev-decide-soft); }
+.ev-callout--risk { --c: var(--ev-risk); --cs: var(--ev-risk-soft); }
+.ev-callout--new { --c: var(--ev-new); --cs: var(--ev-new-soft); }
+.ev-callout ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+@media (max-width: 520px) { .ev-callout { grid-template-columns: minmax(0, 1fr); } }
+
+/* ==========================================================================
+   Details toggle: the summary names what is inside
+   <details class="ev-more"><summary>
+     <span class="ev-more-what"><span data-kind="table">tick trace</span> ...</span>
+     <span class="ev-more-meta">7 rows</span></summary>
+     <div class="ev-more-body">...</div></details>
+   ========================================================================== */
+.ev-more {
+  border: 1px solid var(--ev-line); border-radius: var(--ev-radius);
+  background: var(--ev-surface); min-width: 0;
+}
+.ev-more > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: 6px 10px; padding: 11px 14px; border-radius: var(--ev-radius);
+  font-size: var(--ev-fs-sm); color: var(--ev-muted);
+}
+.ev-more > summary::-webkit-details-marker { display: none; }
+.ev-more > summary::before {
+  /* chevron: rotates when open; the summary text itself names what is inside (no "More" label) */
+  content: ""; flex: none; align-self: center; width: 14px; height: 14px; margin-right: -2px;
+  background: var(--ev-accent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 3.5 4.5 4.5L6 12.5'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 3.5 4.5 4.5L6 12.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.ev-more[open] > summary::before { transform: rotate(90deg); }
+.ev-more > summary:hover { background: var(--ev-sunken); }
+.ev-more[open] > summary { border-bottom: 1px solid var(--ev-line); border-radius: var(--ev-radius) var(--ev-radius) 0 0; }
+/* Items read as one line: "Tick trace · Why 5 rows are enough" */
+.ev-more-what { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 0; min-width: 0; flex: 1 1 16rem; }
+.ev-more-what > * { display: inline; color: var(--ev-fg); font-weight: 500; }
+.ev-more > summary:hover .ev-more-what > * { color: var(--ev-accent); }
+.ev-more-what > :not(:last-child)::after { content: "·"; padding-inline: 8px; color: var(--ev-faint); font-weight: 400; }
+.ev-more-meta { margin-left: auto; font: 400 var(--ev-fs-xs)/1.4 var(--ev-font-mono); color: var(--ev-faint); }
+[data-kind="code"]  { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 4 2 8l3.5 4M10.5 4 14 8l-3.5 4'/%3E%3C/svg%3E"); }
+[data-kind="table"] { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6'%3E%3Crect x='2' y='2.5' width='12' height='11' rx='2'/%3E%3Cpath d='M2 6.5h12M2 10h12M6.5 6.5v7'/%3E%3C/svg%3E"); }
+[data-kind="list"]  { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M6 4h8M6 8h8M6 12h8'/%3E%3Ccircle cx='2.6' cy='4' r='.6'/%3E%3Ccircle cx='2.6' cy='8' r='.6'/%3E%3Ccircle cx='2.6' cy='12' r='.6'/%3E%3C/svg%3E"); }
+[data-kind="why"]   { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M6.3 6.3a1.8 1.8 0 1 1 2.4 1.7c-.5.2-.7.6-.7 1.1M8 11.3v.1'/%3E%3C/svg%3E"); }
+[data-kind="chart"] { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M3 13V9M8 13V3M13 13V6'/%3E%3C/svg%3E"); }
+[data-kind="trace"] { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M8 4.8V8l2.2 1.4'/%3E%3C/svg%3E"); }
+[data-kind="risk"]  { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.7' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M8 2 14.5 13.5h-13z'/%3E%3Cpath d='M8 6.5v3M8 11.6v.1'/%3E%3C/svg%3E"); }
+[data-kind="file"]  { --ev-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linejoin='round'%3E%3Cpath d='M4 1.8h5.2L12.5 5v9.2h-8.5z'/%3E%3Cpath d='M9 2v3.3h3.3'/%3E%3C/svg%3E"); }
+
+.ev-more-body {
+  padding: var(--ev-s5) var(--ev-s4); display: flex; flex-direction: column; gap: var(--ev-s6);
+  font-size: 15px; color: var(--ev-muted);
+}
+.ev-more-body > * { min-width: 0; }
+.ev-more-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+@media (min-width: 640px) { .ev-more-body { padding-inline: var(--ev-s5); } }
+
+/* Group: a titled block inside ev-more (one per item named in the summary) */
+.ev-group { display: flex; flex-direction: column; gap: var(--ev-s3); min-width: 0; }
+.ev-group-head { display: flex; align-items: flex-start; gap: 4px 10px; flex-wrap: wrap; }
+.ev-group-head h3 { line-height: 26px; }
+.ev-group-head .ev-group-meta { line-height: 26px; }
+.ev-group-head h3 { font-size: var(--ev-fs-h3); font-weight: 600; color: var(--ev-fg); letter-spacing: -0.005em; font-family: var(--ev-font-sans); }
+.ev-group-head[data-kind]::before {
+  content: ""; width: 26px; height: 26px; flex: none; border-radius: 8px;
+  background: var(--ev-accent-soft); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ev-accent) 30%, transparent);
+  -webkit-mask: none; mask: none;
+}
+.ev-group-head[data-kind] { position: relative; }
+.ev-group-head[data-kind]::after {
+  content: ""; position: absolute; left: 6px; top: 6px; width: 14px; height: 14px;
+  background: var(--ev-accent);
+  -webkit-mask: var(--ev-icon) center / contain no-repeat; mask: var(--ev-icon) center / contain no-repeat;
+}
+.ev-group-head .ev-group-meta { margin-left: auto; font: 400 var(--ev-fs-xs) var(--ev-font-mono); color: var(--ev-faint); }
+
+/* Key/value facts and a tiny bar list for "visual help" inside details */
+.ev-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; font-size: var(--ev-fs-sm); }
+.ev-facts dt { color: var(--ev-faint); font-family: var(--ev-font-mono); font-size: var(--ev-fs-xs); padding-top: 2px; }
+.ev-facts dd { margin: 0; color: var(--ev-fg); }
+.ev-bars { display: grid; grid-template-columns: max-content minmax(0, 1fr) max-content; gap: 6px 12px; align-items: center; font-size: 13px; }
+.ev-bars > .ev-bar { height: 10px; border-radius: 3px; background: var(--ev-sunken); position: relative; overflow: hidden; }
+.ev-bars > .ev-bar > i { position: absolute; inset: 0 auto 0 0; width: var(--v, 0%); background: var(--ev-accent-fill); border-radius: 3px; }
+.ev-bars > .ev-bar.is-cap > i { background: var(--ev-decide); }
+.ev-bars > .ev-k, .ev-bars > .ev-v { font-family: var(--ev-font-mono); color: var(--ev-muted); font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   Compact tables
+   ========================================================================== */
+.ev-table-wrap { overflow-x: auto; border: 1px solid var(--ev-line); border-radius: var(--ev-radius-sm); background: var(--ev-surface); }
+.ev-table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.45; }
+.ev-table th, .ev-table td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--ev-line); vertical-align: top; }
+.ev-table th { font: 600 var(--ev-fs-xs)/1.4 var(--ev-font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ev-muted); background: var(--ev-sunken); white-space: nowrap; }
+.ev-table td { color: var(--ev-muted); }
+.ev-table td:first-child { color: var(--ev-fg); }
+.ev-table tr:last-child td { border-bottom: 0; }
+.ev-table .ev-num, .ev-table .ev-mono { font-family: var(--ev-font-mono); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ev-table tr.is-hl td { background: var(--ev-accent-soft); color: var(--ev-fg); }
+.ev-table tr.is-hl td:first-child { box-shadow: inset 3px 0 0 var(--ev-accent-fill); }
+.ev-table tr.is-muted td { opacity: .62; }
+.ev-table tr.is-sep td { background: var(--ev-sunken); color: var(--ev-faint); font: 500 var(--ev-fs-xs)/1.4 var(--ev-font-mono); letter-spacing: .04em; padding-block: 5px; }
+.ev-table td .ev-chip { font-size: 11px; }
+
+/* ==========================================================================
+   Code block (built by EV.code from <figure class="ev-code" data-...><pre><code>)
+   ========================================================================== */
+.ev-code {
+  margin: 0; min-width: 0; border: 1px solid var(--ev-line); border-radius: var(--ev-radius-sm);
+  background: var(--ev-code-bg); overflow: hidden;
+}
+.ev-code-head {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px 12px; border-bottom: 1px solid var(--ev-line); background: var(--ev-sunken);
+  font: 400 12.5px/1.4 var(--ev-font-mono); color: var(--ev-muted);
+}
+.ev-code-file { display: inline-flex; align-items: center; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
+.ev-code-file::before {
+  content: ""; width: 14px; height: 14px; flex: none; background: var(--ev-faint);
+  -webkit-mask: var(--ev-icon) center / contain no-repeat; mask: var(--ev-icon) center / contain no-repeat;
+}
+.ev-code-file .ev-dir { color: var(--ev-faint); }
+.ev-code-file .ev-base { color: var(--ev-fg); font-weight: 500; }
+.ev-code-tag { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; }
+.ev-code-stat { font-weight: 600; }
+.ev-code-stat .ev-add { color: var(--ev-new); }
+.ev-code-stat .ev-del { color: var(--ev-risk); }
+.ev-code-scroll { overflow-x: auto; }
+.ev-code pre { margin: 0; padding-block: 10px; font: 400 13px/1.62 var(--ev-font-mono); color: var(--ev-fg); font-variant-ligatures: none; }
+.ev-code pre > code { display: block; min-width: max-content; font-size: inherit; }
+.ev-ln { display: flex; min-height: 1.62em; }
+.ev-ln-n { flex: none; width: 3.4em; padding-right: .9em; text-align: right; color: var(--ev-faint); opacity: .7; user-select: none; }
+.ev-ln-g { flex: none; width: 1.3em; text-align: center; color: var(--ev-faint); user-select: none; font-weight: 700; }
+.ev-ln-c { flex: 1; white-space: pre; padding-right: 20px; }
+/* Wrapping code (.ev-code--wrap): long lines wrap instead of scrolling sideways; for short snippets in narrow panels */
+.ev-code--wrap pre > code { min-width: 0; }
+.ev-code--wrap .ev-ln-c { min-width: 0; padding-right: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ev-ln.is-add { background: var(--ev-new-soft); }
+.ev-ln.is-add .ev-ln-g, .ev-ln.is-add .ev-ln-n { color: var(--ev-new); opacity: 1; }
+.ev-ln.is-del { background: var(--ev-risk-soft); }
+.ev-ln.is-del .ev-ln-g, .ev-ln.is-del .ev-ln-n { color: var(--ev-risk); opacity: 1; }
+.ev-ln.is-del .ev-ln-c { opacity: .75; }
+.ev-ln.is-hl { background: var(--ev-accent-soft); box-shadow: inset 3px 0 0 var(--ev-accent-fill); }
+.ev-ln.is-hl .ev-ln-n { color: var(--ev-accent); opacity: 1; }
+.ev-code.is-focus .ev-ln:not(.is-hl):not(.is-add):not(.is-del):not(.ev-ln-group) .ev-ln-c { opacity: .42; }
+.ev-ln-group {
+  display: flex; align-items: center; gap: 10px; margin-top: 6px; padding: 4px 12px 2px calc(4.7em + 0px);
+  font: 600 10.5px/1.6 var(--ev-font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ev-faint);
+}
+.ev-ln-group:first-child { margin-top: 0; }
+.ev-ln-group::after { content: ""; flex: 1; height: 1px; background: var(--ev-line); min-width: 24px; }
+.ev-ln-group.is-new { color: var(--ev-new); }
+.ev-mark, .ev-code-notes > li::before {
+  display: inline-grid; place-items: center; flex: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--ev-accent-fill); color: var(--ev-on-accent);
+  font: 700 11px/1 var(--ev-font-sans); vertical-align: 1px;
+}
+.ev-mark { margin-left: 1.2ch; }
+.ev-code-notes {
+  list-style: none; counter-reset: ev-note; padding: 12px 14px; border-top: 1px solid var(--ev-line);
+  display: flex; flex-direction: column; gap: 8px; background: var(--ev-surface);
+  font-size: var(--ev-fs-sm); color: var(--ev-muted);
+}
+.ev-code-notes > li { counter-increment: ev-note; display: flex; gap: 10px; align-items: baseline; }
+.ev-code-notes > li::before { content: counter(ev-note); transform: translateY(3px); }
+.ev-code-notes > li b { color: var(--ev-fg); }
+.ev-tk-kw { color: var(--ev-c-kw); }
+.ev-tk-str { color: var(--ev-c-str); }
+.ev-tk-fn { color: var(--ev-c-fn); }
+.ev-tk-com { color: var(--ev-c-com); font-style: italic; }
+.ev-tk-num { color: var(--ev-c-num); }
+.ev-tk-type { color: var(--ev-c-fn); opacity: .85; }
+
+/* ==========================================================================
+   Clip player frame (built by EV.clip)
+   ========================================================================== */
+.ev-clip { margin: 0; border: 1px solid var(--ev-line-strong); border-radius: var(--ev-radius); background: var(--ev-code-bg); overflow: hidden; min-width: 0; }
+.ev-clip-screen { position: relative; cursor: pointer; }
+.ev-clip-screen > svg { display: block; width: 100%; height: auto; }
+.ev-clip-bar { display: flex; align-items: center; gap: 6px; padding: 7px 12px 7px 8px; border-top: 1px solid var(--ev-line); background: var(--ev-surface); }
+.ev-clip-btn {
+  appearance: none; border: 1px solid transparent; background: transparent; color: var(--ev-fg);
+  width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; cursor: pointer; flex: none;
+}
+.ev-clip-btn:hover { background: var(--ev-sunken); border-color: var(--ev-line); }
+.ev-clip-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.ev-clip-btn .ev-rp { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ev-clip-track { flex: 1; min-width: 40px; height: 28px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+.ev-clip-rail { width: 100%; height: 4px; border-radius: 4px; background: var(--ev-line-strong); position: relative; overflow: hidden; }
+.ev-clip-fill { position: absolute; inset: 0 auto 0 0; background: var(--ev-accent-fill); border-radius: 4px; }
+.ev-clip-time { font: 400 12px var(--ev-font-mono); color: var(--ev-muted); font-variant-numeric: tabular-nums; flex: none; min-width: 7.5ch; text-align: right; }
+.ev-clip-cap { padding: 10px 14px; border-top: 1px solid var(--ev-line); font-size: 13.5px; color: var(--ev-muted); }
+
+/* SVG vocabulary for clips and static diagrams (inside .ev-svg or .ev-clip) */
+.ev-svg text, .ev-clip text { font-family: var(--ev-font-sans); font-size: 15px; fill: var(--ev-fg); }
+.ev-t-mono { font-family: var(--ev-font-mono) !important; font-variant-numeric: tabular-nums; }
+.ev-t-xs { font-size: 12.5px !important; }
+.ev-t-sm { font-size: 14px !important; }
+.ev-t-lg { font-size: 22px !important; font-weight: 600; }
+.ev-t-num { font-family: var(--ev-font-mono) !important; font-size: 56px !important; font-weight: 600; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.ev-t-b { font-weight: 600; }
+text.ev-t-muted { fill: var(--ev-muted); }
+text.ev-t-faint { fill: var(--ev-faint); }
+text.ev-t-acc { fill: var(--ev-accent); }
+text.ev-t-risk { fill: var(--ev-risk); }
+text.ev-t-new { fill: var(--ev-new); }
+text.ev-t-decide { fill: var(--ev-decide); }
+text.ev-t-on-acc { fill: var(--ev-on-accent); }
+.ev-node { fill: var(--ev-surface); stroke: var(--ev-line-strong); stroke-width: 1.2; }
+.ev-node.is-acc { fill: var(--ev-accent-soft); stroke: var(--ev-accent-fill); }
+.ev-node.is-risk { fill: var(--ev-risk-soft); stroke: var(--ev-risk); }
+.ev-node.is-new { fill: var(--ev-new-soft); stroke: var(--ev-new); }
+.ev-node.is-decide { fill: var(--ev-decide-soft); stroke: var(--ev-decide); }
+.ev-wire { fill: none; stroke: var(--ev-line-strong); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.ev-wire.is-on { stroke: var(--ev-accent-fill); stroke-dasharray: none; }
+.ev-wire.is-risk { stroke: var(--ev-risk); stroke-dasharray: none; }
+.ev-f-acc { fill: var(--ev-accent-fill); } .ev-f-acc-soft { fill: var(--ev-accent-soft); }
+.ev-f-risk { fill: var(--ev-risk); } .ev-f-new { fill: var(--ev-new); } .ev-f-decide { fill: var(--ev-decide); }
+.ev-f-fg { fill: var(--ev-fg); } .ev-f-line { fill: var(--ev-line-strong); } .ev-f-muted { fill: var(--ev-muted); }
+.ev-f-surface { fill: var(--ev-surface); } .ev-f-sunken { fill: var(--ev-sunken); }
+.ev-s-acc { fill: none; stroke: var(--ev-accent-fill); stroke-width: 2; }
+.ev-s-line { fill: none; stroke: var(--ev-line-strong); stroke-width: 1.5; }
+
+/* ==========================================================================
+   Footer + motion
+   ========================================================================== */
+.ev-foot { max-width: var(--ev-page-w); margin: var(--ev-s8) auto 0; padding-top: var(--ev-s4); border-top: 1px solid var(--ev-line); color: var(--ev-faint); font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) {
+  .ev-tab, .ev-toc a, .ev-themes button { transition: color .15s, background-color .15s, border-color .15s; }
+  .ev-more > summary::before { transition: transform .2s var(--ev-ease); }
+  .ev-toc-bar svg { transition: transform .2s var(--ev-ease); }
+  html { scroll-behavior: smooth; }
+}
+
+</style>
+<script>
+/* explain-visually kit.js: themes, tabs or page mode (+ chapter list), code blocks, clip player. Dependency-free.
+   Loaded in <head> (inlined by assemble.py). Defines window.EV; wires the page on DOMContentLoaded.
+   Public API:
+     EV.onShow(tab, fn(panel, info))   run fn whenever tab `tab` becomes visible (info.first on 1st show)
+     EV.onHide(tab, fn(panel))         run fn when it is hidden
+     EV.clip(el, opts) -> player       animated SVG clip with play/pause/replay/scrub
+     EV.code(el)                       enhance one <figure class="ev-code"> (auto-run for all on load)
+     EV.highlight(src) -> html         TS/JS token highlighting of one string
+     EV.svg                            helpers: el, text, clamp, win, easeIO, easeOut
+     EV.select(tab)                    switch tab from script
+     EV.steps(els, fn(i, el))          scroll steps beside a sticky panel: marks the current one .is-active and
+                                       calls fn when it changes (both scroll directions; first step at rest)
+     EV.stickyTop() -> px              height of the sticky bar at the top (tab bar / chapter bar), 0 if none;
+                                       also kept in the CSS variable --ev-sticky-top on <html>
+   Wired without any fragment script:
+     .ev-side[data-ev-story]           story steps: EV.steps + data-step on the panel + data-on/-hl/-say states
+     .ev-pick                          option / before-after cards that switch the panel next to them
+   Events dispatched on each .ev-tab-content: "ev:tabshow" / "ev:tabhide" (detail: {tab, first}). */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var EV = window.EV = window.EV || {};
+
+  /* ------------------------------------------------------------------ themes */
+  var THEMES = [
+    { id: "violet", name: "Violet", dark: true, light: true, sw: ["#09090b", "#8d7dff"],
+      font: "family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600" },
+    { id: "ocean", name: "Ocean", dark: true, light: true, sw: ["#071422", "#2fb8d6"],
+      font: "family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600" },
+    { id: "amber", name: "Amber", dark: true, light: true, sw: ["#121212", "#e0a030"],
+      font: "family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600" },
+    { id: "aurora", name: "Aurora", dark: true, light: false, sw: ["#0a0e17", "#2dd4bf"],
+      font: "family=Sora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600" }
+  ];
+  var byId = {};
+  THEMES.forEach(function (t) { byId[t.id] = t; });
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+
+  var authored = root.getAttribute("data-ev-theme");
+  var theme = byId[load("ev-theme")] ? load("ev-theme") : byId[authored] ? authored : "violet";
+  var modeChoice = load("ev-mode"); // "dark" | "light" | null (= follow host / system)
+  var mqLight = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
+
+  function resolveMode() {
+    var t = byId[theme];
+    if (!t.light) return "dark";
+    if (!t.dark) return "light";
+    if (modeChoice === "dark" || modeChoice === "light") return modeChoice;
+    var host = root.getAttribute("data-theme");
+    if (host === "dark" || host === "light") return host;
+    return mqLight && mqLight.matches ? "light" : "dark";
+  }
+  var fontsLoaded = { violet: true }; // the shell links Geist
+  function ensureFonts(t) {
+    if (fontsLoaded[t.id]) return;
+    fontsLoaded[t.id] = true;
+    var l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?" + t.font + "&display=swap";
+    document.head.appendChild(l);
+  }
+  function applyTheme() {
+    root.setAttribute("data-ev-theme", theme);
+    root.setAttribute("data-ev-mode", resolveMode());
+    ensureFonts(byId[theme]);
+    renderSwitchers();
+  }
+  applyTheme(); // synchronous, before first paint
+  if (mqLight && mqLight.addEventListener) mqLight.addEventListener("change", function () { if (!modeChoice) applyTheme(); });
+  if (window.MutationObserver) new MutationObserver(function () { if (!modeChoice) applyTheme(); })
+    .observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+
+  var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+
+  function buildSwitcher(host) {
+    host.classList.add("ev-themes");
+    host.setAttribute("role", "group");
+    host.setAttribute("aria-label", "Theme");
+    var g = document.createElement("div");
+    g.className = "ev-themes-group";
+    THEMES.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("data-ev-theme-id", t.id);
+      b.title = t.name + (t.light ? "" : " (dark only)");
+      b.innerHTML = '<span class="ev-sw" style="background:' + t.sw[0] + '"><i style="background:' + t.sw[1] + '"></i></span><span class="ev-nm">' + t.name + "</span>";
+      b.addEventListener("click", function () { theme = t.id; save("ev-theme", t.id); applyTheme(); });
+      g.appendChild(b);
+    });
+    var m = document.createElement("button");
+    m.type = "button";
+    m.className = "ev-mode";
+    m.addEventListener("click", function () {
+      modeChoice = resolveMode() === "dark" ? "light" : "dark";
+      save("ev-mode", modeChoice);
+      applyTheme();
+    });
+    host.innerHTML = "";
+    host.appendChild(g);
+    host.appendChild(m);
+  }
+  function renderSwitchers() {
+    var mode = root.getAttribute("data-ev-mode"), t = byId[theme];
+    document.querySelectorAll(".ev-themes").forEach(function (host) {
+      host.querySelectorAll("[data-ev-theme-id]").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.getAttribute("data-ev-theme-id") === theme));
+      });
+      var m = host.querySelector(".ev-mode");
+      if (!m) return;
+      var both = t.dark && t.light;
+      m.disabled = !both;
+      m.innerHTML = mode === "dark" ? SUN : MOON;
+      m.setAttribute("aria-label", both ? (mode === "dark" ? "Switch to light mode" : "Switch to dark mode") : t.name + " has a dark mode only");
+      m.title = m.getAttribute("aria-label");
+    });
+  }
+
+  /* -------------------------------------------------------------------- tabs */
+  var panels = {}, tabs = {}, order = [], current = null, shownOnce = {};
+
+  function fire(panel, type, first) {
+    panel.dispatchEvent(new CustomEvent(type, { detail: { tab: panel.getAttribute("data-tab"), first: !!first } }));
+  }
+  function show(name, opts) {
+    opts = opts || {};
+    if (!panels[name]) return;
+    if (current === name) return;
+    var prev = current;
+    current = name;
+    order.forEach(function (n) {
+      var on = n === name;
+      if (tabs[n]) { tabs[n].setAttribute("aria-selected", String(on)); tabs[n].tabIndex = on ? 0 : -1; }
+      panels[n].hidden = !on;
+    });
+    if (prev) fire(panels[prev], "ev:tabhide");
+    var first = !shownOnce[name];
+    shownOnce[name] = true;
+    fire(panels[name], "ev:tabshow", first);
+    if (opts.focus && tabs[name]) tabs[name].focus();
+    if (opts.hash) { try { history.replaceState(null, "", "#" + name); } catch (e) {} }
+    if (opts.scroll) {
+      var bar = document.querySelector(".ev-tabbar");
+      // If the reader is deep in the previous tab (bar is stuck), jump to the top of the new one.
+      if (bar && bar.getBoundingClientRect().top <= 1) {
+        window.scrollTo({ top: panels[name].parentNode.getBoundingClientRect().top + window.scrollY - bar.offsetHeight, behavior: "auto" });
+      }
+    }
+  }
+  EV.select = function (name) { show(name, { hash: true, scroll: true }); };
+
+  function fromHash() {
+    var h = decodeURIComponent((location.hash || "").slice(1));
+    if (!h) return false;
+    if (panels[h]) { show(h); return true; }
+    var el = document.getElementById(h);
+    var p = el && el.closest(".ev-tab-content");
+    if (p && panels[p.getAttribute("data-tab")]) {
+      show(p.getAttribute("data-tab"));
+      requestAnimationFrame(function () { el.scrollIntoView({ block: "start" }); });
+      return true;
+    }
+    return false;
+  }
+
+  function initTabs() {
+    document.querySelectorAll(".ev-tab-content[data-tab]").forEach(function (p) {
+      var n = p.getAttribute("data-tab");
+      panels[n] = p;
+      order.push(n);
+    });
+    var list = document.querySelector(".ev-tablist");
+    if (!list) { // standalone: every fragment is visible at once
+      order.forEach(function (n) { current = n; shownOnce[n] = true; fire(panels[n], "ev:tabshow", true); });
+      fromHashStandalone();
+      return;
+    }
+    list.querySelectorAll('[role="tab"]').forEach(function (t) {
+      var n = t.getAttribute("data-tab");
+      tabs[n] = t;
+      t.addEventListener("click", function () { show(n, { hash: true, scroll: true }); });
+    });
+    list.addEventListener("keydown", function (e) {
+      var names = order.filter(function (n) { return tabs[n]; });
+      var i = names.indexOf(current), j = -1;
+      if (e.key === "ArrowRight") j = (i + 1) % names.length;
+      else if (e.key === "ArrowLeft") j = (i - 1 + names.length) % names.length;
+      else if (e.key === "Home") j = 0;
+      else if (e.key === "End") j = names.length - 1;
+      if (j < 0) return;
+      e.preventDefault();
+      show(names[j], { focus: true, hash: true });
+    });
+    order.forEach(function (n) { panels[n].hidden = true; });
+    if (!fromHash()) {
+      var def = list.getAttribute("data-default");
+      show(panels[def] ? def : order[0]);
+    }
+    window.addEventListener("hashchange", fromHash);
+  }
+  function fromHashStandalone() {
+    var h = (location.hash || "").slice(1), el = h && document.getElementById(h);
+    if (el) requestAnimationFrame(function () { el.scrollIntoView({ block: "start" }); });
+  }
+
+  /* ------------------------------------------- page mode: chapter list */
+  /* Height of whatever is stuck to the top of the viewport (tab bar, or the collapsed chapter bar
+     on narrow screens). Fragments with sticky graphics offset themselves by this. */
+  EV.stickyTop = function () {
+    var bar = document.querySelector(".ev-tabbar") || document.querySelector(".ev-toc-bar");
+    if (!bar || getComputedStyle(bar).display === "none") return 0;
+    return Math.round(bar.getBoundingClientRect().height);
+  };
+  function initToc() {
+    var toc = document.querySelector(".ev-toc");
+    if (!toc) return;
+    var bar = toc.querySelector(".ev-toc-bar");
+    var nowN = toc.querySelector(".ev-toc-now .ev-toc-n"), nowL = toc.querySelector(".ev-toc-now .ev-toc-lbl");
+    var links = Array.prototype.slice.call(toc.querySelectorAll(".ev-toc-list a"));
+    var items = links.map(function (a) {
+      var part = a.closest(".ev-toc-sub") ? a.closest(".ev-toc-sub").parentNode.querySelector(".ev-toc-part") : a;
+      return { a: a, part: part, el: document.getElementById(a.getAttribute("href").slice(1)) };
+    }).filter(function (it) { return it.el; });
+    var cur = -1, queued = false;
+    function label(a) { return a.querySelector(".ev-toc-t").textContent; }
+    function setActive(i) {
+      if (i === cur) return;
+      cur = i;
+      var it = items[i];
+      links.forEach(function (l) { l.classList.remove("is-active", "is-in"); l.removeAttribute("aria-current"); });
+      it.a.classList.add("is-active");
+      it.a.setAttribute("aria-current", "location");
+      if (it.part !== it.a) it.part.classList.add("is-in");
+      if (nowN) nowN.textContent = it.part.querySelector(".ev-toc-n").textContent;
+      if (nowL) nowL.textContent = label(it.part) + (it.part !== it.a ? " · " + label(it.a) : "");
+    }
+    function onScroll() {
+      queued = false;
+      var top = EV.stickyTop(), line = top + (window.innerHeight - top) * 0.45, active = 0;
+      items.forEach(function (it, i) { if (it.el.getBoundingClientRect().top <= line) active = i; });
+      if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 2) active = items.length - 1;
+      setActive(active);
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(onScroll); } }
+    function close() { toc.classList.remove("is-open"); if (bar) bar.setAttribute("aria-expanded", "false"); }
+    if (bar) bar.addEventListener("click", function () {
+      var open = toc.classList.toggle("is-open");
+      bar.setAttribute("aria-expanded", String(open));
+    });
+    links.forEach(function (a) { a.addEventListener("click", close); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && toc.classList.contains("is-open")) { close(); bar.focus(); } });
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    onScroll();
+  }
+
+  /* ------------------------------------- scroll steps (story, code walkthrough) */
+  /* The current step is the last one whose top has passed the middle of the viewport (below the top bar),
+     else the first. Computed from positions on every scroll, so it is right when scrolling back up too and
+     nothing changes until step 2 reaches the middle (the panel's first state is step 1's). */
+  EV.steps = function (els, fn) {
+    els = Array.prototype.slice.call(els);
+    if (!els.length) return;
+    var current = -1, queued = false;
+    var pinSide = els[0].closest(".ev-side--pin");
+    var pin = pinSide && pinSide.querySelector(":scope > .ev-stick");
+    function readingTop() {
+      var top = EV.stickyTop();
+      if (pin && getComputedStyle(pin).order === "-1") top = Math.max(top, pin.getBoundingClientRect().bottom);
+      return top;
+    }
+    function update() {
+      queued = false;
+      if (!els[0].getClientRects().length) return;   // hidden tab
+      var top = readingTop(), line = top + (window.innerHeight - top) / 2, i = 0;
+      els.forEach(function (el, k) { if (el.getBoundingClientRect().top <= line) i = k; });
+      if (i === current) return;
+      current = i;
+      els.forEach(function (el, k) {
+        el.classList.toggle("is-active", k === i);
+        if (k === i) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
+      });
+      if (fn) fn(i, els[i]);
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    var tab = els[0].closest(".ev-tab-content");
+    if (tab) tab.addEventListener("ev:tabshow", queue);
+    update();
+  };
+
+  /* onShow / onHide: safe to call before or after the first show */
+  EV.onShow = function (name, fn) {
+    function attach() {
+      var p = panels[name] || document.querySelector('.ev-tab-content[data-tab="' + name + '"]');
+      if (!p) return;
+      p.addEventListener("ev:tabshow", function (e) { fn(p, e.detail); });
+      if (shownOnce[name] && !p.hidden) fn(p, { tab: name, first: true });
+    }
+    if (ready) attach(); else pending.push(attach);
+  };
+  EV.onHide = function (name, fn) {
+    var go = function () {
+      var p = document.querySelector('.ev-tab-content[data-tab="' + name + '"]');
+      if (p) p.addEventListener("ev:tabhide", function () { fn(p); });
+    };
+    if (ready) go(); else pending.push(go);
+  };
+  var ready = false, pending = [];
+
+  /* ---------------------------------------------------------- svg helpers */
+  var NS = "http://www.w3.org/2000/svg";
+  function svgEl(parent, tag, attrs, text) {
+    var e = document.createElementNS(NS, tag);
+    if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function clamp(v, a, b) { a = a == null ? 0 : a; b = b == null ? 1 : b; return v < a ? a : v > b ? b : v; }
+  EV.svg = {
+    el: svgEl,
+    text: function (p, x, y, s, cls, extra) {
+      var a = { x: x, y: y };
+      if (cls) a["class"] = cls;
+      if (extra) for (var k in extra) a[k] = extra[k];
+      return svgEl(p, "text", a, s);
+    },
+    clamp: clamp,
+    win: function (t, a, b) { return clamp((t - a) / (b - a)); },        // 0..1 progress of t through [a,b]
+    easeIO: function (p) { return p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; },
+    easeOut: function (p) { return 1 - Math.pow(1 - p, 3); },
+    setClass: function (e, c) { if (e.getAttribute("class") !== c) e.setAttribute("class", c); },
+    setText: function (e, s) { s = String(s); if (e.textContent !== s) e.textContent = s; }
+  };
+
+  /* ------------------------------------------------------------ clip player */
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ICON_PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9.5-5.5z"/></svg>';
+  var ICON_PAUSE = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg>';
+  var ICON_REPLAY = '<svg viewBox="0 0 16 16" aria-hidden="true" class="ev-rp"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4"/><path d="M2.5 2.5v3.5H6"/></svg>';
+  function fmt(s) { s = Math.floor(s); var m = Math.floor(s / 60); s -= m * 60; return m + ":" + (s < 10 ? "0" : "") + s; }
+  var players = [], rafOn = false, last = 0, io = null;
+
+  /* opts: { duration (s), width=440, height=270, label, loop=true, caption,
+             setup(svg) called once to build static shapes, draw(t, svg) called per frame } */
+  EV.clip = function (el, opts) {
+    if (!el || el.__evClip) return el && el.__evClip;
+    el.classList.add("ev-clip");
+    var w = opts.width || 440, h = opts.height || 270, dur = opts.duration;
+    var screen = document.createElement("div");
+    screen.className = "ev-clip-screen";
+    var svg = svgEl(null, "svg", { viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": opts.label || el.getAttribute("aria-label") || "Animation" });
+    screen.appendChild(svg);
+    var bar = document.createElement("div");
+    bar.className = "ev-clip-bar";
+    bar.innerHTML = '<button class="ev-clip-btn" type="button" data-pp></button>' +
+      '<button class="ev-clip-btn" type="button" data-rp aria-label="Replay">' + ICON_REPLAY + "</button>" +
+      '<div class="ev-clip-track" role="slider" tabindex="0" aria-label="Clip position" aria-valuemin="0" aria-valuemax="' + dur + '"><div class="ev-clip-rail"><div class="ev-clip-fill"></div></div></div>' +
+      '<span class="ev-clip-time"></span>';
+    el.innerHTML = "";
+    el.appendChild(screen);
+    el.appendChild(bar);
+    if (opts.caption) {
+      var cap = document.createElement("figcaption");
+      cap.className = "ev-clip-cap";
+      cap.textContent = opts.caption;
+      el.appendChild(cap);
+    }
+    if (opts.setup) opts.setup(svg);
+    var P = {
+      el: el, svg: svg, dur: dur, t: dur, playing: false, started: false, userPaused: reduce, visible: false,
+      loop: opts.loop !== false, draw: opts.draw,
+      pp: bar.querySelector("[data-pp]"), fill: bar.querySelector(".ev-clip-fill"),
+      time: bar.querySelector(".ev-clip-time"), track: bar.querySelector(".ev-clip-track")
+    };
+    P.render = function () {
+      P.draw(P.t, svg);
+      P.fill.style.width = (P.t / dur * 100) + "%";
+      P.time.textContent = fmt(P.t) + " / " + fmt(dur);
+      P.track.setAttribute("aria-valuenow", P.t.toFixed(1));
+    };
+    P.ui = function () {
+      P.pp.innerHTML = P.playing ? ICON_PAUSE : ICON_PLAY;
+      P.pp.setAttribute("aria-label", P.playing ? "Pause" : "Play");
+    };
+    P.play = function () {
+      if (!P.started || P.t >= dur) { P.t = 0; P.started = true; }
+      P.playing = true; P.ui(); kick();
+    };
+    P.pause = function () { P.playing = false; P.ui(); };
+    P.seek = function (t) { P.t = clamp(t, 0, dur); P.started = true; P.render(); };
+    P.toggle = function () {
+      if (P.playing) { P.pause(); P.userPaused = true; } else { P.userPaused = false; P.play(); }
+    };
+    P.render(); // poster = end frame
+    P.ui();
+    P.pp.addEventListener("click", P.toggle);
+    screen.addEventListener("click", P.toggle);
+    bar.querySelector("[data-rp]").addEventListener("click", function () { P.t = 0; P.started = true; P.userPaused = false; P.play(); });
+    function seekEv(ev) { var r = P.track.getBoundingClientRect(); P.seek((ev.clientX - r.left) / r.width * dur); }
+    P.track.addEventListener("pointerdown", function (ev) {
+      P.track.setPointerCapture(ev.pointerId); seekEv(ev);
+      function mv(e) { seekEv(e); }
+      function up() { P.track.removeEventListener("pointermove", mv); P.track.removeEventListener("pointerup", up); }
+      P.track.addEventListener("pointermove", mv); P.track.addEventListener("pointerup", up);
+    });
+    P.track.addEventListener("keydown", function (ev) {
+      if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") { P.seek(P.t + (ev.key === "ArrowRight" ? 1 : -1)); ev.preventDefault(); }
+    });
+    var panel = el.closest(".ev-tab-content");
+    if (panel) panel.addEventListener("ev:tabhide", function () { if (P.playing) P.pause(); });
+    players.push(P);
+    if (io) io.observe(el);
+    el.__evClip = P;
+    return P;
+  };
+  function frame(ts) {
+    var dt = last ? Math.min(.1, (ts - last) / 1000) : 0, any = false;
+    last = ts;
+    players.forEach(function (P) {
+      if (!P.playing) return;
+      any = true;
+      P.t += dt;
+      if (P.t >= P.dur) {
+        if (reduce || !P.loop) { P.t = P.dur; P.pause(); } else P.t = 0;
+      }
+      P.render();
+    });
+    if (any) requestAnimationFrame(frame); else { rafOn = false; last = 0; }
+  }
+  function kick() { if (!rafOn) { rafOn = true; last = 0; requestAnimationFrame(frame); } }
+  if ("IntersectionObserver" in window) {
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var P = en.target.__evClip;
+        if (!P) return;
+        P.visible = en.isIntersecting && en.intersectionRatio >= .5;
+        if (P.visible && !P.userPaused && !P.playing) P.play();
+        else if (!P.visible && P.playing) P.pause();
+      });
+    }, { threshold: [0, .5, 1] });
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) players.forEach(function (P) { if (P.playing) P.pause(); });
+  });
+
+  /* ------------------------------------------------------- code highlighting */
+  var KW = "const|let|var|function|return|if|else|for|while|of|in|new|await|async|export|import|from|as|type|interface|extends|implements|class|typeof|keyof|true|false|null|undefined|this|throw|try|catch|finally|switch|case|default|break|continue|do|yield|enum|declare|satisfies|void|readonly|public|private|protected|static";
+  var TOKEN = new RegExp(
+    "(\\/\\/.*$)" +                                   // 1 line comment
+    "|(\\/\\*.*?(?:\\*\\/|$))" +                      // 2 block comment (single line part)
+    "|(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*'|`(?:[^`\\\\]|\\\\.)*`)" + // 3 strings
+    "|\\b(" + KW + ")\\b" +                           // 4 keywords
+    "|\\b(\\d[\\d_]*(?:\\.\\d+)?)\\b" +               // 5 numbers
+    "|\\b([A-Z][A-Za-z0-9_]*)\\b" +                   // 6 types / classes
+    "|([A-Za-z_$][\\w$]*)(?=\\s*\\()", "g");          // 7 calls
+  var CLS = [null, "com", "com", "str", "kw", "num", "type", "fn"];
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function hlLine(line, state) {
+    var out = "", i = 0, m;
+    if (state.inBlock) {
+      var end = line.indexOf("*/");
+      if (end < 0) return '<span class="ev-tk-com">' + esc(line) + "</span>";
+      out = '<span class="ev-tk-com">' + esc(line.slice(0, end + 2)) + "</span>";
+      i = end + 2; state.inBlock = false;
+    }
+    TOKEN.lastIndex = i;
+    while ((m = TOKEN.exec(line))) {
+      if (m[0] === "") { TOKEN.lastIndex++; continue; }
+      out += esc(line.slice(i, m.index));
+      var k = 1; while (!m[k]) k++;
+      out += '<span class="ev-tk-' + CLS[k] + '">' + esc(m[0]) + "</span>";
+      if (k === 2 && !/\*\/$/.test(m[0])) state.inBlock = true;
+      i = TOKEN.lastIndex;
+    }
+    return out + esc(line.slice(i));
+  }
+  EV.highlight = function (src) {
+    var st = { inBlock: false };
+    return src.split("\n").map(function (l) { return hlLine(l, st); }).join("\n");
+  };
+
+  function ranges(spec) { // "3-6, 9" -> {3:1,4:1,5:1,6:1,9:1}
+    var set = {};
+    (spec || "").split(",").forEach(function (part) {
+      var m = /^\s*(\d+)\s*(?:-\s*(\d+))?\s*$/.exec(part);
+      if (!m) return;
+      for (var n = +m[1], e = m[2] ? +m[2] : n; n <= e; n++) set[n] = 1;
+    });
+    return set;
+  }
+  /* <figure class="ev-code" data-file="path/to/file.ts" data-start="1" data-add="3-6" data-del="2"
+       data-hl="9" data-focus data-marks="4:1, 9:2" data-groups="3-6:New early return; 8-9:Unchanged"
+       data-tag="Proposed"><pre><code>…escaped source…</code></pre>
+       <ol class="ev-code-notes"><li>note for marker 1</li>…</ol></figure>
+     Line numbers in all attributes are DISPLAYED numbers (data-start based). */
+  EV.code = function (fig) {
+    if (fig.__evCode) return;
+    fig.__evCode = true;
+    var code = fig.querySelector("pre > code") || fig.querySelector("pre");
+    if (!code) return;
+    var src = code.textContent.replace(/^\n+|\s+$/g, "");
+    var start = parseInt(fig.getAttribute("data-start") || "1", 10);
+    var add = ranges(fig.getAttribute("data-add")), del = ranges(fig.getAttribute("data-del")), hl = ranges(fig.getAttribute("data-hl"));
+    var marks = {};
+    (fig.getAttribute("data-marks") || "").split(",").forEach(function (p) {
+      var m = /^\s*(\d+)\s*:\s*(\w+)\s*$/.exec(p);
+      if (m) (marks[+m[1]] = marks[+m[1]] || []).push(m[2]);
+    });
+    var groups = {};
+    (fig.getAttribute("data-groups") || "").split(";").forEach(function (p) {
+      var m = /^\s*(\d+)(?:\s*-\s*(\d+))?\s*:\s*(.+?)\s*$/.exec(p);
+      if (m) groups[+m[1]] = { label: m[3], end: m[2] ? +m[2] : +m[1] };
+    });
+    var lines = EV.highlight(src).split("\n"), nAdd = 0, nDel = 0, html = "";
+    lines.forEach(function (l, i) {
+      var n = start + i, cls = "ev-ln", g = " ";
+      if (groups[n]) {
+        var isNew = true;
+        for (var k = n; k <= groups[n].end; k++) if (!add[k]) isNew = false;
+        html += '<span class="ev-ln-group' + (isNew ? " is-new" : "") + '">' + esc(groups[n].label) + "</span>";
+      }
+      if (add[n]) { cls += " is-add"; g = "+"; nAdd++; }
+      else if (del[n]) { cls += " is-del"; g = "−"; nDel++; }
+      if (hl[n]) cls += " is-hl";
+      var mk = (marks[n] || []).map(function (x) { return '<span class="ev-mark" aria-label="note ' + x + '">' + x + "</span>"; }).join("");
+      html += '<span class="' + cls + '"><span class="ev-ln-n">' + n + '</span><span class="ev-ln-g" aria-hidden="true">' + g + '</span><span class="ev-ln-c">' + (l || " ") + mk + "</span></span>";
+    });
+    var pre = code.closest("pre") || code;
+    var newPre = document.createElement("pre");
+    newPre.innerHTML = "<code>" + html + "</code>";
+    var scroll = document.createElement("div");
+    scroll.className = "ev-code-scroll";
+    scroll.appendChild(newPre);
+    pre.parentNode.replaceChild(scroll, pre);
+    if (fig.hasAttribute("data-focus")) fig.classList.add("is-focus");
+    var file = fig.getAttribute("data-file"), tag = fig.getAttribute("data-tag");
+    if (file || tag || nAdd || nDel) {
+      var head = document.createElement("div");
+      head.className = "ev-code-head";
+      var h = "";
+      if (file) {
+        var cut = file.lastIndexOf("/");
+        h += '<span class="ev-code-file" data-kind="file"><span><span class="ev-dir">' + esc(file.slice(0, cut + 1)) + '</span><span class="ev-base">' + esc(file.slice(cut + 1)) + "</span></span></span>";
+      }
+      h += '<span class="ev-code-tag">';
+      if (nAdd || nDel) h += '<span class="ev-code-stat"><span class="ev-add">+' + nAdd + '</span> <span class="ev-del">−' + nDel + "</span></span>";
+      if (tag) h += '<span class="ev-chip ev-chip--neutral">' + esc(tag) + "</span>";
+      h += "</span>";
+      head.innerHTML = h;
+      fig.insertBefore(head, fig.firstChild);
+    }
+  };
+
+  /* --------------------------------------------------------------- boot */
+  function boot() {
+    document.querySelectorAll("[data-ev-themes]").forEach(buildSwitcher);
+    renderSwitchers();
+    document.querySelectorAll("figure.ev-code").forEach(EV.code);
+    ready = true;
+    pending.splice(0).forEach(function (f) { f(); });
+    initTabs();
+    initToc();
+    syncStickyTop();
+    window.addEventListener("resize", syncStickyTop);
+    document.querySelectorAll(".ev-side").forEach(initSide);
+    document.querySelectorAll(".ev-side[data-ev-story]").forEach(initStory);
+    document.querySelectorAll(".ev-pick").forEach(initPick);
+  }
+
+  /* Story without script: for step n (1-based) the panel gets data-step="n", and every element inside it with
+     data-on="2-4" is shown only on those steps ("3-" = from 3 on, "2,5" = just those), data-hl="…" (same syntax)
+     gets .is-hl, and data-say="t1|t2|…" shows the text for step n (an empty item keeps the previous text).
+     Everything is set from n alone, so scrolling back restores earlier states exactly. */
+  function stepMatches(spec, n) {
+    return spec.split(",").some(function (part) {
+      var m = part.trim().match(/^(\d*)(-?)(\d*)$/);
+      if (!m || !(m[1] || m[3])) return false;
+      var lo = m[1] ? +m[1] : 1, hi = m[2] ? (m[3] ? +m[3] : Infinity) : lo;
+      return n >= lo && n <= hi;
+    });
+  }
+  function initStory(side) {
+    var stick = side.querySelector(":scope > .ev-stick");
+    if (!stick) return;
+    EV.steps(side.querySelectorAll(".ev-step"), function (i) {
+      var n = i + 1;
+      stick.setAttribute("data-step", n);
+      stick.querySelectorAll("[data-on]").forEach(function (el) {
+        el.classList.toggle("is-off", !stepMatches(el.getAttribute("data-on"), n));
+      });
+      stick.querySelectorAll("[data-hl]").forEach(function (el) {
+        el.classList.toggle("is-hl", stepMatches(el.getAttribute("data-hl"), n));
+      });
+      stick.querySelectorAll("[data-say]").forEach(function (el) {
+        var texts = el.getAttribute("data-say").split("|"), text = "";
+        for (var k = 0; k < n && k < texts.length; k++) if (texts[k].trim()) text = texts[k].trim();
+        el.textContent = text;
+      });
+    });
+  }
+
+  /* Pick cards: .ev-pick-card[role=tab][aria-controls] switch the .ev-pick-panel they point at (click, arrow keys). */
+  function initPick(pick) {
+    var cards = Array.prototype.slice.call(pick.querySelectorAll(".ev-pick-card"));
+    function select(card, focus) {
+      cards.forEach(function (c) {
+        var on = c === card, panel = document.getElementById(c.getAttribute("aria-controls"));
+        c.setAttribute("aria-selected", String(on));
+        c.tabIndex = on ? 0 : -1;
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) card.focus();
+    }
+    cards.forEach(function (card, i) {
+      card.addEventListener("click", function () { select(card); });
+      card.addEventListener("keydown", function (e) {
+        var step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        select(cards[(i + step + cards.length) % cards.length], true);
+      });
+    });
+    select(cards.filter(function (c) { return c.getAttribute("aria-selected") === "true"; })[0] || cards[0]);
+  }
+  /* Mirrors EV.stickyTop() into CSS so sticky panels (.ev-stick) can sit below the top bar without script. */
+  function syncStickyTop() { root.style.setProperty("--ev-sticky-top", EV.stickyTop() + "px"); }
+
+  /* ev-side: tell CSS the panel's height (for the centred sticky top) and line the panel up with the first text
+     box at rest, by pushing down whichever column starts higher. Re-runs whenever either side changes size
+     (also when a hidden tab is shown). */
+  function initSide(side) {
+    var stick = side.querySelector(":scope > .ev-stick");
+    var text = Array.prototype.filter.call(side.children, function (c) { return c !== stick; })[0];
+    if (!stick || !text || !window.ResizeObserver) return;
+    var anchor = text.querySelector("[data-ev-anchor]") || text.firstElementChild || text;
+    function align() {
+      var h = stick.offsetHeight;
+      if (!h) return;                       // hidden tab
+      side.style.setProperty("--ev-stick-h", h + "px");   // read by .ev-stick and the story column
+      var stacked = getComputedStyle(stick).position !== "sticky";
+      var a = anchor.getBoundingClientRect(), t = text.getBoundingClientRect();
+      /* Centre the panel on the anchor when it is shorter; align their tops when it is taller, so the panel
+         never starts above the first text box. */
+      var diff = stacked ? 0 : Math.round(a.top - t.top + Math.max(0, (a.height - h) / 2));
+      stick.style.setProperty("--ev-side-shift", Math.max(0, diff) + "px");
+      text.style.setProperty("--ev-side-shift", Math.max(0, -diff) + "px");
+    }
+    var ro = new ResizeObserver(align);
+    [stick, text, anchor].forEach(function (el) { ro.observe(el); });
+    window.addEventListener("resize", align);
+    align();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+
+</script>
+</head>
+<body>
+<div class="ev-doc ev-doc--toc">
+<nav class="ev-toc" aria-label="Chapters">
+  <button class="ev-toc-bar" type="button" aria-expanded="false" aria-controls="ev-toc-list"><span class="ev-toc-now"><span class="ev-toc-n">1</span><span class="ev-toc-lbl">Overview</span></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3.5 4.5 4.5L6 12.5"/></svg></button>
+  <div class="ev-toc-list" id="ev-toc-list"><p class="ev-toc-title">Chapters</p>
+    <ol><li><a class="ev-toc-part" href="#overview"><span class="ev-toc-n">1</span><span class="ev-toc-t">Overview</span></a></li>
+      <li><a class="ev-toc-part" href="#story"><span class="ev-toc-n">2</span><span class="ev-toc-t">Story</span></a><ol class="ev-toc-sub"><li><a href="#story-today"><span class="ev-toc-t">Today</span></a></li><li><a href="#story-oxc"><span class="ev-toc-t">Oxlint</span></a></li><li><a href="#story-catch"><span class="ev-toc-t">The catch</span></a></li><li><a href="#story-first"><span class="ev-toc-t">First step</span></a></li></ol></li>
+      <li><a class="ev-toc-part" href="#decide"><span class="ev-toc-n">3</span><span class="ev-toc-t">Decision</span></a><ol class="ev-toc-sub"><li><a href="#decide-options"><span class="ev-toc-t">Options</span></a></li><li><a href="#decide-details"><span class="ev-toc-t">How it was measured</span></a></li></ol></li></ol>
+  </div>
+</nav>
+<div class="ev-doc-main">
+<div class="ev-page" id="overview">
+  <div class="ev-topbar">
+    <div class="ev-docname"><span>Oxlint, oxfmt or Biome</span></div>
+    <div data-ev-themes></div>
+  </div>
+<header class="ev-overview">
+  <p class="ev-eyebrow">fantasy-snooker · ESLint + Prettier → Oxc or Biome</p>
+  <h1 class="ev-headline" id="ov-title">Switch to Oxlint + oxfmt: lint <em>44.0 s → 5.3 s</em>, with 1 rule switched off and 3 path checks to port</h1>
+  <p class="ev-lede">There is no "oxprettier": Oxc's linter is oxlint and its formatter is oxfmt (beta); Biome, the all-in-one alternative, is faster still but keeps only 163 of 295 rules.</p>
+  <figure class="ev-hero">
+    <div class="ev-bars ev-bars--hero">
+      <span class="ev-k">ESLint</span><span class="ev-bar is-muted"><i style="--v:100%"></i></span><span class="ev-v"><b>44.0 s</b></span>
+      <span class="ev-k">Oxlint</span><span class="ev-bar is-good"><i style="--v:12%"></i></span><span class="ev-v"><b>5.3 s</b></span>
+      <span class="ev-k">Biome</span><span class="ev-bar"><i style="--v:7.5%"></i></span><span class="ev-v"><b>3.3 s</b></span>
+    </div>
+    <figcaption class="ev-text">Whole-repo lint, one run each, no ESLint cache. Oxlint: type-aware, after switching off the one typed rule that crashed. Biome: 163 of 295 rules only.</figcaption>
+  </figure>
+  <p class="ev-keyline">
+    <span>Format check: Prettier 10.2 s → oxfmt 2.3 s</span>
+    <span>Output vs Prettier: oxfmt 3 code files differ, Biome 25</span>
+    <span class="ev-decide"><b>Decide</b> start with oxfmt only, or the full Oxlint swap? Either way, nothing checks formatting in CI today.</span>
+  </p>
+</header>
+</div>
+<main class="ev-panels ev-pages">
+<header class="ev-part-head" id="story"><p class="ev-eyebrow"><span class="ev-n">2</span>Story · 6 steps</p><h2 class="ev-part-title" id="story-part-title">What carries over, and what does not</h2></header>
+<section aria-labelledby="story-part-title" class="ev-tab-content" data-tab="story" data-label="Story" data-hint="6 steps" data-part-title="What carries over, and what does not">
+<div class="ev-side ev-side--pin" data-ev-story>
+  <div>
+    <div class="ev-step" id="story-today" data-toc="Today"><b>Today:</b> ESLint, the linter, takes 44.0 s on a clean run, and Prettier, the formatter, is checked by nobody: 149 files already drift from it.</div>
+    <div class="ev-step" id="story-oxc" data-toc="Oxlint"><b>Oxlint</b>, Oxc's Rust linter, reads our ESLint config. 263 of the 276 rules it recognises migrate, including the type-aware <code>no-unsafe-*</code> family through tsgolint, Oxc's type-checking helper.</div>
+    <div class="ev-step"><b>Biome</b> is one package that lints and formats. Its migrator found 295 rules; 152 stable and 11 nursery (Biome's unstable) rules, 163 in all, migrate.</div>
+    <div class="ev-step"><b>The rest of Biome's list is gone:</b> 98 rules are not implemented (type-aware <code>no-unsafe-*</code>, React Compiler rules) and 34 come from plugins it does not know, including testing-library and our two local rules.</div>
+    <div class="ev-step" id="story-catch" data-toc="The catch"><b>Oxlint's catch:</b> 13 rules skipped, one react-x rule must be switched off because JS plugins (Oxc's alpha way to run ESLint plugins) get no type information, and 3 path checks are lost until ported.</div>
+    <div class="ev-step" id="story-first" data-toc="First step"><b>First step:</b> swap Prettier for oxfmt and keep ESLint. It is the lowest-risk change and the lint half can follow.</div>
+  </div>
+  <div class="ev-stick"><figure class="ev-visual"><svg class="ev-svg" viewBox="0 0 440 320" role="img" aria-label="Rules that carry over per candidate: Oxlint 263 of 276, Biome 163 of 295">
+    <text x="20" y="34" class="ev-t-muted">Rules that carry over (each tool's own count)</text>
+
+    <text x="20" y="92">Oxlint + oxfmt</text>
+    <rect x="20" y="102" width="240" height="26" rx="4" class="ev-f-sunken"/>
+    <rect x="20" y="102" width="229" height="26" rx="4" class="ev-f-acc" data-on="2-" data-hl="2"/>
+    <rect x="249" y="102" width="11" height="26" rx="4" class="ev-f-risk" data-on="5-" data-hl="5"/>
+    <text x="420" y="121" text-anchor="end" class="ev-t-b" data-on="2-">263 of 276</text>
+    <text x="20" y="148" class="ev-t-sm ev-t-risk" data-on="5-">− 13 skipped by the migrator</text>
+
+    <text x="20" y="188">Biome</text>
+    <rect x="20" y="198" width="240" height="26" rx="4" class="ev-f-sunken"/>
+    <rect x="20" y="198" width="133" height="26" rx="4" class="ev-f-acc" data-on="3-" data-hl="3"/>
+    <rect x="153" y="198" width="107" height="26" rx="4" class="ev-f-risk" data-on="4-" data-hl="4"/>
+    <text x="420" y="217" text-anchor="end" class="ev-t-b" data-on="3-">163 of 295</text>
+    <text x="20" y="244" class="ev-t-sm ev-t-risk" data-on="4-">− 98 not implemented, 34 unknown plugins</text>
+
+    <line x1="20" y1="258" x2="420" y2="258" class="ev-wire"/>
+    <text x="20" y="282" class="ev-t-b" data-say="Today: ESLint lints, Prettier formats|Oxlint keeps 263 of 276 rules|Biome keeps 163 of 295 rules|Biome drops 132 rules|Oxlint: 13 skipped, 1 rule off, 3 checks|First step: swap Prettier for oxfmt">Today: ESLint lints, Prettier formats</text>
+    <text x="20" y="304" class="ev-t-sm ev-t-muted" data-say="No candidate measured yet|incl. type-aware no-unsafe-* via tsgolint|152 stable + 11 nursery rules|the 98 + 34 are not carried over|to port; JS plugins are alpha|keep ESLint, add Oxlint when ready">No candidate measured yet</text>
+  </svg></figure></div>
+</div>
+</section>
+<header class="ev-part-head" id="decide"><p class="ev-eyebrow"><span class="ev-n">3</span>Decision · 3 options</p><h2 class="ev-part-title" id="decide-part-title">Which way to go</h2></header>
+<section aria-labelledby="decide-part-title" class="ev-tab-content" data-tab="decide" data-label="Decision" data-hint="3 options" data-part-title="Which way to go">
+<div class="ev-secs"><section class="ev-sec" id="decide-options" data-toc="Options"><p class="ev-text">Pick how much of the toolchain to move now; the effort figures are estimates, the rule and timing numbers were measured once on one machine.</p>
+<div class="ev-side ev-pick"><div><div class="ev-pick-cards" role="tablist" aria-label="Options" data-ev-anchor><button type="button" class="ev-pick-card" role="tab" id="decide-a-card" aria-controls="decide-a" aria-selected="true"><span class="ev-pick-title">A · Oxlint + oxfmt <span class="ev-chip ev-chip--accent">Recommended</span></span><span class="ev-pick-sum">Replace both tools; the migrator keeps 263 rules and both custom rules.</span><span class="ev-pick-chips"><span class="ev-chip ev-chip--ok">263 rules migrate</span><span class="ev-chip ev-chip--ok">lint 44.0 s → 5.3 s</span><span class="ev-chip ev-chip--risk">JS plugins are alpha</span></span></button><button type="button" class="ev-pick-card" role="tab" id="decide-b-card" aria-controls="decide-b" aria-selected="false"><span class="ev-pick-title">B · Biome</span><span class="ev-pick-sum">One package for lint and format, fastest of all, but 132 of 295 rules do not carry over.</span><span class="ev-pick-chips"><span class="ev-chip ev-chip--ok">lint 3.3 s</span><span class="ev-chip ev-chip--removed">132 rules lost</span><span class="ev-chip ev-chip--risk">ignores eslint-disable</span></span></button><button type="button" class="ev-pick-card" role="tab" id="decide-c-card" aria-controls="decide-c" aria-selected="false"><span class="ev-pick-title">C · oxfmt only, keep ESLint</span><span class="ev-pick-sum">The low-risk first step: replace Prettier, leave every lint rule where it is.</span><span class="ev-pick-chips"><span class="ev-chip ev-chip--ok">every ESLint rule</span><span class="ev-chip ev-chip--ok">format check 10.2 s → 2.3 s</span><span class="ev-chip ev-chip--risk">lint stays 44.0 s</span></span></button></div>
+<div class="ev-callout ev-callout--decision"><span>What would change this</span><div><ul><li>JS plugins gain type information, or react-x gets native Oxlint rules: A's main gap closes</li><li>Biome implements <code>no-unsafe-*</code> and the React Compiler rules, or honours <code>eslint-disable</code>: B becomes viable</li><li>ESLint with a warm <code>--cache</code> is fast enough day to day (unmeasured): lint speed stops mattering, so C is enough</li></ul></div></div></div>
+<div class="ev-stick"><div class="ev-pick-panel" role="tabpanel" id="decide-a" aria-labelledby="decide-a-card"><h3>A · Oxlint + oxfmt</h3><dl class="ev-pick-rows"><dt data-kind="ok">Keeps</dt><dd><ul><li>263 rules, incl. the type-aware <code>no-unsafe-*</code> family via tsgolint (Oxc's type-checking helper)</li><li>Both <code>local/*</code> rules, unchanged through a 2-line shim</li><li>All <code>eslint-disable</code> comments honoured (5 turn out unused)</li><li>Tailwind class sorting is built into oxfmt, which also formats Markdown and YAML</li></ul></dd><dt data-kind="removed">Loses</dt><dd><ul><li><code>react-x/no-leaked-conditional-rendering</code>: crashed on 190 files, must be switched off</li><li>3 path checks (<code>vi.mock</code>, <code>require</code>, <code>import()</code> types) until ported; Oxlint prints its default message</li><li>Bulk suppressions: <code>lint:baseline</code> goes, but <code>eslint-suppressions.json</code> is already <code>{}</code></li></ul></dd><dt data-kind="decision">Fix first</dt><dd><ul><li>Hand-fix the migrated config: drop the <code>includeRoles</code> option Oxlint rejects, pin <code>react.version</code> to 19.2.6, re-add the <code>test/e2e/**</code> testing-library ignore (unsupported inside overrides); on Windows set <code>OXLINT_TSGOLINT_PATH</code></li><li>Port the 3 lost selectors into the local plugin as a small rule</li><li>Add <code>.gitattributes</code> pinning LF, then one format commit</li></ul></dd><dt data-kind="risk">Risks</dt><dd><ul><li>JS plugins are alpha: pin exact versions; oxfmt is beta</li><li>tsgolint runs on TypeScript 7 (repo: 6.0.3): 1 new <code>no-unsafe-argument</code> that <code>tsc</code> does not report</li><li>1 new <code>import/no-named-as-default-member</code>, since <code>import/resolver</code> is not migrated</li></ul></dd><dt data-kind="neutral">Effort</dt><dd>~1–2 days (estimate): config fixes, one small rule, <code>.gitattributes</code>, scripts, CI, VS Code and AGENTS.md updates, one format commit</dd></dl><figure class="ev-code ev-code--wrap" data-file="eslint-rules/local-plugin.mts (new)" data-add="1-2"><pre><code>import { fileConventionsPlugin } from "./file-conventions.mts";
+export default fileConventionsPlugin;</code></pre></figure></div><div class="ev-pick-panel" role="tabpanel" id="decide-b" aria-labelledby="decide-b-card" hidden><h3>B · Biome</h3><dl class="ev-pick-rows"><dt data-kind="ok">Keeps</dt><dd><ul><li>163 of 295 rules (55 %): 152 stable and 11 nursery (Biome's unstable rules)</li><li>One package, one config; lint 3.3 s and format 0.6 s (format run was partial, CRLF errors)</li><li>Some type-aware rules through its own inference, without <code>tsc</code></li></ul></dd><dt data-kind="removed">Loses</dt><dd><ul><li>98 rules not implemented: 17 typescript-eslint incl. <code>no-unsafe-*</code>, 14 react-hooks incl. React Compiler rules, 33 react-x, 15 react, 8 import</li><li>34 rules from unknown plugins: testing-library 22, @next 10, both <code>local/*</code></li><li>Tailwind sorting only as a nursery rule with an unsafe fix; Markdown and YAML not formatted</li></ul></dd><dt data-kind="decision">Fix first</dt><dd><ul><li>Rewrite ~203 <code>eslint-disable</code> comments as <code>// biome-ignore …: reason</code></li><li>Hand-strip <code>eslint.config.mts</code> to <code>.mjs</code>: the migrator cannot read it</li><li>Correct <code>quoteStyle</code> and <code>semicolons</code> written by <code>biome migrate prettier</code></li><li>Try GritQL (Biome's plugin language) for the custom rules: not proven possible</li></ul></dd><dt data-kind="risk">Risks</dt><dd><ul><li>25 code files format differently from Prettier (+92/−58 lines)</li><li>Custom rules may have no equivalent at all</li></ul></dd><dt data-kind="neutral">Effort</dt><dd>~3–5 days (estimate): rewrite disables, fix migrator output, GritQL attempts</dd></dl></div><div class="ev-pick-panel" role="tabpanel" id="decide-c" aria-labelledby="decide-c-card" hidden><h3>C · oxfmt only, keep ESLint</h3><dl class="ev-pick-rows"><dt data-kind="ok">Keeps</dt><dd><ul><li>Every ESLint rule, plugin and custom rule</li><li>Tailwind sorting built in; 3 code files differ from Prettier output (9 files in all, the rest Markdown and HTML)</li></ul></dd><dt data-kind="removed">Loses</dt><dd><ul><li>No lint speed-up: 44.0 s without cache (a warm <code>--cache</code> was not measured)</li><li>Two toolchains remain: ESLint plus Oxc</li></ul></dd><dt data-kind="decision">Fix first</dt><dd><ul><li>Write <code>.oxfmtrc.json</code>: the migration drops <code>endOfLine: "auto"</code></li><li>Add <code>.gitattributes</code> pinning LF, or oxfmt flags 1,028 files on the CRLF checkout</li><li>Add a <code>format:check</code> script to CI and pre-push; one format commit</li></ul></dd><dt data-kind="risk">Risks</dt><dd><ul><li>oxfmt is beta</li><li><code>scripts/dev/compareNextBuilds.ts</code> still imports <code>prettier</code></li></ul></dd><dt data-kind="neutral">Effort</dt><dd>~half a day (estimate): <code>.oxfmtrc.json</code>, <code>.gitattributes</code>, format scripts, one format commit</dd></dl><figure class="ev-code ev-code--wrap" data-file=".oxfmtrc.json" data-add="2-7"><pre><code>{
+  "printWidth": 80, "tabWidth": 4, "useTabs": true,
+  "trailingComma": "all", "sortPackageJson": false,
+  "sortTailwindcss": { "functions": ["twMerge", "tw"] },
+  "ignorePatterns": ["package.json", "pnpm-workspace.yaml"]
+}</code></pre></figure></div></div></div>
+<details class="ev-more" id="decide-details" data-toc="How it was measured"><summary><span class="ev-more-what"><span data-kind="trace">How it was measured</span><span data-kind="list">Sources</span></span></summary><div class="ev-more-body"><div class="ev-group"><div class="ev-group-head" data-kind="trace"><h3>How it was measured</h3></div><ul><li>One machine (Windows 11, Node 24.21.0, 16 threads), single runs, on a <code>git archive</code> scratch copy of f0e33eb0.</li><li>Versions: ESLint 9.39.4, oxlint 1.87.0, oxlint-tsgolint 7.0.2004, oxfmt 0.72.0, Biome 2.5.15, Prettier 3.8.3.</li><li>ESLint: <code>eslint . --max-warnings=0</code> without cache, 44.0 s. Oxlint: <code>--type-aware</code> 5.3 s with 4 problems, after dropping the typed react-x rule (first run crashed at 17.4 s).</li><li>Biome lint ran on the migrated config and ignores <code>eslint-disable</code> comments: 246 errors and 159 warnings.</li><li>A second run on the same machine gave ESLint 47.3 s and Oxlint 4.75–4.92 s. Rule counts are not comparable across migrators (276 vs 295).</li><li>Not measured: ESLint with a warm <code>--cache</code>, and the effort figures (estimates).</li></ul></div><div class="ev-group"><div class="ev-group-head" data-kind="list"><h3>Sources</h3></div><ul><li><a href="https://oxc.rs/blog/2026-07-22-type-aware-linting-stable">Oxc: type-aware linting stable (tsgolint v7)</a></li><li><a href="https://oxc.rs/docs/guide/usage/linter/js-plugins.html">Oxc: JS plugins (alpha, no type info)</a></li><li><a href="https://oxc.rs/docs/guide/usage/linter/type-aware">Oxc: type-aware linting</a></li><li><a href="https://oxc.rs/blog/2026-02-24-oxfmt-beta">Oxc: oxfmt beta</a></li><li><a href="https://biomejs.dev/blog/biome-v2-5/">Biome 2.5</a></li><li><a href="https://biomejs.dev/linter/rules/use-sorted-classes/">Biome: useSortedClasses (nursery)</a></li></ul></div></div></details>
+</section></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

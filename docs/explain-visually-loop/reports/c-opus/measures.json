@@ -1,0 +1,26 @@
+{
+  "page": "runs/c-v2/20261013-075753-sonnet-facts/out/index.html",
+  "bytes": 104800,
+  "visible_words": 1196,
+  "sections": [
+    "story",
+    "decide"
+  ],
+  "chapters": 3,
+  "steps": 6,
+  "code_blocks": 5,
+  "tables": 0,
+  "chips": 11,
+  "toggles": 2,
+  "callouts": 1,
+  "side_panels": 2,
+  "visuals": 1,
+  "clips": 0,
+  "external_links": 9,
+  "literal_colours_in_fragment_styles": 0,
+  "layout_problems": [],
+  "page_height_desktop": 3649,
+  "page_height_phone": 6151,
+  "largest_step_gap_desktop": 108,
+  "pinned_panel_share_phone": 0.33
+}

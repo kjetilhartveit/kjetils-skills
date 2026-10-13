@@ -1,0 +1,153 @@
+{
+  "page": "runs/c-v2/20261013-075753-sonnet-facts/out/index.html",
+  "overall": 87.3,
+  "quality": 86.0,
+  "quality_basis": "checks + judge",
+  "speed": 85.5,
+  "economy": 95.3,
+  "checks": {
+    "score": 100.0,
+    "facts": {
+      "points": 40.0,
+      "max": 40,
+      "found": {
+        "names the Oxc formatter oxfmt": true,
+        "oxlint migrator keeps 263 rules": true,
+        "rule base 276 or 295": true,
+        "Biome keeps 163 (or 152) rules / about half": true,
+        "lint time compared in seconds": true,
+        "react-x typed rule crashes / must be dropped": true,
+        "type-aware no-unsafe rules via tsgolint": true,
+        "testing-library plugin": true,
+        "the two local custom rules": true,
+        "Biome ignores eslint-disable comments": true,
+        "low-risk path: oxfmt first, keep ESLint": true,
+        "formatting is not enforced today / drift": true,
+        "line endings / .gitattributes": true,
+        "JS plugins are alpha (risk)": true,
+        "effort sized per option": true,
+        "lost no-restricted-syntax path checks": true,
+        "what would change the recommendation": true,
+        "links to oxc.rs / biomejs.dev sources": true
+      },
+      "overclaims": []
+    },
+    "layout": {
+      "points": 30,
+      "max": 30,
+      "problems": []
+    },
+    "structure": {
+      "points": 30,
+      "max": 30,
+      "checks": {
+        "at most 4 chapters": 8,
+        "story with 4-9 steps": 5,
+        "decision chapter": 5,
+        "not thin (>= 900 words)": 4,
+        "no literal colours in fragments": 4,
+        "toggles name their contents": 4
+      }
+    }
+  },
+  "judge": {
+    "score": 78.5,
+    "model": "opus",
+    "runs": 1,
+    "cost_usd": 0.306,
+    "items": {
+      "headline": 8,
+      "accuracy": 8,
+      "evidence": 8,
+      "story": 6,
+      "decision": 9,
+      "concision": 8,
+      "clarity": 8,
+      "phone": 8,
+      "desktop": 8
+    },
+    "reasons": {
+      "headline": "The headline gives the answer, the 44.0 s → 5.3 s lint time and the cost on the Oxlint side (1 rule switched off, 3 path checks to port). The lede adds new information: the oxprettier name fix and Biome's 163 of 295. The key line adds format time and output drift. The headline leaves out the bigger risk, that Oxlint relies on JS plugins that are still alpha.",
+      "accuracy": "Almost everything matches facts.md: 263/276 versus 163/295 with each tool's own count labelled, the 98 + 34 breakdown, the crashed react-x rule, the 3 lost selectors, 3 versus 25 code files of output drift, the effort estimates and the triggers that would change the choice. There are small slips. It says 'tsc does not report' the new no-unsafe-argument, but the right comparison is typescript-eslint on TS 6. 'Oxlint … reads our ESLint config' skips the migrator step. The lint chart puts Biome's 3.3 s next to the others; a caption covers this, but the run had 405 diagnostics because Biome ignores eslint-disable comments.",
+      "evidence": "A collapsible 'How it was measured' section gives the machine, Node version, single runs, the git archive scratch copy, every tool version, the commands, ESLint without cache, the 17.4 s crash, the second run (47.3 s, 4.75–4.92 s) and says warm --cache was not measured. Six sources are named. Biome format is marked partial. It does not mention the warm OS file cache, and the method sits behind a toggle at the very bottom.",
+      "story": "Six short steps with one pinned bar graphic that changes: bars are empty at 'Today', then the Oxlint bar fills, then Biome's red loss segment appears, then a red 13-skipped sliver, then a 'First step' caption. But the story is mostly a rule-count comparison, not today → problem → change → result. The 44 s speed problem never shows up in the graphic. The two bars are the same length even though their totals differ (276 vs 295), and the last step only changes a text label.",
+      "decision": "Three options (A recommended, B Biome, C cautious oxfmt-only), each with Keeps, Loses, Fix-first, Risks and Effort. The fixes are concrete (includeRoles, react.version pin, .gitattributes, OXLINT_TSGOLINT_PATH). There is a 'What would change this' list and a 'Decide' line. Missing open decisions: whether to port the RuleTester tests or keep eslint, and whether to drop the leaked-rendering rule or wait.",
+      "concision": "About 1,100 words, and the answer is clear within the first screen. Some numbers are repeated: 44.0 s appears about 6 times, and 263 rules, 5.3 s and the tsgolint definition each appear 2–3 times across the headline, story, option cards and details. Nothing a decision needs is missing.",
+      "clarity": "Jargon is explained where it first appears: linter and formatter, tsgolint ('Oxc's type-checking helper'), JS plugins ('Oxc's alpha way to run ESLint plugins'), nursery ('Biome's unstable'), GritQL ('Biome's plugin language'). Real code is shown: the 2-line shim and .oxfmtrc.json. 'Type-aware' is never explained, and the lost selectors are only listed by name, not shown as code.",
+      "phone": "At 390 px the headline, hero bars and labels are readable and nothing overflows sideways. Mid-story the graphic stays pinned at the top (about 38% of the screen) with a 'Story · Oxlint' chapter bar and the current step card below it. The graphic's small grey captions are borderline small.",
+      "desktop": "Dark and light are both finished. The story graphic lines up with the active step, and the decision detail panel is level with option card A. There are large blank gaps between story steps, and at the first step the graphic's bars are empty placeholder boxes, which look unfinished. The 'Decide' pill is right-aligned and slightly detached from the line above it."
+    },
+    "factual_errors": [
+      "'tsgolint runs on TypeScript 7 (repo: 6.0.3): 1 new no-unsafe-argument that tsc does not report': facts say the new finding comes from tsgolint on TS 7 versus typescript-eslint on TS 6; tsc is the wrong thing to compare against (minor).",
+      "'Oxlint, Oxc's Rust linter, reads our ESLint config': the config is converted by @oxlint/migrate and needed 4 hand fixes; oxlint does not read eslint.config.mts directly (mild overclaim, partly corrected later on the page)."
+    ],
+    "verdict": "A strong decision page: an accurate headline with key numbers, three well-built options with concrete fixes, effort and triggers that would change the choice, and an honest method section. Its biggest weakness is the story. It is a rule-count bar chart that barely changes, the bars are not to scale across tools, and it never shows the speed problem driving the move.",
+    "scores_per_run": [
+      78.5
+    ]
+  },
+  "speed_parts": {
+    "score": 85.5,
+    "parts": {
+      "output_tokens_total": {
+        "value": 12216,
+        "score": 83.2,
+        "weight": 0.45
+      },
+      "wall_s": {
+        "value": 92,
+        "score": 87.4,
+        "weight": 0.2
+      },
+      "num_turns": {
+        "value": 13,
+        "score": 74.2,
+        "weight": 0.1
+      },
+      "total_cost_usd": {
+        "value": 0.3418034999999999,
+        "score": 86.9,
+        "weight": 0.1
+      },
+      "input_tokens_total": {
+        "value": 350532,
+        "score": 96.3,
+        "weight": 0.15
+      }
+    }
+  },
+  "economy_parts": {
+    "score": 95.3,
+    "parts": {
+      "words": 100.0,
+      "bytes": 96.0,
+      "chapters": 90
+    }
+  },
+  "run": {
+    "label": "c-v2",
+    "model": "sonnet",
+    "mode": "facts",
+    "wall_s": 92,
+    "num_turns": 13,
+    "total_cost_usd": 0.3418034999999999,
+    "output_tokens_total": 12216,
+    "thinking_tokens_total": 4078,
+    "input_tokens_total": 350532,
+    "est_minutes_at_15_tok_s": 13.6
+  },
+  "page_measures": {
+    "visible_words": 1196,
+    "bytes": 104800,
+    "sections": [
+      "story",
+      "decide"
+    ],
+    "steps": 6,
+    "code_blocks": 5,
+    "tables": 0,
+    "chips": 11,
+    "toggles": 2,
+    "layout_problems": []
+  }
+}

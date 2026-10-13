@@ -1,0 +1,109 @@
+{
+  "label": "c-v2",
+  "model": "sonnet",
+  "mode": "facts",
+  "skills_dir": "C:/git/kjetils-skills-wt/opt-c-opus/skills",
+  "project": "C:/git/fantasy-snooker-evbench",
+  "started": "2026-10-13T07:57:53",
+  "wall_s": 92,
+  "max_budget_usd": 15.0,
+  "max_turns": 200,
+  "exit_code": 0,
+  "timed_out": false,
+  "is_error": false,
+  "terminal_reason": "completed",
+  "num_turns": 13,
+  "duration_ms": 88100,
+  "duration_api_ms": 80538,
+  "total_cost_usd": 0.3418034999999999,
+  "output_tokens_total": 12216,
+  "thinking_tokens_total": 4078,
+  "input_tokens_total": 350532,
+  "est_minutes_at_15_tok_s": 13.6,
+  "usage": {
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 47325,
+    "cache_read_input_tokens": 303195,
+    "output_tokens": 12216,
+    "output_tokens_details": {
+      "thinking_tokens": 4078
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 47325,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 297,
+        "cache_read_input_tokens": 69581,
+        "cache_creation_input_tokens": 467,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 467
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "model_usage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 12,
+      "outputTokens": 12216,
+      "cacheReadInputTokens": 303195,
+      "cacheCreationInputTokens": 47325,
+      "webSearchRequests": 0,
+      "costUSD": 0.3418034999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 4078,
+      "canonicalModel": "claude-sonnet-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "tool_calls": {
+    "Read": 6,
+    "Write": 4,
+    "Edit": 1,
+    "Bash": 1
+  },
+  "subagent_tool_calls": {},
+  "assistant_messages": 16,
+  "text_chars": 747,
+  "thinking_chars": 0,
+  "final_text": "Switch to Oxlint plus oxfmt: lint drops from 44.0 s to 5.3 s, with 1 rule switched off and 3 path checks to port. There is no \"oxprettier\"; Oxc's formatter is oxfmt (beta).\n\n- **Biome:** it keeps only 163 of 295 rules and loses the custom rules.\n- **Low-risk first step:** replace Prettier with oxfmt and keep ESLint.\n- **Format check:** none exists in CI today, so any option needs one added.\n\nPage: `C:/git/kjetils-skills-wt/opt-c-opus/docs/explain-visually-loop/runs/c-v2/20261013-075753-sonnet-facts/out/index.html`. It was built from the supplied facts only and passed the automated `check.py`. The effort estimates are estimates, and a warm ESLint `--cache` run was not measured.",
+  "index_html": true
+}
