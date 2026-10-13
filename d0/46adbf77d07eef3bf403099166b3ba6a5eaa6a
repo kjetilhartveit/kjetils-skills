@@ -1,0 +1,33 @@
+skills/explainer-kit/assets/check.py
+  s_07e33d71035f6c::t_112bb83c28cb0f 117
+skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_07e33d71035f6c::t_112bb83c28cb0f 165-166
+skills/explain-visually/SKILL.md
+  s_07e33d71035f6c::t_112bb83c28cb0f 49-50,55,63-64
+skills/explain-with-storytelling/SKILL.md
+  s_07e33d71035f6c::t_112bb83c28cb0f 22-28
+skills/explainer-kit/assets/kit.css
+  s_07e33d71035f6c::t_112bb83c28cb0f 571,579,620,626
+skills/explainer-kit/assets/preview.py
+  s_07e33d71035f6c::t_112bb83c28cb0f 18-19,21,66-82,84
+skills/explainer-kit/assets/kit.js
+  s_07e33d71035f6c::t_112bb83c28cb0f 599-601,648-650
+skills/explain-with-preview/SKILL.md
+  s_07e33d71035f6c::t_112bb83c28cb0f 28-31,34-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d046adbf77d07eef3bf403099166b3ba6a5eaa6a",
+  "prompts": {},
+  "sessions": {
+    "s_07e33d71035f6c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eb512366-d6aa-4c92-a0b4-1cba591f6ee4",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
