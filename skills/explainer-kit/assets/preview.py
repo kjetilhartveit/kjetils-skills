@@ -13,10 +13,12 @@ so it needs no CSS or script of its own. Text fields may contain inline HTML (<b
   "options": [
     {"id": "a", "title": "A · Oxlint + oxfmt", "recommended": true,     ("selected": true picks the start card;
      "summary": "One line.",                                             default: recommended, else the first)
-     "chips": [["ok", "263 rules kept"], ["risk", "JS plugins alpha"]],  chip kinds: new removed risk decision ok accent neutral
+     "chips": [["ok", "263 rules migrate"], ["risk", "JS plugins alpha"]],  chip kinds: new removed risk decision ok accent neutral
      "rows": [{"kind": "ok", "label": "Keeps", "items": ["…", "…"]},     row kinds: ok new removed risk decision neutral;
               {"kind": "risk", "label": "Risks", "items": ["…"]}],       use the same labels in every option
-     "effort": "~1–2 days: …"}
+     "effort": "~1–2 days: …",
+     "code": {"file": "eslint-rules/local-plugin.mts", "add": "1-2",    optional: ≤ 8 real lines this option adds or
+              "lines": ["import { x } from \"./x.mts\";", "export default x;"]}}   changes (add/del/hl: displayed line ranges)
   ],
   "flip": ["What would change the recommendation …"],                  optional, shown as a callout under the cards
   "details": [{"kind": "list", "title": "Sources", "html": "<ul>…</ul>"}]   optional ev-more toggle, one group each
@@ -70,11 +72,21 @@ def panel_html(name: str, option: dict, selected: bool) -> str:
         rows.append(f'<dt data-kind="{kind}">{row["label"]}</dt><dd><ul>{items}</ul></dd>')
     if option.get("effort"):
         rows.append(f'<dt data-kind="neutral">Effort</dt><dd>{option["effort"]}</dd>')
+    code = code_html(option["code"]) if option.get("code") else ""
     hidden = "" if selected else " hidden"
     return (
         f'<div class="ev-pick-panel" role="tabpanel" id="{name}-{option["id"]}" aria-labelledby="{name}-{option["id"]}-card"{hidden}>'
-        f'<h3>{option["title"]}</h3><dl class="ev-pick-rows">{"".join(rows)}</dl></div>'
+        f'<h3>{option["title"]}</h3><dl class="ev-pick-rows">{"".join(rows)}</dl>{code}</div>'
     )
+
+
+def code_html(code: dict) -> str:
+    """A short real snippet as a wrapping kit code block (no sideways scroll in the narrow panel)."""
+    lines = code["lines"] if isinstance(code.get("lines"), list) else str(code.get("text", "")).splitlines()
+    marks = "".join(f' data-{key}="{attr(str(code[key]))}"' for key in ("add", "del", "hl") if code.get(key))
+    file = f' data-file="{attr(code["file"])}"' if code.get("file") else ""
+    return (f'<figure class="ev-code ev-code--wrap"{file}{marks}><pre><code>'
+            f'{html.escape(chr(10).join(lines), quote=False)}</code></pre></figure>')
 
 
 def flip_html(flip: list) -> str:
@@ -118,9 +130,10 @@ def build(data: dict) -> str:
         f'<section class="ev-tab-content" data-tab="{name}" data-label="{attr(data.get("label", "Decision"))}" '
         f'data-hint="{attr(data.get("hint", f"{len(options)} options"))}" data-part-title="{attr(data["title"])}">\n'
         f'<div class="ev-secs"><section class="ev-sec" id="{name}-options" data-toc="Options">{lede}\n'
-        f'<div class="ev-side ev-pick"><div><div class="ev-pick-cards" role="tablist" aria-label="Options" data-ev-anchor>{cards}</div></div>\n'
+        f'<div class="ev-side ev-pick"><div><div class="ev-pick-cards" role="tablist" aria-label="Options" data-ev-anchor>{cards}</div>\n'
+        f'{flip_html(data.get("flip", []))}</div>\n'
         f'<div class="ev-stick">{panels}</div></div>\n'
-        f'{flip_html(data.get("flip", []))}\n{details_html(name, data.get("details", []))}\n'
+        f'{details_html(name, data.get("details", []))}\n'
         f'</section></div>\n</section>\n'
     )
 

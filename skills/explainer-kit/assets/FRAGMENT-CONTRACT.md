@@ -147,7 +147,7 @@ Decision (options) and before/after chapters are generated, with no HTML, CSS or
  "lede": "One sentence framing the question.",
  "options": [
    {"id": "a", "title": "A · Option name", "recommended": true, "summary": "One line.",
-    "chips": [["ok", "263 rules kept"], ["risk", "JS plugins alpha"]],
+    "chips": [["ok", "263 rules migrate"], ["risk", "JS plugins alpha"]],
     "rows": [{"kind": "ok", "label": "Keeps", "items": ["…"]},
              {"kind": "removed", "label": "Loses", "items": ["…"]},
              {"kind": "decision", "label": "Fix first", "items": ["…"]},

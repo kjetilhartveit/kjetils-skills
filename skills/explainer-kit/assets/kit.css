@@ -536,7 +536,7 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-visual > svg { display: block; width: 100%; height: auto; }
 
 /* Side-by-side: text on the left, a sticky panel (.ev-stick) on the right. At rest the panel is centred on the
-   first text box (the column's first child, or its [data-ev-anchor] element); while scrolling it sticks in the
+   first text box (the column's first child, or its [data-ev-anchor] element), or top-aligned with it when taller; while scrolling it sticks in the
    vertical centre of the viewport below the top bar, so both arrive in the middle together.
    kit.js sets --ev-stick-h (panel height) and the alignment margins; --ev-sticky-top is the top bar height.
    Below 900px the columns stack and the panel is no longer sticky. */
@@ -568,7 +568,9 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 /* Story pin (.ev-side--pin): spaces the steps so each one can reach the middle. Below 900px the panel moves
    above the steps and sticks under the top bar, capped at 42% of the screen (its SVG scales down to fit), and
    the steps scroll under it; EV.steps then reads the step below the pinned panel. */
-.ev-side--pin > :not(.ev-stick) { display: flex; flex-direction: column; gap: 12vh; padding-bottom: 30vh; }
+/* Bottom padding of half the panel: the panel stays in view until the last step reaches the middle, and no
+   longer, so the story doesn't end in an empty band. */
+.ev-side--pin > :not(.ev-stick) { display: flex; flex-direction: column; gap: 12vh; padding-bottom: calc(var(--ev-stick-h, 50vh) / 2); }
 @media (max-width: 899px) {
   .ev-side--pin > .ev-stick {
     order: -1; position: sticky; top: var(--ev-sticky-top, 0px); z-index: 3; max-height: 42vh; overflow: hidden;
@@ -615,6 +617,16 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-pick-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-weight: 600; color: var(--ev-fg); }
 .ev-pick-sum { font-size: var(--ev-fs-sm); color: var(--ev-muted); }
 .ev-pick-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+/* The cards column also holds the "What would change this" callout, so it fills the space beside a tall panel.
+   The panel is never a scroll box: when it is taller than the cards it simply scrolls with the page. */
+.ev-pick > :first-child { display: flex; flex-direction: column; gap: var(--ev-s5); }
+.ev-pick > .ev-stick { max-height: none; overflow: visible; }
+.ev-pick .ev-callout { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 899px) {
+  .ev-pick > :first-child { display: contents; }
+  .ev-pick > .ev-stick { order: 1; }
+  .ev-pick .ev-callout { order: 2; }
+}
 .ev-pick-panel {
   display: flex; flex-direction: column; gap: var(--ev-s4); padding: var(--ev-s5);
   border: 1px solid var(--ev-line-strong); border-radius: var(--ev-radius); background: var(--ev-surface);
@@ -814,6 +826,9 @@ b, strong { font-weight: 600; color: var(--ev-fg); }
 .ev-ln-n { flex: none; width: 3.4em; padding-right: .9em; text-align: right; color: var(--ev-faint); opacity: .7; user-select: none; }
 .ev-ln-g { flex: none; width: 1.3em; text-align: center; color: var(--ev-faint); user-select: none; font-weight: 700; }
 .ev-ln-c { flex: 1; white-space: pre; padding-right: 20px; }
+/* Wrapping code (.ev-code--wrap): long lines wrap instead of scrolling sideways; for short snippets in narrow panels */
+.ev-code--wrap pre > code { min-width: 0; }
+.ev-code--wrap .ev-ln-c { min-width: 0; padding-right: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .ev-ln.is-add { background: var(--ev-new-soft); }
 .ev-ln.is-add .ev-ln-g, .ev-ln.is-add .ev-ln-n { color: var(--ev-new); opacity: 1; }
 .ev-ln.is-del { background: var(--ev-risk-soft); }

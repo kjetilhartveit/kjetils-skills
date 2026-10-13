@@ -629,7 +629,7 @@
   /* Mirrors EV.stickyTop() into CSS so sticky panels (.ev-stick) can sit below the top bar without script. */
   function syncStickyTop() { root.style.setProperty("--ev-sticky-top", EV.stickyTop() + "px"); }
 
-  /* ev-side: tell CSS the panel's height (for the centred sticky top) and centre the panel on the first text
+  /* ev-side: tell CSS the panel's height (for the centred sticky top) and line the panel up with the first text
      box at rest, by pushing down whichever column starts higher. Re-runs whenever either side changes size
      (also when a hidden tab is shown). */
   function initSide(side) {
@@ -640,10 +640,12 @@
     function align() {
       var h = stick.offsetHeight;
       if (!h) return;                       // hidden tab
-      stick.style.setProperty("--ev-stick-h", h + "px");
+      side.style.setProperty("--ev-stick-h", h + "px");   // read by .ev-stick and the story column
       var stacked = getComputedStyle(stick).position !== "sticky";
       var a = anchor.getBoundingClientRect(), t = text.getBoundingClientRect();
-      var diff = stacked ? 0 : Math.round(a.top - t.top + a.height / 2 - h / 2);
+      /* Centre the panel on the anchor when it is shorter; align their tops when it is taller, so the panel
+         never starts above the first text box. */
+      var diff = stacked ? 0 : Math.round(a.top - t.top + Math.max(0, (a.height - h) / 2));
       stick.style.setProperty("--ev-side-shift", Math.max(0, diff) + "px");
       text.style.setProperty("--ev-side-shift", Math.max(0, -diff) + "px");
     }
