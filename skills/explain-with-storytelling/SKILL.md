@@ -31,7 +31,7 @@ scroll under it. Best for the big picture before the details.
 ## Build it from this template (no script, no layout CSS)
 
 Copy it and change the labels, values and steps. It is a counter, to-scale rows whose empty tracks show from
-step 1, and a caption line that changes every step. Bar width = value ÷ largest × 300 (the track is 300 wide).
+step 1, and a caption line that changes every step. Bar width = value ÷ largest × 240 (the track is 240 wide; values sit right of it).
 
 ```html
 <section class="ev-tab-content" data-tab="story" data-label="Story" data-hint="6 steps" data-part-title="…">
@@ -45,12 +45,12 @@ step 1, and a caption line that changes every step. Bar width = value ÷ largest
     <text x="20" y="92" class="ev-t-muted" data-say="Build today (Webpack)|…|…|…|…|…">Build today (Webpack)</text>
     <!-- row: label, empty track (always shown), bar (shown from its step), value right-aligned -->
     <text x="20" y="139">Webpack</text>
-    <rect x="100" y="122" width="300" height="24" rx="4" class="ev-f-sunken"/>
-    <rect x="100" y="122" width="300" height="24" rx="4" class="ev-f-line" data-hl="1,2"/>
+    <rect x="100" y="122" width="240" height="24" rx="4" class="ev-f-sunken"/>
+    <rect x="100" y="122" width="240" height="24" rx="4" class="ev-f-line" data-hl="1,2"/>
     <text x="420" y="139" text-anchor="end" class="ev-t-b">38 s</text>
     <text x="20" y="183">Vite</text>
-    <rect x="100" y="166" width="300" height="24" rx="4" class="ev-f-sunken"/>
-    <rect x="100" y="166" width="47" height="24" rx="4" class="ev-f-acc" data-on="3-" data-hl="3"/>
+    <rect x="100" y="166" width="240" height="24" rx="4" class="ev-f-sunken"/>
+    <rect x="100" y="166" width="38" height="24" rx="4" class="ev-f-acc" data-on="3-" data-hl="3"/>
     <text x="420" y="183" text-anchor="end" class="ev-t-b" data-on="3-">6 s</text>
     <!-- … one row per thing compared, 44 px apart … -->
     <line x1="20" y1="252" x2="420" y2="252" class="ev-wire"/>
