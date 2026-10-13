@@ -1,0 +1,35 @@
+skills/explain-with-preview/SKILL.md
+  s_ed05da56bfc65f::t_90f4c110322fff 9-10,15,27-29,32-37,47-49
+skills/explainer-kit/assets/preview.py
+  s_ed05da56bfc65f::t_a1e815c210d4a9 86
+  s_ed05da56bfc65f::t_bfec037cd8d99d 19-21,78,82-85,87-92
+skills/explain-with-storytelling/SKILL.md
+  s_ed05da56bfc65f::t_348e6a8ff5ac94 19-21,23-27,30,37-38,40,52-54,57-58,61
+skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_ed05da56bfc65f::t_def50727856032 157,159-160
+  s_ed05da56bfc65f::t_d2e52aed8e9177 89,101-102,112,156,164-165
+skills/explain-visually/SKILL.md
+  s_ed05da56bfc65f::t_cbe08e9d5daae4 9,19-33,41,48-49,59,61-65,73-75,79-81,83,85,89-91
+skills/explain-with-code-walkthrough/SKILL.md
+  s_ed05da56bfc65f::t_01f2a88b3bb0ff 8-10,15,19-22,26-52
+skills/explainer-kit/SKILL.md
+  s_ed05da56bfc65f::t_3dbc01b9ec771b 27-28
+skills/explainer-kit/assets/kit.css
+  s_ed05da56bfc65f::t_2e0688bf8674bc 585,637-639
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4c8042e4d3969a7be0f22caa21e2226efb138aa7",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
