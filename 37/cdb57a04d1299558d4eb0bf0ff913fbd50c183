@@ -1,0 +1,27 @@
+skills/explain-visually/SKILL.md
+  s_ed05da56bfc65f::t_9872a19498ae89 26-27,49-50
+skills/explain-with-storytelling/SKILL.md
+  s_ed05da56bfc65f::t_7709777fbf283f 52
+skills/explainer-kit/assets/kit.css
+  s_ed05da56bfc65f::t_e1b03ed68c36d1 755-757
+skills/explainer-kit/assets/preview.py
+  s_ed05da56bfc65f::t_5859feac4e7e91 2-5,107-109,158-160,184,247,251-259,265
+skills/explainer-kit/assets/walkthrough.py
+  s_ed05da56bfc65f::t_e21010ba62c004 31,63,103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "37cdb57a04d1299558d4eb0bf0ff913fbd50c183",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
