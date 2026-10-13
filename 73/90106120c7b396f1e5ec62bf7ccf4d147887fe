@@ -1,0 +1,26 @@
+skills/explainer-kit/assets/preview.py
+  s_ed05da56bfc65f::t_99145ae1a6e586 133-134,136
+  s_ed05da56bfc65f::t_0dec8c6cacdf53 16,19-21,75,79,83-91
+skills/explainer-kit/assets/FRAGMENT-CONTRACT.md
+  s_ed05da56bfc65f::t_442a2316f91d0a 150
+skills/explainer-kit/assets/kit.css
+  s_ed05da56bfc65f::t_7b129d9e2c260a 539,571-573,620-629,829-831
+skills/explainer-kit/assets/kit.js
+  s_ed05da56bfc65f::t_b25f7111532392 632,643,646-648
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7390106120c7b396f1e5ec62bf7ccf4d147887fe",
+  "prompts": {},
+  "sessions": {
+    "s_ed05da56bfc65f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab5701d2-4c61-4143-8461-7bbb3103ac90",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
