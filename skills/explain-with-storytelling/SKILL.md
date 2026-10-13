@@ -20,8 +20,11 @@ scroll under it. Best for the big picture before the details.
   few words in the same sentence ("tsgolint, Oxc's type-checking helper,").
 - An arc: the situation today → what it costs → the change → the result → the catch → what to do first.
 - **One graphic** (one SVG) that evolves through all steps, and **every step changes something visible** on it
-  (a bar appears, a value turns red, the counter moves, the caption changes). Not a dashboard of every fact at once,
-  and not a different picture per step.
+  (a bar appears, a value turns red, the counter moves, and the caption line always says what this step shows).
+  Not a dashboard of every fact at once, and not a different picture per step.
+- **Don't redraw the hero.** The overview already shows the headline numbers; the story shows the thing they are
+  about, and draws the catch on it: e.g. one bar per option split into carried over / lost / to fix, or the
+  toolchain as boxes that get swapped one by one, with the broken part turning red or struck through.
 - It **fills its panel from step 1**: draw the whole frame (labels, empty tracks, axis) at rest and fill it in as the
   story goes, so there is never a small drawing in a large empty panel.
 - To scale and honest: bars on one scale share a unit and a base (seconds with seconds; counts out of different
@@ -42,7 +45,7 @@ step 1, and a caption line that changes every step. Bar width = value ÷ largest
   </div>
   <div class="ev-stick"><figure class="ev-visual"><svg class="ev-svg" viewBox="0 0 440 320" role="img" aria-label="…">
     <text x="20" y="62" class="ev-t-num" data-say="38 s||6 s|4 s||6 s">38 s</text>
-    <text x="20" y="92" class="ev-t-muted" data-say="Build today (Webpack)|…|…|…|…|…">Build today (Webpack)</text>
+    <text x="20" y="92" class="ev-t-muted" data-say="Build today (Webpack)|step 2 caption|…|…|…|…">Build today (Webpack)</text>  <!-- one caption per step -->
     <!-- row: label, empty track (always shown), bar (shown from its step), value right-aligned -->
     <text x="20" y="139">Webpack</text>
     <rect x="100" y="122" width="240" height="24" rx="4" class="ev-f-sunken"/>

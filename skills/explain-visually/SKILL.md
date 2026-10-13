@@ -63,7 +63,8 @@ code the reader would change, ≤ 8 lines), and one line per chapter. Chapters:
 
 - Read `explainer-kit/assets/FRAGMENT-CONTRACT.md` and the chapter skills you use, all in one turn. The contract
   is the whole API: **never read `kit.css`, `kit.js`, `assemble.py` or `SCRIPTS-AND-TABS.md`** for this page.
-- Write the chapters yourself, one file each, in order. Don't start subagents for a page this size.
+- Write the chapters yourself, one file each, in order, each with the Write tool (never a shell heredoc: one
+  stray quote fails the whole command and every file has to be written again). Don't start subagents for a page this size.
 - Use kit components as they are; no new themes, fonts or components, and no layout CSS of your own.
 - Show the real snippet from your plan as the recommended option's `code` in the decision JSON (and the cautious
   option's, if it changes config), not as a chapter of its own.
