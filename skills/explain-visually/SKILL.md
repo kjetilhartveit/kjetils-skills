@@ -25,17 +25,17 @@ The look comes from the `explainer-kit` skill; each chapter follows its `explain
 - The user asks for a visual explanation, an explainer or "explain this visually".
 - Explaining a code change, a proposal, a plan or an architecture decision so the user can make informed decisions.
 
-## 1. Gather the facts into `facts.md`
+## 1. Gather/research information/facts into `facts.md`
 
 - If a facts file already exists (e.g. the task gives you one), it is your source of truth: skip to step 2.
-- Otherwise append each fact to `facts.md` in the working folder **as you find it**, one line with its source
-  (`file:line`, link, or the command you ran). Don't restate facts in your thinking; write them down once.
-- Get numbers from commands (`grep -c`, `jq`, a timed run), not by counting by hand.
-- Measure on the real repo when it is cheap (a scratch copy or worktree, never the repo itself). Note method and
-  versions. Never stretch one measurement into "every" or "all".
-- Budget: at most 3 web searches and 3 page fetches; stop when every claim you plan to make has a source.
-- Note what the user must decide, the effort per option, the risks with their fixes, and what would change the
-  recommendation.
+- Research the facts/topics using up to 3 concurrent subagents.
+  - Output each fact; one line with its source (`file:line`, link, or the command you ran). Don't restate facts in your thinking; write them down once.
+  - Get numbers from commands (`grep -c`, `jq`, a timed run), not by counting by hand.
+  - Measure on the real repo when it is cheap (a scratch copy or worktree, never the repo itself). Note method and
+    versions. Never stretch one measurement into "every" or "all".
+  - Budget: stop when every claim you plan to make has a source.
+- You, as an orchestrator, combines the research into `facts.md`.
+- Note what the user must decide, the effort per option, the risks with their fixes, and what would change the recommendation.
 
 ## 2. Plan the page (no separate brief)
 
@@ -43,12 +43,12 @@ Write the plan as the first lines of `notes.md` (≤ 15 lines): the one-sentence
 key numbers (each gets **one** home on the page), the 4–8 terms to gloss, the one real snippet to show (config or
 code the reader would change, ≤ 8 lines), and one line per chapter. Chapters:
 
-| Chapter  | Built with                                 | Section  | When                                                   |
-| -------- | ------------------------------------------ | -------- | ------------------------------------------------------ |
-| Overview | this skill (kit overview)                  | —        | always                                                 |
-| Story    | `explain-with-storytelling`                | `story`  | always: 5–7 steps, one evolving graphic                |
-| Code     | `explain-with-code-walkthrough`            | `code`   | only when the change *is* code the reader must see     |
-| Decision | `explain-with-preview`, options (JSON)     | `decide` | when the user has something to decide                  |
+| Chapter  | Built with                             | Section  | When                                               |
+| -------- | -------------------------------------- | -------- | -------------------------------------------------- |
+| Overview | this skill (kit overview)              | —        | always                                             |
+| Story    | `explain-with-storytelling`            | `story`  | always: 5–7 steps, one evolving graphic            |
+| Code     | `explain-with-code-walkthrough`        | `code`   | only when the change _is_ code the reader must see |
+| Decision | `explain-with-preview`, options (JSON) | `decide` | when the user has something to decide              |
 
 - At most **3 chapters** after the overview. Fragility, dependencies and complexity go into the decision options'
   rows (keeps / loses / fix first / risks), not into chapters of their own. A separate before/after chapter
