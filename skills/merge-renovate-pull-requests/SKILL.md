@@ -23,25 +23,6 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
 
 - eslint / eslint monorepo should not be updated to >= v10 yet because they haven't patched a bug.
 
-## Dependency specific update details:
-
-### TypeScript v6
-
-- `tsconfig.json`:
-  - Set `module` to `esnext`. `moduleResolution` should probably be `bundler`.
-  - Set `target` to `esnext` (we are a greenfield project, so we can use the latest features).
-  - `lib`:
-    - We may add `esnext` to the list (so we can access new APIs like Temporal).
-    - `dom.iterable` is now included in `dom`, so if we're already using `dom` then we don't need to add `dom.iterable` to the list.
-  - `types` no longer include all libraries in `node_modules/@types` so we should make sure `node` is added to the list. If we get errors about missing types, then we might have to add missing types to the list.
-  - `baseUrl` can be removed in 99% of instances, especially if it's `.` (a single dot).
-  - `esModuleInterop` and `allowSyntheticDefaultImports` are now always true, so these can probably be removed.
-  - `noUncheckedSideEffectImports` now defaults to true, so this can probably be removed.
-- `module` syntax now yields an error, we should rather use `namespace`. Note that ambient module declaration form is still fully acceptable.
-- Make sure that VSCode is using the TypeScript version of the workspace. `.vscode/settings.json` should have `typescript.tsdk` set to the path of the TypeScript version of the workspace (e.g. `"typescript.tsdk": "node_modules\\typescript\\lib"`).
-- Blog post announcing TypeScript 6.0: https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/
-  - You may read more about the changes in the blog post if needed.
-
 ## Adding logs of agent merges:
 
 1. When we want to log agent merges we append the following information to `AGENT_MERGE.md` (in the root folder of the repo).
