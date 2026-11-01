@@ -1,0 +1,19 @@
+skills/explain-visually/SKILL.md
+  s_a320fde5e6df81::t_0b16a60e54287a 87-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a01c04e7d75e0e5cfaa73c5859d56e00b9299044",
+  "prompts": {},
+  "sessions": {
+    "s_a320fde5e6df81": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a31be4be-afca-4b19-875e-06279963abb2",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
