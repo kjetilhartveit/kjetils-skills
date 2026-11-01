@@ -84,5 +84,22 @@ python <kit>/assets/check.py index.html
 - Run `check.py` once. Fix only the problems it lists, run it once more, then stop. Don't take or study
   screenshots to hunt for other issues and don't write your own browser scripts.
 - Read your page text once against `facts.md`: counts, names, no "every/all" the facts don't support.
-- Publish the single page as an artifact (unless told to just write the file). Reply in at most 5 lines: the
-  answer, the page path, and anything unchecked.
+- Publish the single page as an artifact (unless told to just write the file), and see below if you have no `Artifact`
+  tool. Reply in at most 5 lines: the answer, the page path, and anything unchecked.
+
+### Publishing without the `Artifact` tool
+
+Claude Code leaves the tool out of Agent SDK sessions (T3 Code, for one) and `claude -p` unless
+`CLAUDE_CODE_ARTIFACT=1` is set. Any session with a shell can publish through a child run that has it set:
+
+```bash
+CLAUDE_CODE_ARTIFACT=1 CLAUDE_CODE_ARTIFACT_AUTO_OPEN=0 claude -p \
+  "Publish the existing file <folder>/index.html with the Artifact tool. Don't edit it. Reply with only its URL." \
+  --model claude-haiku-5-5 --tools Artifact,Read --allowedTools Artifact,Read --strict-mcp-config \
+  --add-dir "<folder>" < /dev/null
+```
+
+- Use absolute paths with forward slashes. Without `Read` in both lists the publish is refused.
+- To update a page, start the prompt with `Update <URL> by publishing the existing file ...`, or a new artifact is made.
+- It needs `claude` signed in to claude.ai; API keys can't publish. If it fails, reply with the page path and say it
+  wasn't published. Claude Docs and T3's `html_render` are no substitutes: neither keeps the scroll-driven story.
