@@ -1,0 +1,19 @@
+skills/merge-renovate-pull-requests/SKILL.md
+  s_31fe1f8a1f791e::t_92585ffc667020 66,78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8336fa01a7dd79a9f10c9074c3e9629197105003",
+  "prompts": {},
+  "sessions": {
+    "s_31fe1f8a1f791e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae130efe-b14a-4f03-9c56-ce1900426e6f",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
