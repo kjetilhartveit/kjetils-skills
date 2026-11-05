@@ -63,6 +63,7 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
 ## 1. Processing open pull requests where all checks passed:
 
 1. Merge in open pull requests (by renovatebot) where all checks have passed.
+   - Merge them into the agent-merge branch locally with git (`git fetch origin` and `git merge origin/<renovate-branch>`), then push the branch. Never change the base branch of a Renovate PR and never merge or close it on GitHub; Renovate closes it once its changes reach `main`.
 2. Install latest package versions (with e.g. `pnpm install`).
    - Make sure we are using the latest transitive dependencies in case there are merge conflicts.
 3. Run type checking, linting and build. If any of them fails, then we should fix them before proceeding.
@@ -74,7 +75,7 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
 
 1. We should process open pull requests where any checks have failed one by one.
 2. For each pull request with any failed checks (by renovatebot):
-   1. Merge in the pull request.
+   1. Merge in the pull request locally with git, as in section 1.
    2. Install latest package versions (with e.g. `pnpm install`).
       - Make sure we are using the latest transitive dependencies in case there are merge conflicts.
    3. Run type checking, linting and build. If any of them fails, then we should fix them before proceeding.
