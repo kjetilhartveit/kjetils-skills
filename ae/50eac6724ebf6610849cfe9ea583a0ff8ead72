@@ -1,0 +1,14 @@
+skills/merge-renovate-pull-requests/SKILL.md
+  h_ea837308011c6c 65,77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ae50eac6724ebf6610849cfe9ea583a0ff8ead72",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
