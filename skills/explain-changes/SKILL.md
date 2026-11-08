@@ -1,6 +1,6 @@
 ---
 name: explain-changes
-description: Use when the user asks to explain changes or code changes, or when handing changes to them for review, i.e. code on a branch, files outside a repo (scripts, config, moved folders), scheduled tasks or integration commands, to build one review page from git, file snapshots and recorded commands instead of from memory.
+description: Use when the user asks to explain changes (code changes or any other changes).
 ---
 
 # Explain changes
@@ -12,23 +12,21 @@ says which parts are yours.
 
 ## Use this skill when
 
-- The user asks to explain changes or code changes, or to see or check what you changed.
-- You hand work back to the user and it changed something: a repo, files outside a repo, a scheduled task, an integration.
-- Before you change anything that git doesn't track, so there's a "before" to compare with.
+- Use when the user asks to explain changes (code changes or any other changes).
+- Check changes you made: a repo, files outside a repo, a scheduled task, an integration.
 
-This isn't `explain-visually`. That one explains a decision or a design in a story; this one shows the changes
-themselves, quickly, with the diff as the main thing.
+This isn't `explain-visually`. That one explains a decision or a design in a story; this one shows the changes themselves, quickly, with the diff as the main thing.
 
 ## Pick the route
 
-| What changed                          | Review it with                                                                 |
-| ------------------------------------- | ------------------------------------------------------------------------------ |
-| A GitHub repo, pushed branch          | The page **and** the GitHub compare link on it. A draft PR only when the task or the user asks for one |
-| A local repo or unpushed work         | The page, `--git <repo>`. Uncommitted and untracked files are included and flagged |
-| Files outside a repo                  | A session: `begin --files <path>` before you change them                       |
-| State you can only read with a command (cron, Task Scheduler, a service, an API's settings) | A session: `begin --capture NAME=COMMAND` before, the page diffs the output after |
-| A one-off command with side effects   | Run it through `review.py run`, so the command, exit code and output are recorded |
-| An MCP tool call (Notion, TickTick, email) | `review.py note`, with the raw result saved to a file as `--evidence`. It shows as "reported by agent" |
+| What changed                                                                                | Review it with                                                                                         |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| A GitHub repo, pushed branch                                                                | The page **and** the GitHub compare link on it. A draft PR only when the task or the user asks for one |
+| A local repo or unpushed work                                                               | The page, `--git <repo>`. Uncommitted and untracked files are included and flagged                     |
+| Files outside a repo                                                                        | A session: `begin --files <path>` before you change them                                               |
+| State you can only read with a command (cron, Task Scheduler, a service, an API's settings) | A session: `begin --capture NAME=COMMAND` before, the page diffs the output after                      |
+| A one-off command with side effects                                                         | Run it through `review.py run`, so the command, exit code and output are recorded                      |
+| An MCP tool call (Notion, TickTick, email)                                                  | `review.py note`, with the raw result saved to a file as `--evidence`. It shows as "reported by agent" |
 
 GitHub's own PR view and the AI tools' diff views are good too, and better for line comments. The page is for what
 they don't cover: changes outside a repo, several repos at once, state and actions, and one look across tools.
@@ -47,7 +45,7 @@ python <skill>/assets/review.py render --git C:/git/a --git C:/git/b=origin/deve
 The diff is from the merge base with the base branch (default `origin/HEAD`) to the working tree, so it shows
 committed, uncommitted and untracked changes together. Commits, push status and the compare link come with it.
 
-**Anything else**, a session in the scratchpad. Start it *before* the first change:
+**Anything else**, a session in the scratchpad. Start it _before_ the first change:
 
 ```bash
 R="python <skill>/assets/review.py"
@@ -84,6 +82,7 @@ $R render --git . --description <scratchpad>/review/why.md --annotations <scratc
   the page, so read the page after the last edit.
 - A file's note shows as FILE at the top of the file and under its name in the file list. A change's note shows as
   CHANGE right above its first changed line, so a hunk with two separate changes gets two notes.
+
 ## Show it
 
 1. Check the page before you link it: the files and +/− that `render` prints match
