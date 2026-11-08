@@ -1,0 +1,19 @@
+skills/explain-changes/SKILL.md
+  s_31ff42e3fd4bcc::t_90e1c17b4502d0 3,15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cbdb253af9015f542916a844490a0759c35aab8e",
+  "prompts": {},
+  "sessions": {
+    "s_31ff42e3fd4bcc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_31ff42e3fd4bcc",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
