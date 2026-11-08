@@ -1,6 +1,6 @@
 ---
 name: explain-changes
-description: Use when the user asks to review or explain changes or code changes, or when handing changes to them for review, i.e. code on a branch, files outside a repo (scripts, config, moved folders), scheduled tasks or integration commands, to build one review page from git, file snapshots and recorded commands instead of from memory.
+description: Use when the user asks to explain changes or code changes, or when handing changes to them for review, i.e. code on a branch, files outside a repo (scripts, config, moved folders), scheduled tasks or integration commands, to build one review page from git, file snapshots and recorded commands instead of from memory.
 ---
 
 # Explain changes
@@ -12,7 +12,7 @@ says which parts are yours.
 
 ## Use this skill when
 
-- The user asks to review or explain changes or code changes, or to see or check what you changed.
+- The user asks to explain changes or code changes, or to see or check what you changed.
 - You hand work back to the user and it changed something: a repo, files outside a repo, a scheduled task, an integration.
 - Before you change anything that git doesn't track, so there's a "before" to compare with.
 
