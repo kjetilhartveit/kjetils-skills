@@ -1,0 +1,15 @@
+skills/explain-changes/SKILL.md
+  h_ea837308011c6c 3,15-16,18,22-27,48,85
+  h_ea837308011c6c 28-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b85705886b66887583a84619957d71597e1ba1c1",
+  "prompts": {},
+  "humans": {
+    "h_ea837308011c6c": {
+      "author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
