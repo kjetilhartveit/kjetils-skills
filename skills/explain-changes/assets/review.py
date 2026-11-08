@@ -610,13 +610,18 @@ def render_change(change: dict, anchor: str) -> str:
             "<p class='rv-note'>No line changes (mode or empty file).</p>"
     if change["truncated"]:
         body += f"<p class='rv-note'>Showing the first {MAX_DIFF_LINES_PER_FILE:,} lines of this diff.</p>"
+    viewed_key = f"{esc(anchor)}:{esc(change['path'])}:{change['added']}:{change['removed']}"
+    # The same actions again below a diff, so a long one can be marked and folded without scrolling back up.
+    if rows:
+        body += (f"<div class='rv-file-foot'><label class='rv-viewed'><input type='checkbox' data-key='{viewed_key}'> "
+                 "Viewed</label><button type='button' class='rv-fold'>Collapse ↑</button></div>")
     return (f"<details class='rv-file' id='{anchor}' data-path='{esc(change['path'])}'{'' if collapsed else ' open'}>"
             f"<summary><span class='rv-chip rv-{label}' title='{label}'>{glyph}</span>"
             f"<span class='rv-path'>{title}</span>{''.join(extras)}"
             f"<span class='rv-count'><span class='rv-plus'>+{change['added']}</span> "
             f"<span class='rv-minus'>−{change['removed']}</span></span>"
             f"<label class='rv-viewed' onclick='event.stopPropagation()'><input type='checkbox' "
-            f"data-key='{esc(anchor)}:{esc(change['path'])}:{change['added']}:{change['removed']}'> Viewed</label>"
+            f"data-key='{viewed_key}'> Viewed</label>"
             f"</summary>{body}</details>")
 
 
@@ -785,6 +790,7 @@ font:600 13px var(--mono);flex:none}
 .rv-file>summary{display:flex;gap:8px;align-items:center;padding:8px 12px;cursor:pointer;flex-wrap:wrap}
 .rv-file[open]>summary{border-bottom:1px solid var(--line)}.rv-file.rv-done{opacity:.6}
 .rv-viewed{font-size:13px;color:var(--muted);display:flex;gap:4px;align-items:center}
+.rv-file-foot{display:flex;gap:12px;align-items:center;justify-content:flex-end;padding:8px 12px;border-top:1px solid var(--line)}
 .rv-scroll{overflow-x:auto}.rv-diff{border-collapse:collapse;width:100%;font:12.5px/1.45 var(--mono)}
 .rv-diff td{padding:0 8px;vertical-align:top}.rv-no{color:var(--muted);text-align:right;user-select:none;width:1%;white-space:nowrap}
 .rv-code{white-space:pre}.rv-sign{user-select:none;display:inline-block;width:14px;color:var(--muted)}
@@ -852,18 +858,30 @@ SCRIPT = """
 (() => {
   const store = (() => { try { return window.localStorage; } catch { return null; } })();
   const pageKey = 'rv:' + document.title + ':';
-  document.querySelectorAll('.rv-viewed input').forEach((box) => {
-    const key = pageKey + box.dataset.key;
-    const file = box.closest('.rv-file');
+  // Folding a file from its bottom would leave the reader far below it, so bring its header back into view.
+  const fold = (file, scroll = true) => {
+    file.open = false;
+    if (scroll && file.getBoundingClientRect().top < 0) file.scrollIntoView({ block: 'start' });
+  };
+  document.querySelectorAll('.rv-file').forEach((file) => {
+    const boxes = [...file.querySelectorAll('.rv-viewed input')];
+    if (!boxes.length) return;
+    const key = pageKey + boxes[0].dataset.key;
     const listed = document.querySelectorAll(`.rv-files a[href="#${file.id}"], .rv-nav a[href="#${file.id}"]`);
-    const apply = () => {
-      file.classList.toggle('rv-done', box.checked);
-      listed.forEach((link) => link.closest('li').classList.toggle('rv-listed-done', box.checked));
-      if (box.checked) file.open = false;
+    const apply = (viewed, scroll = true) => {
+      boxes.forEach((box) => { box.checked = viewed; });
+      file.classList.toggle('rv-done', viewed);
+      listed.forEach((link) => link.closest('li').classList.toggle('rv-listed-done', viewed));
+      if (viewed) fold(file, scroll);
     };
-    try { box.checked = store?.getItem(key) === '1'; } catch {}
-    if (box.checked) apply();
-    box.addEventListener('change', () => { try { store?.setItem(key, box.checked ? '1' : '0'); } catch {} apply(); });
+    let stored = false;
+    try { stored = store?.getItem(key) === '1'; } catch {}
+    if (stored) apply(true, false);
+    boxes.forEach((box) => box.addEventListener('change', () => {
+      try { store?.setItem(key, box.checked ? '1' : '0'); } catch {}
+      apply(box.checked);
+    }));
+    file.querySelector('.rv-fold')?.addEventListener('click', () => fold(file));
   });
   const modeKey = 'rv:diff-view';
   const setMode = (mode) => {

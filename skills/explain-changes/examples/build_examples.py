@@ -395,6 +395,21 @@ def check_page(name: str, page: Path, work: Path) -> list[str]:
     files = {path: status for path, (status, _) in sections.items()}
     if files != expected["files"]:
         problems.append(f"the page shows {files}, expected {expected['files']}")
+    # A file with a diff has "Viewed" at the top and again in a bottom bar with Collapse, both with one key. A file
+    # without one (a plain move) is short, so it has only the top box.
+    footers = 0
+    for path, (_, body) in sections.items():
+        keys = re.findall(r"<label class='rv-viewed'[^>]*><input type='checkbox' data-key='([^']*)'>", body)
+        footer = re.search(r"<div class='rv-file-foot'><label class='rv-viewed'>.*?"
+                           r"<button type='button' class='rv-fold'>Collapse ↑</button></div>$", body, re.S)
+        footers += bool(footer)
+        if "class='rv-diff'" not in body:
+            if len(keys) != 1 or footer:
+                problems.append(f"{path} has no diff but more than the Viewed box at the top")
+        elif len(keys) != 2 or keys[0] != keys[1] or not footer:
+            problems.append(f"{path} doesn't have the same Viewed box at the top and in a bottom bar with Collapse")
+    if not footers:
+        problems.append("no file has the bottom bar with Viewed and Collapse")
     moves = sum(status == "moved" for status in files.values())
     if moves != expected["moves"]:
         problems.append(f"{moves} files moved on the page, expected {expected['moves']}")

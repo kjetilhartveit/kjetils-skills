@@ -108,7 +108,8 @@ Then one section per source: repo (branch vs base, commits, push status, GitHub 
 with status, +/− and the agent's file summary; and the diffs, with line numbers. Big, generated (lock files) and
 deleted files start collapsed. Then the state diffs and the recorded actions. Expand/collapse all and a "Viewed" box
 per file (kept in the browser) make a long review easier to get through; a viewed file folds and fades, in the file
-list too.
+list too. Below each diff, a bar repeats "Viewed" with a "Collapse" button, so a long file can be marked and folded
+from its end; folding from there scrolls back to the file's header.
 
 Two diff views, switched in the toolbar and remembered in the browser: **Inline** (the default) shows a modified line
 once, removed words red and struck through, added words green, with one line-number column (the old number on
