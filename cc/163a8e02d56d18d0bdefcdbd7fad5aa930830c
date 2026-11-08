@@ -1,0 +1,23 @@
+skills/explain-changes/SKILL.md
+  s_bebbc35f03245d::t_5e9cc61c2baf32 1-132
+skills/explain-changes/assets/review.py
+  s_bebbc35f03245d::t_b262ddb47c47fb 1-1157
+skills/explain-changes/examples/build_examples.py
+  s_bebbc35f03245d::t_d32188e1e08f40 1-452
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cc163a8e02d56d18d0bdefcdbd7fad5aa930830c",
+  "prompts": {},
+  "sessions": {
+    "s_bebbc35f03245d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_bebbc35f03245d",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
