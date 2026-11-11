@@ -34,6 +34,7 @@ they don't cover: changes outside a repo, several repos at once, state and actio
 ## How
 
 `review.py` needs Python 3.10+ and git, nothing else. `<skill>` is this skill's folder (`~/.agents/skills/explain-changes`).
+The page's style and script are `assets/review.css` and `assets/review.js`, inlined into the page by `render`.
 
 **Repo only**, at the end:
 
@@ -60,6 +61,7 @@ $R render --session <scratchpad>/review --description <scratchpad>/review/why.md
 - `--files` takes a file or folder (repeatable). Text files up to 1 MB are kept for the diff; moves are found by
   content. `.git`, `node_modules` and build folders are skipped.
 - `--capture` commands should only read, and print the same output for the same state (sort it if needed).
+  `render` runs them again from the session's `session.json`, so only render sessions you started yourself.
 - Don't put secrets in watched files or captured output: the page shows them. Leave out `.env*` files.
 - `--description` is Markdown shown under the title, in three short paragraphs: why the change was made; a little
   background (`**Background:** ...`) if the reader needs it; and what was fixed or changed (`**Fixed:** ...` or
@@ -118,6 +120,11 @@ both. **Wrap lines**, on by default and remembered, wraps long lines under the l
 scrolling sideways. On a phone there's one line-number column.
 
 ## Changing review.py
+
+Keep the page's style and script in `review.css` and `review.js`, not as strings in `review.py`. Socket's security
+audit on [skills.sh](https://skills.sh) got `review.py` with those long strings left out (`CSS =`, `SCRIPT =`),
+called it incomplete and gave the skill a warning. Its other point, that the script runs shell commands, is what
+`run` and `--capture` are for; the docstring says where the commands come from.
 
 1. Change this file in the same commit, so it says what the script does now: the options, the page and its parts.
    Also check the other skills that mention `explain-changes`, e.g. with `grep -rn explain-changes skills`.
