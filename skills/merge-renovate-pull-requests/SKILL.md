@@ -23,10 +23,9 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
 
 - eslint / eslint monorepo should not be updated to >= v10 yet because they haven't patched a bug.
 
-## Logging agent merges in the PR description:
+## Logging agent merges in the PR:
 
-The log of an agent merge lives in the description of the agent-merge PR, not in a file in the repo. When we log agent
-merges we write (or rewrite) the PR description with `gh pr edit <pr> --body-file <file>`, in this format:
+When we want to log agent merges then create a comment in the PR in this format:
 
 ```
 {summary of changes}
@@ -41,9 +40,6 @@ merges we write (or rewrite) the PR description with `gh pr edit <pr> --body-fil
 
 {comments header and comments if there are any}
 ```
-
-- Keep the description current: rewrite it as more pull requests are processed, rather than appending entries.
-- Don't create or append to `AGENT_MERGE.md`. Some repos still have one from before; leave it as it is.
 
 # Main workflow:
 
@@ -64,7 +60,7 @@ merges we write (or rewrite) the PR description with `gh pr edit <pr> --body-fil
 3. Run type checking, linting and build. If any of them fails, then we should fix them before proceeding.
 4. Make sure the new branch is pushed, and check the results/checks in CI/GitHub workflow. If the job fails in CI, then we go back to step 3 and try again.
    - If we can't fix the errors within a reasonable amount of effort, then leave it to the user to resolve it manually. Leave a comment in the pull request explaining this and then abort the current workflow.
-5. Log agent merges in the PR description.
+5. Log agent merges in the PR.
 
 ## 2. Processing open pull requests where any checks failed:
 
@@ -76,7 +72,7 @@ merges we write (or rewrite) the PR description with `gh pr edit <pr> --body-fil
    3. Run type checking, linting and build. If any of them fails, then we should fix them before proceeding.
    4. Push the fixes and see the results in CI/GitHub workflow. If the job fails in CI, then we go back to step 3 (for the individual pull request) and try again.
       - If the task is unresolvable (perhaps due to an open issue in the third-party dependency) then we should leave it to the user to resolve it manually. Leave a comment in the pull request explaining this and then abort the current workflow.
-3. Log agent merges in the PR description.
+3. Log agent merges in the PR.
 
 ## 3. After processing all open pull requests:
 
