@@ -23,31 +23,23 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
 
 - eslint / eslint monorepo should not be updated to >= v10 yet because they haven't patched a bug.
 
-## Adding logs of agent merges:
+## Logging agent merges in the PR:
 
-1. When we want to log agent merges we append the following information to `AGENT_MERGE.md` (in the root folder of the repo).
+When we want to log agent merges then create a comment in the PR in this format:
 
-   ```
-   # {agent merge concise title}
+```
+{summary of changes}
 
-   Date: {date and time}
+## Breaking changes
 
-   {summary of changes}
+{bullet list of the breaking changes; include a short description of the actual breaking changes and including links to official sources for reading more}
 
-   ## Breaking changes
+## Pull requests
 
-   {bullet list of the breaking changes; include a short description of the actual breaking changes and including links to official sources for reading more}
+{bullet list with links to pull requests}
 
-   ## Pull requests
-
-   {bullet list with links to pull requests}
-
-   {comments header and comments if there are any}
-
-   {separator between entries, use the `---` separator}
-   ```
-
-2. Then we commit and push the changes.
+{comments header and comments if there are any}
+```
 
 # Main workflow:
 
@@ -68,7 +60,7 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
 3. Run type checking, linting and build. If any of them fails, then we should fix them before proceeding.
 4. Make sure the new branch is pushed, and check the results/checks in CI/GitHub workflow. If the job fails in CI, then we go back to step 3 and try again.
    - If we can't fix the errors within a reasonable amount of effort, then leave it to the user to resolve it manually. Leave a comment in the pull request explaining this and then abort the current workflow.
-5. Log agent merges.
+5. Log agent merges in the PR.
 
 ## 2. Processing open pull requests where any checks failed:
 
@@ -80,7 +72,7 @@ You may use the GitHub CLI to get fetch pull requests from the GitHub repo, see 
    3. Run type checking, linting and build. If any of them fails, then we should fix them before proceeding.
    4. Push the fixes and see the results in CI/GitHub workflow. If the job fails in CI, then we go back to step 3 (for the individual pull request) and try again.
       - If the task is unresolvable (perhaps due to an open issue in the third-party dependency) then we should leave it to the user to resolve it manually. Leave a comment in the pull request explaining this and then abort the current workflow.
-3. Log agent merges.
+3. Log agent merges in the PR.
 
 ## 3. After processing all open pull requests:
 
