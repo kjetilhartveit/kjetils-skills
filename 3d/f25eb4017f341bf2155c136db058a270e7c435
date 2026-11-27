@@ -1,0 +1,23 @@
+.claude-plugin/marketplace.json
+  s_c6f8ebca71acbe::t_9e42d668a3156e 1-15
+.claude-plugin/plugin.json
+  s_c6f8ebca71acbe::t_3e7526f0c2fe6f 1-9
+README.md
+  s_c6f8ebca71acbe::t_500dd946d6a302 1-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3df25eb4017f341bf2155c136db058a270e7c435",
+  "prompts": {},
+  "sessions": {
+    "s_c6f8ebca71acbe": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_c6f8ebca71acbe",
+        "model": "unknown"
+      },
+      "human_author": "Kjetil Hårtveit <kjetil_runescape@hotmail.com>"
+    }
+  }
+}
