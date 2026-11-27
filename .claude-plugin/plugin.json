@@ -1,0 +1,9 @@
+{
+  "name": "kjetils-skills",
+  "displayName": "Kjetil's skills",
+  "description": "Kjetil's public agent skills: visual explainers, the explainer kit and Renovate pull request merging.",
+  "author": {
+    "name": "Kjetil Hårtveit",
+    "url": "https://github.com/kjetilhartveit"
+  }
+}
