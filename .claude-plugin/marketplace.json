@@ -1,0 +1,15 @@
+{
+  "name": "kjetils-skills",
+  "description": "Kjetil's public skills, as one plugin.",
+  "owner": {
+    "name": "Kjetil Hårtveit",
+    "url": "https://github.com/kjetilhartveit"
+  },
+  "plugins": [
+    {
+      "name": "kjetils-skills",
+      "source": "./",
+      "description": "Kjetil's public agent skills: visual explainers, the explainer kit and Renovate pull request merging."
+    }
+  ]
+}
